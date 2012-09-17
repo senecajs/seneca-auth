@@ -1,0 +1,4 @@
+seneca-auth
+===========
+
+seneca-auth
