@@ -1,0 +1,30 @@
+{
+  "name": "seneca-auth",
+  "version": "0.0.0",
+  "description": "auth plugin for seneca",
+  "main": "lib/auth.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "seneca",
+    "auth",
+    "plugin"
+  ],
+  "author": "Richard Rodger",
+  "license": "BSD",
+
+  "dependencies": {
+    "underscore":     "1.1.x",
+    "passport":       "0.1.x",
+    "passport-local": "0.1.x",
+    "passport-twitter": "*"
+  },
+
+  "devDependencies": {
+    "vows":"*",
+    "async":"*",
+    "eyes":"*"
+  }
+}
