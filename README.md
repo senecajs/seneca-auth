@@ -1,8 +1,8 @@
 # seneca-auth - Node.js module
 
-## A user authentication plugin for the (Seneca)[/rjrodger/seneca] toolkit
+## A user authentication plugin for the [Seneca](/rjrodger/seneca) toolkit
 
-Dependencies: (seneca-user)[/rjrodger/seneca-user]
+Dependencies: [seneca-user](/rjrodger/seneca-user)
 
 Current Version: 0.1.1
 
