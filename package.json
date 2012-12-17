@@ -14,7 +14,7 @@
   "license": "MIT",
   "main": "lib/auth.js",
   "scripts": {
-    "test": "mocha test/happy.js"
+    "test": "node test/travis.js"
   },
   "files": [
     "LICENSE.txt",
@@ -25,7 +25,6 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "seneca": "~0.4.3",
     "underscore": "~1.1.7",
     "passport": "~0.1.15",
     "passport-local": "~0.1.6",
