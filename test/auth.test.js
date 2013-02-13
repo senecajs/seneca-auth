@@ -7,7 +7,7 @@ var si = seneca()
 si.use( 'user' )
 si.use( require('..') )
 
-describe('plugin', function() {
+describe('auth', function() {
   it('responds', function() {
     var rand = Math.random()
     var start = new Date().getTime()

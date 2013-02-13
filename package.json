@@ -1,7 +1,7 @@
 {
   "name": "seneca-auth",
   "description": "User authentication plugin for the seneca module.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "keywords": [
     "seneca",
     "auth",
@@ -25,21 +25,22 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "underscore": "~1.1.7",
+    "underscore": "~1.4.4",
     "passport": "~0.1.15",
     "passport-local": "~0.1.6",
     "passport-twitter": "~0.1.4",
     "dispatch": "~0.2.0",
-    "string": "~1.1.0",
-    "gex": "~0.0.3",
-    "seneca-user": "~0.1.1"
+    "string": "~1.2.1",
+    "gex": "0.0.3"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rjrodger/seneca-auth.git"
   },
   "devDependencies": {
-    "async": "*",
-    "eyes": "*"
+    "eyes": "~0.1.8",
+    "async": "~0.2.5",
+    "seneca-user": "~0.2.0",
+    "seneca": "~0.5.0"
   }
 }
