@@ -4,7 +4,7 @@
 
 Dependencies: [seneca-user](/rjrodger/seneca-user)
 
-Current Version: 0.2.0
+Current Version: 0.2.1
 
 [![Build Status](https://secure.travis-ci.org/rjrodger/seneca-auth.png?c)](http://travis-ci.org/rjrodger/seneca-auth)
 
