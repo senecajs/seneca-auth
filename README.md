@@ -34,6 +34,12 @@ With _always:true_, a redirect always occurs.
 
 The default behaviour is to redirect if no other rule above applies.
 
+The module takes a _restrict_ parameter (string or array) to allow only authenticated requests to those 
+endpoints. It will return HTTP code 401 (Unauthorized) for requests matching these paths.
+
+    seneca.use('auth', {restrict:['/api/']})
+
+
 
 ### login
 
