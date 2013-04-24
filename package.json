@@ -29,6 +29,7 @@
     "passport": "~0.1.16",
     "passport-local": "~0.1.6",
     "passport-twitter": "~0.1.4",
+    "passport-google": "~0.3.0",
     "dispatch": "~0.2.0",
     "string": "~1.2.1",
     "gex": "0.0.3"
