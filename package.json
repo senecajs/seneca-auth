@@ -42,7 +42,7 @@
   "devDependencies": {
     "eyes": "~0.1.8",
     "async": "~0.2.5",
-    "seneca-user": "~0.2.1",
-    "seneca": "~0.5.3"
+    "seneca-user": "~0.2.x",
+    "seneca": "~0.5.x"
   }
 }
