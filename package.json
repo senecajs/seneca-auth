@@ -31,6 +31,7 @@
     "passport-google-oauth": "~0.1.5",
     "passport-twitter": "~0.1.4",
     "passport-linkedin": "~0.1.3",
+    "passport-github": "~0.1.5",
     "dispatch": "~0.2.0",
     "string": "~1.2.1",
     "gex": "0.0.3"
