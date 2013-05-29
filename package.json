@@ -34,7 +34,8 @@
     "passport-github": "~0.1.5",
     "dispatch": "~0.2.0",
     "string": "~1.2.1",
-    "gex": "0.0.3"
+    "gex": "0.0.3",
+    "passport-facebook": "~0.1.5"
   },
   "repository": {
     "type": "git",
