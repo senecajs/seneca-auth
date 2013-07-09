@@ -4,9 +4,9 @@
 
 Dependencies: [seneca-user](/rjrodger/seneca-user)
 
-Current Version: 0.2.4
+Current Version: 0.2.5
 
-[![Build Status](https://secure.travis-ci.org/rjrodger/seneca-auth.png?c)](http://travis-ci.org/rjrodger/seneca-auth)
+Tested on: Node 0.10.6, 0.8.7
 
 NOTE: documentation is in progress. Take a look at the <a href="http://github.com/rjrodger/seneca-examples">user accounts example</a>.
 
