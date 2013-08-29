@@ -7,14 +7,21 @@ var si = seneca()
 si.use( 'user' )
 si.use( require('..') )
 
+var useract = si.pin({role:'user',cmd:'*'})
+var authact = si.pin({role:'auth',cmd:'*'})
+
+
 describe('auth', function() {
-  it('responds', function() {
-    var rand = Math.random()
-    var start = new Date().getTime()
-    si.act({role:'auth',cmd:'ping',rand:rand},function(err,res){
-      assert.ok(null==err)
-      assert.equal(res.rand,rand)
-      assert.ok(start<=res.when)
+  it('happy', function(cb) {
+
+    authact.register({data:{nick:'u1',name:'u1n',password:'u1p'}},function(err,out){
+      if( err ) return cb(err);
+      
+      assert.ok(out.ok)
+      assert.ok(out.user)
+      assert.ok(out.login)
+      cb()
     })
+
   })
 })
