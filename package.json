@@ -1,7 +1,7 @@
 {
   "name": "seneca-auth",
   "description": "User authentication plugin for the seneca module.",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "keywords": [
     "seneca",
     "auth",
@@ -25,7 +25,7 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "underscore": "~1.4.4",
+    "underscore": "~1.5.1",
     "passport": "~0.1.16",
     "passport-local": "~0.1.6",
     "passport-google-oauth": "~0.1.5",
@@ -44,8 +44,7 @@
   },
   "devDependencies": {
     "eyes": "~0.1.8",
-    "async": "~0.2.5",
-    "seneca-user": "~0.2.x",
-    "seneca": ">=0.5.9"
+    "seneca-user": "~0.2.4",
+    "seneca": "~0.5.11"
   }
 }
