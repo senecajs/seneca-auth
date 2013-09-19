@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "eyes": "~0.1.8",
-    "seneca-user": "~0.2.4",
+    "seneca-user": "~0.2.6",
     "seneca": "~0.5.12",
     "mocha": "~1.13.0"
   }
