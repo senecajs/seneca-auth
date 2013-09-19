@@ -4,7 +4,7 @@
 
 Dependencies: [seneca-user](/rjrodger/seneca-user)
 
-Current Version: 0.2.6
+Current Version: 0.2.7
 
 Tested on: Node 0.10.6, 0.8.7, Seneca 0.5.12
 
