@@ -4,9 +4,9 @@
 
 Dependencies: [seneca-user](/rjrodger/seneca-user)
 
-Current Version: 0.2.5
+Current Version: 0.2.6
 
-Tested on: Node 0.10.6, 0.8.7
+Tested on: Node 0.10.6, 0.8.7, Seneca 0.5.12
 
 NOTE: documentation is in progress. Take a look at the <a href="http://github.com/rjrodger/seneca-examples">user accounts example</a>.
 
