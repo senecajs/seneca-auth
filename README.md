@@ -8,6 +8,9 @@ Current Version: 0.2.7
 
 Tested on: Node 0.10.6, 0.8.7, Seneca 0.5.12
 
+[![Build Status](https://travis-ci.org/rjrodger/seneca-auth.png?branch=master)](https://travis-ci.org/rjrodger/seneca-auth)
+
+
 NOTE: documentation is in progress. Take a look at the <a href="http://github.com/rjrodger/seneca-examples">user accounts example</a>.
 
 
