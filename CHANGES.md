@@ -1,7 +1,7 @@
 
 ## 0.2.8: 
 
-   * provides simple login page
+   * provides simple login page (but default is not to show it, set option defaultpages:true)
    * tested against seneca 0.5.15
    * added peerDependencies
 
