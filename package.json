@@ -34,7 +34,8 @@
     "string": "1.8.x",
     "gex": "0.1.x",
     "async": "0.2.x",
-    "cookies": "0.3.x"
+    "cookies": "0.3.x",
+    "connect": "2.12.x"
   },
   "repository": {
     "type": "git",
