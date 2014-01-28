@@ -4,9 +4,9 @@
 
 Dependencies: [seneca-user](/rjrodger/seneca-user)
 
-Current Version: 0.2.7
+Current Version: 0.2.8
 
-Tested on: Node 0.10.6, 0.8.7, Seneca 0.5.12
+Tested on: Node 0.10.24, Seneca 0.5.15
 
 [![Build Status](https://travis-ci.org/rjrodger/seneca-auth.png?branch=master)](https://travis-ci.org/rjrodger/seneca-auth)
 
