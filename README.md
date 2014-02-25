@@ -76,3 +76,7 @@ Get the details of an existing, logged in user.
 
 
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rjrodger/seneca-auth/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
