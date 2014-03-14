@@ -16,7 +16,7 @@ describe('auth', function() {
 
     authact.register({data:{nick:'u1',name:'u1n',password:'u1p'}},function(err,out){
       if( err ) return cb(err);
-      
+
       assert.ok(out.ok)
       assert.ok(out.user)
       assert.ok(out.login)
