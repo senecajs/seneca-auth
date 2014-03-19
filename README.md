@@ -72,7 +72,7 @@ Get the details of an existing, logged in user.
 ### plugins
 
 | Provider |                                plugin                                    |                                     example                                      |
-|----------|:------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:|
+|----------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | local    | embedded                                                                 | [seneca-mvp](https://github.com/rjrodger/seneca-mvp)                             |
 | Facebook | [seneca-facebook-auth](https://github.com/nherment/seneca-facebook-auth) | [facebook](https://github.com/nherment/seneca-facebook-auth/tree/master/example) |
 | Github   | [seneca-github-auth](https://github.com/nherment/seneca-github-auth)     | [github](https://github.com/nherment/seneca-github-auth/tree/master/example)     |
