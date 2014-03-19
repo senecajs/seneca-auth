@@ -5,6 +5,7 @@ var ServiceRouter = require('../lib/ServiceRouter.js')
 describe('ServiceRouter', function() {
 
   var passportMock
+  var senecaMock
 
 
   before(function() {
@@ -14,6 +15,9 @@ describe('ServiceRouter', function() {
           setImmediate(next())
         }
       }
+    }
+    senecaMock = {
+      add: function() {}
     }
   })
 
@@ -26,7 +30,7 @@ describe('ServiceRouter', function() {
     }
 
 
-    new ServiceRouter(options, {}, {}, passportMock)
+    new ServiceRouter(options, senecaMock, {}, passportMock)
   })
 
 
