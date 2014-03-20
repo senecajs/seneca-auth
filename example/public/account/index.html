@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--link rel="shortcut icon" href="../../assets/ico/favicon.png"-->
+
+    <title>Account</title>
+
+    <style>
+      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      display: none !important;
+      }
+    </style>
+
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/mvp.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="account" ng-app="account" ng-controller="Main" ng-cloak>
+
+    <div id="wrap">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavBar">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Service</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">{{user.name}}<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a ng-click="btn_account()">Your Account</a></li>
+                <li><a ng-click="btn_signout()">Sign Out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+
+    <div class="container" style="margin-top:50px" ng-controller="TabView">
+
+      <ul class="nav nav-tabs">
+        <li ng-repeat="name in views" ng-class="{active:name==curtab}"><a href="" ng-click="tabview(name)">{{name}}</a></li>
+      </ul>
+
+      <div class="row" ng-show="show_view_Dashboard">
+        <div class="col-lg-12">
+          <h2>Dashboard</h2>
+          <p>Your content.</p>
+        </div>
+      </div>
+
+      <div class="row" ng-show="show_view_Projects">
+        <div class="col-lg-12" ng-include src="'projects.html'">
+        </div>
+      </div>
+
+      <div class="row" ng-show="show_view_Settings">
+        <div class="col-lg-12">
+          <h2>Settings</h2>
+          <div seneca-settings kind="user"></div>
+        </div>
+      </div>
+
+      <div class="row" ng-show="show_view_Account" ng-controller="Account">
+        <div class="col-lg-12">
+          <h2>Account</h2>
+
+          <h2>Your Details</h2>
+          <form role="form">
+            <div class="form-group">
+              <label for="field_name">Name</label>
+              <input type="text" class="form-control half-width" id="field_name" ng-model="field_name">
+            </div>
+            <div class="form-group">
+              <label for="field_email">Email</label>
+              <input type="text" class="form-control half-width" id="field_email" ng-model="field_email">
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-click="update_user()">Update &raquo;</button>
+
+            <p class="account_msg">
+              {{details_msg}}
+            </p>
+          </form>
+
+          <h2>Change Your Password</h2>
+          <form role="form">
+            <div class="form-group">
+              <label for="field_password">Password</label>
+              <input type="text" class="form-control half-width" id="field_password" ng-model="field_password">
+            </div>
+            <div class="form-group">
+              <label for="field_repeat">Repeat Password</label>
+              <input type="text" class="form-control half-width" id="field_repeat" ng-model="field_repeat">
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-click="change_pass()">Change &raquo;</button>
+
+            <p class="account_msg">
+              {{password_msg}}
+            </p>
+          </form>
+
+
+          <h2>Your Organisation</h2>
+          <form role="form">
+            <div class="form-group">
+              <label for="field_org_name">Name</label>
+              <input type="text" class="form-control half-width" id="field_org_name" ng-model="field_org_name">
+            </div>
+            <div class="form-group">
+              <label for="field_org_web">Website</label>
+              <input type="text" class="form-control half-width" id="field_org_web" ng-model="field_org_web">
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-click="update_org()">Update &raquo;</button>
+
+            <p class="account_msg">
+              {{org_msg}}
+            </p>
+          </form>
+
+
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+    
+    </div>
+
+    <footer>
+      <div class="container">
+        <p>&copy; Company 2013</p>
+      </div>
+    </footer>
+
+    <script src="/bower_components/underscore/underscore-min.js"></script>
+    <script src="/bower_components/jquery/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/js/angular.1.2.0.rc2.min.js"></script>
+    <script src="/js/angular-route.1.2.0.rc2.min.js"></script>
+    <script src="/js/cookies.js"></script>
+    <script src="/settings/seneca-settings.js"></script>
+    <script src="/account/mvp-account.js"></script>
+  </body>
+</html>

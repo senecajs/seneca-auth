@@ -1,0 +1,44 @@
+
+<div ng-controller="Projects">
+
+  <h3 ng-show="show_projects_list">Projects</h3>
+  
+  <div ng-show="show_projects_list">
+    <br>
+    <button class="btn btn-primary" ng-click="new_project()">New Project &raquo;</button>
+  </div>
+
+  <div ng-show="show_projects_list">
+    <br>
+    <ul class="selection-list nav nav-stacked nav-pills">
+      <li ng-repeat="project in projects"><a ng-click="open_project(project.id)" class="">{{project.name}}</a></li>
+    </ul>
+  </div>
+
+
+
+  <h3 ng-show="show_project_details">Project Details</h3>
+
+  <form role="form" ng-show="show_project_details">
+    <br>
+
+    <div class="form-group">
+      <label for="field_name">Name</label>
+      <input type="text" class="form-control half-width" id="field_name" ng-model="field_name">
+    </div>
+    <div class="form-group">
+      <label for="field_code">Code</label>
+      <input type="text" class="form-control half-width" id="field_code" ng-model="field_code">
+    </div>
+
+    <button type="submit" class="btn btn-primary" ng-click="close_project()">Close &raquo;</button>
+    <button type="submit" class="btn btn-primary" ng-click="save_project()">Save &raquo;</button>
+
+    <p class="account_msg">
+      {{project_msg}}
+    </p>
+  </form>
+
+
+</div>
+

@@ -1,0 +1,173 @@
+
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+footer {
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+.footer {
+    margin-top: 200px;
+}
+
+
+#welcome {
+    margin: 200px auto;
+    height: 400px;
+}
+
+#reset {
+    margin: 200px auto;
+}
+
+
+#loginbtns {
+    width:100%;
+}
+
+#loginbtns td.left {
+    text-align:left;
+}
+#loginbtns td.center {
+    text-align:center;
+}
+#loginbtns td.right {
+    text-align:right;
+}
+
+
+.half-width {
+    width: 50%;
+}
+
+
+.mvp_hide {
+    visibility: hidden;
+}
+
+div.mvp_seek_input label {
+    font-style:italic;
+    color: red;
+}
+
+div.mvp_seek_input input {
+    border-color: red;
+}
+
+a.mvp_seek_input:hover {
+    background-color:red;
+    color:black;
+}
+div.mvp_seek_input input::-webkit-input-placeholder { /* WebKit browsers */
+    color:    red;
+}
+div.mvp_seek_input input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    red;
+}
+div.mvp_seek_input input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    red;
+}
+div.mvp_seek_input input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    red;
+}
+
+div.mvp_show_input {
+    display:block;
+}
+
+div.mvp_hide_input {
+    display:none;
+}
+
+
+
+
+body.account {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+
+p.account_msg {
+    margin-top: 10px;
+    height: 60px;
+}
+
+
+ul.selection-list li {
+    border-bottom: 1px solid #ccc;
+}
+
+/* Settings */
+table#seneca-settings {
+    margin: 20px;
+}
+
+table#seneca-settings td {
+}
+
+table#seneca-settings td:first-child {
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+table#seneca-settings td:nth-child(2) {
+    padding: 10px;
+    max-width: 40%;
+}
+
+
+.rating {
+    unicode-bidi:bidi-override;
+    direction:rtl;
+    font-size:30px;
+}
+
+.rating span.star {
+    font-family:FontAwesome;
+    font-weight:normal;
+    font-style:normal;
+    display:inline-block;
+}
+
+.rating span.star:hover{
+    cursor:pointer;
+}
+
+.rating span.star:before{
+    content:"\f006";
+    padding-right:5px;
+    color:#999999;
+}
+
+.rating span.star-active:before {
+    content: "\f005";
+    color: #e3cf7a;
+}
+
+.rating span.star:hover:before, .rating span.star:hover ~ span.star:before {
+    content: "\f005";
+    color: #e3cf7a;
+}
+
+.rating span.star:hover:before {
+    color: #cfb02c;
+}

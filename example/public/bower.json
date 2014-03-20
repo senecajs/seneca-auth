@@ -1,0 +1,23 @@
+{
+  "name": "nodescale",
+  "version": "0.0.0",
+  "homepage": "https://github.com/rjrodger/seneca-mvp",
+  "authors": [
+    "Richard Rodger <richard@ricebridge.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.0.0",
+    "underscore": "~1.5.1",
+    "jquery": "~2.0.3",
+    "angular": "*"
+  }
+}
