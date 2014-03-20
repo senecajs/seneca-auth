@@ -14,7 +14,7 @@
   "license": "MIT",
   "main": "lib/auth.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/*.test.js"
+    "test": "node_modules/.bin/mocha test/*.test.js --reporter spec"
   },
   "files": [
     "LICENSE.txt",
@@ -35,16 +35,20 @@
     "gex": "0.1.x",
     "async": "0.2.x",
     "cookies": "0.3.x",
-    "connect": "2.12.x"
+    "connect": "2.12.x",
+    "middlewares": "0.1.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rjrodger/seneca-auth.git"
   },
   "devDependencies": {
-    "seneca-user": "0.2.x",
-    "seneca": "0.5.x",
-    "mocha": "1.17.x"
+    "mocha": "1.17.x",
+    "request": "*",
+    "express": "*",
+    "seneca": "*",
+    "seneca-user": "*",
+    "seneca-admin": "*"
   },
   "peerDependencies": {
     "seneca": "*",
