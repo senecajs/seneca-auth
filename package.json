@@ -48,12 +48,7 @@
     "express": "*",
     "seneca": "*",
     "seneca-user": "*",
-    "seneca-admin": "*",
-    "seneca-facebook-auth": "*",
-    "seneca-github-auth": "*",
-    "seneca-google-auth": "*",
-    "seneca-linkedin-auth": "*",
-    "seneca-twitter-auth": "*"
+    "seneca-admin": "*"
   },
   "peerDependencies": {
     "seneca": "*",
