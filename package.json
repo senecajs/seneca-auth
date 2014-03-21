@@ -37,7 +37,8 @@
     "cookies": "0.3.x",
     "connect": "2.12.x",
     "middlewares": "0.1.0",
-    "request-arguments-parser": "0.1.0"
+    "request-arguments-parser": "0.1.0",
+    "seneca-crypto-sign": "^0.1.0"
   },
   "repository": {
     "type": "git",

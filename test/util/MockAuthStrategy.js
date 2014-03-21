@@ -10,7 +10,7 @@ MockAuthStrategy.prototype.mock = function(serviceName, seneca) {
   var self = this
   var authPlugin = new LocalStrategy(
     function (username, password, done) {
-      console.log('MOCK', username, password)
+      console.log('mocked:', username, password)
       if(self._validUsers.hasOwnProperty(username) && self._validUsers[username] === password) {
         done(undefined, {
           identifier: username,

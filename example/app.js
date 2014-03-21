@@ -25,8 +25,6 @@ seneca.use('project')
 
 seneca.use('settings')
 
-
-
 seneca.ready(function(err){
   if( err ) return process.exit( !console.error(err) );
 
