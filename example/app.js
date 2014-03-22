@@ -19,7 +19,7 @@ seneca.use('options','options.js')
 seneca.use('mem-store',{web:{dump:true}})
 
 seneca.use('user',{confirm:true})
-seneca.use(require('../lib/auth.js'))
+seneca.use(require('../lib2/auth.js'))
 seneca.use('account')
 seneca.use('project')
 
