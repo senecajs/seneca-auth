@@ -21,6 +21,7 @@
     "README.md",
     "lib"
   ],
+
   "dependencies": {
     "async": "~0.7.0",
     "connect": "2.19.6",
