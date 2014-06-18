@@ -22,21 +22,23 @@
     "lib"
   ],
   "dependencies": {
-    "underscore": "1.5.x",
-    "passport": "0.2.x",
-    "passport-local": "0.1.x",
-    "passport-google-oauth": "0.1.x",
-    "passport-twitter": "1.x",
-    "passport-linkedin": "0.1.x",
-    "passport-github": "0.1.x",
-    "passport-facebook": "1.x",
-    "dispatch": "0.2.x",
-    "string": "1.8.x",
-    "gex": "0.1.x",
     "async": "0.2.x",
-    "cookies": "0.3.x",
     "connect": "2.12.x",
-    "middlewares": "0.1.0"
+    "cookies": "0.3.x",
+    "dispatch": "0.2.x",
+    "gex": "0.1.x",
+    "middlewares": "0.1.0",
+    "passport": "0.2.x",
+    "passport-facebook": "1.x",
+    "passport-github": "0.1.x",
+    "passport-google-oauth": "0.1.x",
+    "passport-linkedin": "0.1.x",
+    "passport-local": "0.1.x",
+    "passport-twitter": "1.x",
+    "seneca-jsonrest-api": "^0.2.1",
+    "seneca-perm": "^0.1.2",
+    "string": "1.8.x",
+    "underscore": "1.5.x"
   },
   "repository": {
     "type": "git",
@@ -45,10 +47,11 @@
   "devDependencies": {
     "mocha": "1.17.x",
     "request": "*",
-    "express": "*",
+    "express": "3.x.x",
     "seneca": "*",
     "seneca-user": "*",
-    "seneca-admin": "*"
+    "seneca-admin": "*",
+    "seneca-data-editor": "*"
   },
   "peerDependencies": {
     "seneca": "*",
