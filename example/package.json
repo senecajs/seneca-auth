@@ -1,0 +1,19 @@
+{
+  "name": "seneca-auth-example",
+  "version": "0.1.0",
+  "description": "",
+  "main": "app.js",
+  "author": "",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "seneca-project": "*",
+    "seneca-account": "*",
+    "seneca-user": "*",
+    "seneca-auth": "*",
+    "seneca": "*",
+    "underscore": "*",
+    "express": "*",
+    "seneca-settings": "*"
+  }
+}

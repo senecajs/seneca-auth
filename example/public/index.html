@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--link rel="shortcut icon" href="../../assets/ico/favicon.png"-->
+
+    <title>Service</title>
+
+    <style>
+      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      display: none !important;
+      }
+    </style>
+
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+
+
+    <link href="/css/mvp.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body ng-app="home" ng-controller="Main" ng-cloak>
+
+    <div id="wrap">
+
+    <div class="container" >
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="#">About</a></li>
+        </ul>
+        <h3 class="text-muted">Seneca MVP</h3>
+      </div>
+
+
+      <div class="row" id="welcome" ng-controller="Login" ng-show="show_login">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-4">
+    <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis enim sed nunc congue fermentum. Phasellus vitae tincidunt arcu.</h2>
+  </div>
+
+  <div class="col-lg-4">
+    <div ng-show="!hasuser">
+    <form role="form">
+      <div ng-class="{'form-group':true,mvp_seek_input:seek_name,animated:true,fadeIn:fadein_name,fadeOut:fadeout_name}">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="enter name" ng-model="input_name" tab-index="1">
+      </div>
+      <div ng-class="{'form-group':true,mvp_seek_input:seek_email}">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" id="email" placeholder="enter email" ng-model="input_email" tab-index="2">
+      </div>
+      <div ng-class="{'form-group':true,mvp_seek_input:seek_password,animated:true,fadeIn:fadein_password,fadeOut:fadeout_password}">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="enter password" ng-model="input_password" tab-index="3">
+      </div>
+    </form>
+    <table id="loginbtns"><tr>
+       <td class="left"><a ng-class="{btn:true, 'btn-primary':true, mvp_seek_input:seek_signup, animated:true, fadeIn:fadein_signup, fadeOut:fadeout_signup}" href="#"  ng-click="signup()" tab-index="5">Sign Up &raquo;</a></td>
+
+       <td class="center"><a ng-class="{btn:true, 'btn-primary':true, mvp_hide:hide_cancel, animated:true, fadeIn:fadein_cancel, fadeOut:fadeout_cancel, float:float_cancel}" href="#"  ng-click="cancel()">Cancel</a></td>
+
+       <td class="right"><a ng-class="{btn:true, 'btn-primary':true, mvp_seek_input:seek_signin, mvp_hide:hide_signin, animated:true, fadeIn:fadein_signin, fadeOut:fadeout_signin}" href="#"  ng-click="signin()" tab-index="4">Sign In &raquo;</a></td>
+
+       <td ng-class="{right:true,hide:hide_send}"><a ng-class="{btn:true, 'btn-primary':true, mvp_seek_input:seek_send, animated:true, fadeIn:fadein_send, fadeOut:fadeout_send}" href="#"  ng-click="send()">Send Reset &raquo;</a></td>
+    </tr></table>
+    <p>
+      <a ng-class="{mvp_hide:hide_forgot}" style="clear:both;float:right;margin-top:10px;" href="#" ng-click="forgot()">forgot password?</a>
+    </p>
+    </div>
+
+    <p style="margin-top:40px;color:red" ng-show="showmsg">{{msg}}</p>
+ </div>
+
+  <div ng-show="hasuser">
+    <h1>Welcome {{user.name}}!</h1>
+    <a ng-class="{btn:true, 'btn-primary':true }" href="#" ng-click="goaccount()">Your Account &raquo;</a>
+  </div>
+
+  <div class="col-lg-2"></div>
+</div>
+      </div>
+
+
+      <div class="row" id="reset" ng-controller="Reset" ng-show="show_reset">
+        <div class="col-lg-5">&nbsp;</div>
+        <div class="col-lg-2">
+          <h1>Password Reset</h1>
+    <form role="form" ng-show="show_reset">
+      <div ng-class="{'form-group':true,mvp_seek_input:seek_password}">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="enter password" ng-model="input_password" tab-index="1">
+      </div>
+      <div ng-class="{'form-group':true,mvp_seek_input:seek_repeat}">
+        <label for="repeat">Repeat Password</label>
+        <input type="password" class="form-control" id="repeat" placeholder="enter repeat" ng-model="input_repeat" tab-index="2">
+      </div>
+
+      <a ng-class="{btn:true, 'btn-primary':true, mvp_seek_input:seek_reset}" ng-show="show_resetpass" href="#" ng-click="reset()">Reset Password &raquo;</a>
+      <a ng-class="{btn:true, 'btn-primary':true }" href="#" ng-show="show_gohome" ng-click="gohome()">Sign In &raquo;</a>
+
+    </form>
+    <p style="margin-top:40px;color:red">
+      {{msg}}
+    </p>
+        </div>
+        <div class="col-lg-5">&nbsp;</div>
+      </div>
+
+
+      <div class="row" id="confirm" ng-controller="Confirm" ng-show="show_confirm">
+        <div class="col-lg-5">&nbsp;</div>
+        <div class="col-lg-2">
+          <h1>Confirm Account</h1>
+
+          <p style="">
+            {{msg}}
+          </p>
+
+          <a ng-class="{btn:true, 'btn-primary':true }" href="#" ng-show="show_goaccount" ng-click="goaccount()">Your Account &raquo;</a>
+          <a ng-class="{btn:true, 'btn-primary':true }" href="#" ng-show="show_gohome" ng-click="gohome()">Sign In &raquo;</a>
+
+        </div>
+        <div class="col-lg-5">&nbsp;</div>
+      </div>
+
+    </div> <!-- /container -->
+
+
+    </div>
+
+
+    <footer>
+      <div class="container">
+        <p>&copy; Company 2013</p>
+      </div>
+    </footer>
+
+
+    <script src="/bower_components/underscore/underscore-min.js"></script>
+    <script src="/bower_components/jquery/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/js/cookies.js"></script>
+    <script src="/js/mvp-public.js"></script>
+  </body>
+</html>
+

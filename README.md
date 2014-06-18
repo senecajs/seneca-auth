@@ -37,7 +37,7 @@ With _always:true_, a redirect always occurs.
 
 The default behaviour is to redirect if no other rule above applies.
 
-The module takes a _restrict_ parameter (string or array) to allow only authenticated requests to those 
+The module takes a _restrict_ parameter (string or array) to allow only authenticated requests to those
 endpoints. It will return HTTP code 401 (Unauthorized) for requests matching these paths.
 
     seneca.use('auth', {restrict:['/api/']})
@@ -69,10 +69,18 @@ Get the details of an existing, logged in user.
    * default url path: _/auth/instance_
    * options property: _urlpath.instance_
 
+### plugins
 
+| Provider |                                plugin                                    |                                     example                                      |
+|----------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| local    | embedded                                                                 | [seneca-mvp](https://github.com/rjrodger/seneca-mvp)                             |
+| Facebook | [seneca-facebook-auth](https://github.com/nherment/seneca-facebook-auth) | [facebook](https://github.com/nherment/seneca-facebook-auth/tree/master/example) |
+| Github   | [seneca-github-auth](https://github.com/nherment/seneca-github-auth)     | [github](https://github.com/nherment/seneca-github-auth/tree/master/example)     |
+| Google   | [seneca-google-auth](https://github.com/nherment/seneca-google-auth)     | [google](https://github.com/nherment/seneca-google-auth/tree/master/example)     |
+| LinkedIn | [seneca-linkedin-auth](https://github.com/nherment/seneca-linkedin-auth) | [linkedin](https://github.com/nherment/seneca-linkedin-auth/tree/master/example) |
+| Twitter  | [seneca-twitter-auth](https://github.com/nherment/seneca-twitter-auth)   | [twitter](https://github.com/nherment/seneca-twitter-auth/tree/master/example)   |
 
-
- 
-
+Seneca-auth embeds a default provider that allows local user registration/login without using a third party identity
+provider.
 
 

@@ -14,37 +14,52 @@
   "license": "MIT",
   "main": "lib/auth.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/*.test.js"
+    "test": "node_modules/.bin/mocha test/*.test.js --reporter spec"
   },
   "files": [
     "LICENSE.txt",
     "README.md",
     "lib"
   ],
+
   "dependencies": {
-    "underscore": "~1.6.0",
-    "gex": "~0.1.3",
-    "string": "~1.8.0",
-    "passport-local": "~1.0.0",
-    "passport": "~0.2.0",
-    "passport-github": "~0.1.5",
-    "passport-twitter": "~1.0.2",
-    "passport-linkedin": "~0.1.3",
-    "passport-google-oauth": "~0.1.5",
-    "passport-facebook": "~1.0.3",
     "async": "~0.7.0",
+    "connect": "2.19.6",
+    "cookies": "~0.4.0",
     "dispatch": "~0.2.0",
-    "cookies": "~0.4.0"
+    "gex": "~0.1.3",
+    "middlewares": "0.1.0",
+    "passport": "~0.2.0",
+    "passport-facebook": "~1.0.3",
+    "passport-github": "~0.1.5",
+    "passport-google-oauth": "~0.1.5",
+    "passport-linkedin": "~0.1.3",
+    "passport-local": "~1.0.0",
+    "passport-twitter": "~1.0.2",
+    "request-arguments-parser": "0.1.0",
+    "seneca-crypto-sign": "0.1.1",
+    "seneca-jsonrest-api": "0.2.1",
+    "seneca-perm": "*",
+    "string": "~1.8.0",
+    "underscore": "~1.6.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rjrodger/seneca-auth.git"
   },
   "devDependencies": {
-    "seneca-user": "~0.2.8",
-    "mocha": "~1.18.2",
-    "seneca": "~0.5.16",
-    "chai": "~1.9.1"
+    "mocha": "1.17.x",
+    "request": "*",
+    "express": "3.x.x",
+    "seneca": "*",
+    "seneca-user": "*",
+    "seneca-admin": "*",
+    "seneca-facebook-auth": "*",
+    "seneca-github-auth": "*",
+    "seneca-google-auth": "*",
+    "seneca-linkedin-auth": "*",
+    "seneca-twitter-auth": "*",
+    "seneca-data-editor": "*"
   },
   "peerDependencies": {
     "seneca": "*",
