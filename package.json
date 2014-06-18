@@ -47,7 +47,7 @@
   "devDependencies": {
     "mocha": "1.17.x",
     "request": "*",
-    "express": "*",
+    "express": "3.x.x",
     "seneca": "*",
     "seneca-user": "*",
     "seneca-admin": "*",

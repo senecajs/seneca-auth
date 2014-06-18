@@ -62,6 +62,7 @@ function Server(seneca) {
   // this lets the admin plugin use web sockets
   this._server = http.createServer(app)
 
+  seneca.use('data-editor')
   seneca.use('admin', {server: this._server})
 }
 
