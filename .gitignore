@@ -1,4 +1,7 @@
 
+config.mine.js
+
+
 lib-cov
 *.seed
 *.log
@@ -16,9 +19,8 @@ node_modules
 npm-debug.log
 
 .idea
+
 *~
 node_modules
 bower_components
-
-
 
