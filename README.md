@@ -84,3 +84,7 @@ Seneca-auth embeds a default provider that allows local user registration/login 
 provider.
 
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rjrodger/seneca-auth/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
