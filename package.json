@@ -1,7 +1,7 @@
 {
   "name": "seneca-auth",
   "description": "User authentication plugin for the seneca module.",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "keywords": [
     "seneca",
     "auth",
@@ -22,29 +22,30 @@
     "lib"
   ],
   "dependencies": {
-    "underscore": "1.5.x",
-    "passport": "0.2.x",
-    "passport-local": "0.1.x",
-    "passport-google-oauth": "0.1.x",
-    "passport-twitter": "1.x",
-    "passport-linkedin": "0.1.x",
-    "passport-github": "0.1.x",
-    "passport-facebook": "1.x",
-    "dispatch": "0.2.x",
-    "string": "1.8.x",
-    "gex": "0.1.x",
-    "async": "0.2.x",
-    "cookies": "0.3.x",
-    "connect": "2.12.x"
+    "async": "~0.9.0",
+    "connect": "~3.0.1",
+    "cookies": "~0.4.1",
+    "dispatch": "~1.0.0",
+    "gex": "~0.1.4",
+    "passport": "~0.2.0",
+    "passport-facebook": "~1.0.3",
+    "passport-github": "~0.1.5",
+    "passport-google-oauth": "~0.1.5",
+    "passport-linkedin": "~0.1.3",
+    "passport-local": "~1.0.0",
+    "passport-twitter": "~1.0.2",
+    "serve-static": "~1.3.0",
+    "string": "~1.9.0",
+    "underscore": "~1.6.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rjrodger/seneca-auth.git"
   },
   "devDependencies": {
-    "seneca-user": "0.2.x",
-    "seneca": "0.5.x",
-    "mocha": "1.17.x"
+    "seneca-user": "~0.2.10",
+    "seneca": "~0.5.17",
+    "mocha": "~1.20.1"
   },
   "peerDependencies": {
     "seneca": "*",
