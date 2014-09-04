@@ -1,21 +1,37 @@
-# seneca-auth - Node.js module
+seneca-auth - a [Seneca](http://senecajs.org) plugin
+======================================================
 
-## A user authentication plugin for the [Seneca](/rjrodger/seneca) toolkit
+## Seneca Auth Plugin
 
-Dependencies: [seneca-user](/rjrodger/seneca-user)
-
-Current Version: 0.2.10
-
-Tested on: Node 0.10.29, Seneca 0.5.18
+A user authentication plugin, using [PassportJS](http://passportjs.org).
 
 [![Build Status](https://travis-ci.org/rjrodger/seneca-auth.png?branch=master)](https://travis-ci.org/rjrodger/seneca-auth)
+
+[![NPM](https://nodei.co/npm/seneca-auth.png)](https://nodei.co/npm/seneca-auth/)
+[![NPM](https://nodei.co/npm-dl/seneca-auth.png)](https://nodei.co/npm-dl/seneca-auth/)
+
+For a gentle introduction to Seneca itself, see the
+[senecajs.org](http://senecajs.org) site.
+
+If you're using this plugin module, feel free to contact me on twitter if you
+have any questions! :) [@rjrodger](http://twitter.com/rjrodger)
+
+Current Version: 0.3.0
+
+Tested on: Seneca 0.5.19, Node 0.10.29
+
+
+### Install
+
+```sh
+npm install seneca-auth
+```
+
+## JSON API and Redirects
 
 
 NOTE: documentation is in progress. Take a look at the <a href="http://github.com/rjrodger/seneca-examples">user accounts example</a>.
 
-
-
-## JSON API and Redirects
 
 The API endpoints return a HTTP redirect when a form submission is
 made against them. That is, when the Content-Type header is one of:
