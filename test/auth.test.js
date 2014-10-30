@@ -39,14 +39,17 @@ describe('auth', function() {
 
   it('route-register-ru1', function(fin){
     si.options({errhandler:fin})
-    si
+    si = si
       .delegate({      
         req$: make_req(),
         res$: make_res()
       })
-      .act(
+    si.fixedargs.req$.seneca = si
+    si.fixedargs.res$.seneca = si
+
+    si.act(
         'role:auth,route:register',
-        {data:{nick:'ru1'}},
+        {data:{nick:'ru1',password:'ru1p'}},
         function(err,out){
           if( err ) return fin(err);
           assert.ok(out.ok)
@@ -64,7 +67,33 @@ describe('auth', function() {
              if( err ) return fin(err);
              assert.ok(out.ok)
              assert.equal(out.user.id,tmp.ru1.id)
-             //console.log(out)
+             fin()
+           })
+  })
+
+
+  it('route-login-ru1', function(fin){
+    si.options({errhandler:fin})
+    si = si
+      .delegate({      
+        req$: make_req({
+          username:'ru1',
+          password:'ru1p'
+        }),
+        res$: make_res()
+      })
+    si.fixedargs.req$.seneca = si
+    si.fixedargs.res$.seneca = si
+
+    si.act('actid$:login-ru1,role:auth,route:login',
+           function(err,out){
+             if( err ) return fin(err);
+
+             assert.ok(out.ok)
+             assert.equal('password',out.why)
+             assert.ok(out.user)
+             assert.ok(out.login)
+             assert.ok(si.fixedargs.res$._headers['Set-Cookie'])
              fin()
            })
   })
@@ -74,25 +103,45 @@ describe('auth', function() {
     request({url:'http://localhost:8888/auth/user',json:true},function(err,res,body){
       if(err) return fin(err);
       assert.ok(body.ok)
+      assert.ok(!body.user)
+      assert.ok(!body.login)
       fin()
     })
+  })
+
+
+  it('http-user', function(fin) {
+    request(
+      {
+        url:'http://localhost:8888/auth/login',
+        body:{username:'ru1',password:'ru1p'},
+        json:true
+      },
+      function(err,res,body){
+        if(err) return fin(err);
+        assert.ok(body.ok)
+        assert.ok(body.user)
+        assert.ok(body.login)
+        assert.ok(res.headers['set-cookie'])
+        fin()
+      })
   })
 
 })
 
 
-function make_req() {
+function make_req(body) {
   return {
-    seneca:{},
     headers:{},
     connection:{},
+    body:body
   }
 }
 
 function make_res() {
   return {
-    seneca:{},
-    getHeader: function(){},
-    setHeader: function(){},
+    _headers: {},
+    getHeader: function(h){ return this._headers[h] },
+    setHeader: function(h,v){ this._headers[h]=v },
   }
 }

@@ -22,7 +22,13 @@ module.exports = function(options) {
       .step(function(out){
         return out.ok ? out : result(null,out)
       })
-      .wait('role:auth,hook:mark_auth,user:$.user,login:$.login')
+      .wait(function(data,next){
+        this.act({
+          role:'auth',
+          hook:'auth',
+          data:{ok:data.ok,why:data.why,user:data.user,login:data.login}
+        },next)
+      })
       .endif()
 
       .end(result)
@@ -55,63 +61,3 @@ module.exports = function(options) {
   }
 }
 
-
-
-/*
-module.exports = function(options) {
-  return function route_register( args, done ) {
-    var seneca  = this
-    var details = args.data
-    var req     = args.req$
-    var res     = args.res$
-
-    seneca.act(
-      'role:user,cmd:register',
-      details,
-
-      function(err,out) {
-        if( err || !out.ok ) return done(err,out);
-
-        if( options.register.autologin ) {
-          seneca.act(
-            'role:user,cmd:login',
-            {user:out.user,auto:true},
-            
-            function(err,out){
-              if( err || !out.ok ) return done(err,out);
-
-              seneca.act(
-                'role:auth,hook:mark_auth',
-                out,
-                do_result)
-            })
-        }
-        else do_result(null,out)
-
-        function do_result(err,out) {
-          if( err ) return done(err);
-
-          var data = {
-            ok: !err && out.ok
-          }
-
-          if( out.why ) {
-            data.why = out.why
-          }
-
-          if( out.user )  { 
-            data.user = out.user 
-            req.seneca.user = data.user
-          }
-
-          if( out.login ) {
-            data.login = out.login
-            req.seneca.login = data.login
-          }
-
-          done( err, data )
-        }
-      })
-  }
-}
-*/
