@@ -8,7 +8,11 @@ module.exports = function(auth,options) {
     var req     = args.req$
     var res     = args.res$
 
-    auth['local'](req,res,function(err){
+    var strategy = args.strategy || 'local'
+
+    // TODO: some logging?
+
+    auth[strategy](req,res,function(err){
       if( err ) return done(err);
 
       done(null,res.seneca.auth)

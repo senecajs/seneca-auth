@@ -110,10 +110,27 @@ describe('auth', function() {
   })
 
 
-  it('http-user', function(fin) {
+  it('http-login', function(fin) {
     request(
       {
         url:'http://localhost:8888/auth/login',
+        body:{username:'ru1',password:'ru1p'},
+        json:true
+      },
+      function(err,res,body){
+        if(err) return fin(err);
+        assert.ok(body.ok)
+        assert.ok(body.user)
+        assert.ok(body.login)
+        assert.ok(res.headers['set-cookie'])
+        fin()
+      })
+  })
+
+  it('http-login-local-strategy', function(fin) {
+    request(
+      {
+        url:'http://localhost:8888/auth/login/local',
         body:{username:'ru1',password:'ru1p'},
         json:true
       },

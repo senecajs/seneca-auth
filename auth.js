@@ -119,6 +119,8 @@ module.exports = function auth( options ) {
       seneca.act('role:auth,hook:mark_auth',out,done)
     }
     else return done(null,out);
+
+    // TODO: info announce!
   }
   
 
@@ -194,7 +196,7 @@ module.exports = function auth( options ) {
           map:{
             user:            { GET:true },
             
-            login:           { POST:true, GET:true, data:true, Xsuffix:'/:strategy?' },
+            login:           { POST:true, GET:true, data:true, suffix:'/:strategy?' },
             logout:          { POST:true, data:true },
             register:        { POST:true, data:true },
             create_reset:    { POST:true, data:true },
