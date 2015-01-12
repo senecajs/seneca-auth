@@ -1,7 +1,7 @@
 {
   "name": "seneca-auth",
   "description": "User authentication plugin for the seneca module.",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "keywords": [
     "seneca",
     "auth",
