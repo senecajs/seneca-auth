@@ -10,11 +10,22 @@
     "authentication",
     "web"
   ],
-  "author": "Richard Rodger",
+  "author": {
+    "name": "Richard Rodger",
+    "email":"richard@ricebridge.com",
+    "url" : "http://richardrodger.com/"
+  },
+  "contributors": [
+    {
+      "name": "Mircea Alexandru",
+      "email":"mircea.alexandru@gmail.com",
+      "url" : "https://github.com/mirceaalexandru"
+    }
+  ],
   "license": "MIT",
-  "main": "lib/auth.js",
+  "main": "auth.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/*.test.js"
+    "test": "lab -t 100"
   },
   "files": [
     "LICENSE.txt",
@@ -26,6 +37,7 @@
     "connect": "~3.0.1",
     "cookies": "~0.4.1",
     "dispatch": "~1.0.0",
+    "eraro": "^0.4.1",
     "gex": "~0.1.4",
     "passport": "~0.2.0",
     "passport-facebook": "~1.0.3",
@@ -34,6 +46,8 @@
     "passport-linkedin": "~0.1.3",
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.2",
+    "seneca-auth-token-cookie": "mirceaalexandru/seneca-auth-token-cookie",
+    "seneca-local-auth": "mirceaalexandru/seneca-local-auth",
     "serve-static": "~1.3.0",
     "string": "~1.9.0",
     "underscore": "~1.6.0"
@@ -43,9 +57,10 @@
     "url": "https://github.com/rjrodger/seneca-auth.git"
   },
   "devDependencies": {
+    "assert": "^1.3.0",
     "seneca-user": "~0.2.10",
-    "seneca": "~0.5.19",
-    "mocha": "~1.20.1"
+    "lab": "^5.13.0",
+    "seneca": "~0.5.19"
   },
   "peerDependencies": {
     "seneca": "*",

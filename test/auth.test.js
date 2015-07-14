@@ -1,49 +1,51 @@
 "use strict";
 
 var assert = require('assert')
-var seneca = require('seneca')
-var Cookies = require('cookies')
+var Lab = require('lab')
+var lab = exports.lab = Lab.script()
 
-var si = seneca()
-si.use( 'user' )
-si.use( require('..'),{secure:true} )
+var seneca = require('seneca')(/*{log: 'print'}*/)
+seneca.use( 'user' )
+seneca.use( require('..'), {secure:true} )
 
-var useract = si.pin({role:'user',cmd:'*'})
-var authact = si.pin({role:'auth',cmd:'*'})
+seneca.cookies = {
+  set: function(tokenkey, id){
+    console.log('Set cookie ' + tokenkey + ":" + id)
+    seneca.cookies[tokenkey] = id
+  },
+  get: function(tokenkey){
+    console.log('Get cookie ' + tokenkey)
+    return seneca.cookies[tokenkey]
+  }
+}
+var res = {}
+var req = {}
+res.seneca = seneca
+req.seneca = seneca
+req.headers = {}
+req.query = {}
 
 
-describe('auth', function() {
+var suite = lab.suite;
+var test = lab.test;
+var before = lab.before;
+var after = lab.after;
 
-  it('happy', function(cb) {
-
-    authact.register({data:{nick:'u1',name:'u1n',password:'u1p'}},function(err,out){
+suite('register/logout suite: ', function() {
+  test('auth register test', function(done) {
+    seneca.act({role:'auth', cmd: 'register', data:{nick:'u1',name:'u1n',password:'u1p'}, req$: req, res$: res},function(err,out){
       if( err ) return cb(err);
-      
-      assert.ok(out.ok)
-      assert.ok(out.user)
-      assert.ok(out.login)
-      cb()
-    })
 
+      assert.ok(out.ok, 'Register not OK')
+      assert.ok(out.user, 'User not registered')
+      assert.ok(out.login, 'Login not done after register')
+      done()
+    })
   })
-
-  it('use secure option', function(cb) {
-
-    var res = {}
-    var req = {}
-
-    si.cookies = { set: function(tokenkey,id,options){
-      assert.ok(options.secure)
-
-      cb()
-    }}
-    res.seneca = si
-    req.seneca = si
-    authact.login({user:{nick:'u1',name:'u1n',password:'u1p'},auto:true,req$:req,res$:res},function(err,out){
-      if( err ) return cb(err);
-
-
+  test('auth logout', function(done) {
+    seneca.act({role:'auth', cmd: 'logout', req$: req, res$: res},function(err,out){
+      assert.ok(!out.ok, 'Login not OK')
+      done()
     })
-
   })
 })

@@ -4,20 +4,17 @@ module.exports = {
   },
 
   "tokenkey": "seneca-login", // name of cookie
-  "transientprefix": "seneca-transient-", // cookie prefix
-
-  service: {local: {}},
 
   prefix: '/auth',
 
   urlpath: {
     login: '/login',
     logout: '/logout',
-    instance: 'instance',
-    register: 'register',
-    reset_create: 'reset_create',
-    reset_load: 'reset_load',
-    reset_execute: 'reset_execute'
+    instance: '/instance',
+    register: '/register',
+    reset_create: '/reset_create',
+    reset_load: '/reset_load',
+    reset_execute: '/reset_execute'
   },
 
   restrict: '/account',
