@@ -560,12 +560,12 @@ module.exports = function auth( options ) {
 
 //LOGIN START
   function afterlogin( err, next, req, res ) {
-    if( err && !err.why ) {
-      return next(null, {http$: {status: 302,redirect:redirect.fail}})
-    }
-
-    seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'login'}, function(err, redirect){
+    seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'login'}, function(redirectErr, redirect){
       // req.user actually == {ok:,user:,login:}
+      if( err && !err.why ) {
+        return next(null, {http$: {status: 301,redirect:redirect.fail}})
+      }
+
       if( req.user && req.user.ok ) {
         // rename passport req.user prop
         req.seneca.user = req.user.user
@@ -582,7 +582,7 @@ module.exports = function auth( options ) {
         if( redirect ) {
           req.seneca.log.debug( 'redirect', 'login', 'fail', redirect.fail )
 
-          return next(null, {http$: {status: 302,redirect:redirect.fail}})
+          return next(null, {http$: {status: 301,redirect:redirect.fail}})
         }
         else {
           return next(null, out)
@@ -597,7 +597,7 @@ module.exports = function auth( options ) {
 
       if( redirect ) {
         req.seneca.log.debug( 'redirect', 'login', 'win', redirect.win )
-        return cb(null, {http$: {status: 302,redirect:redirect.win}})
+        return cb(null, {http$: {status: 301,redirect:redirect.win}})
       }
       else {
         // FIX: this should call instance
@@ -631,10 +631,14 @@ module.exports = function auth( options ) {
             )
 
 
-      pp_auth.local(req, res, function (err) {
-        if (err){
+      pp_auth.local(req, res, function (loginerr, out) {
+        if (loginerr){
           seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'login'}, function(err, redirect){
-            return cb(null, {http$: {status: 302,redirect:redirect.fail}})
+            if ( redirect ){
+              return cb(null, { http$: { status: 301, redirect:redirect.fail }})
+            }else{
+              return cb(null, { http$: { status: 401 }, ok: false, why: loginerr})
+            }
           })
         }
         else{
@@ -644,7 +648,7 @@ module.exports = function auth( options ) {
     })
   }
 //LOGIN END
-
+  f
 
 //LOGOUT START
   function cmd_logout(args, cb) {
@@ -668,17 +672,32 @@ module.exports = function auth( options ) {
           seneca.act({role:'user',cmd:'logout', token: token}, function(err) {
             if( err ) {
               seneca.log('error',err)
-              return cb(null, {http$: {status: 301,redirect:redirect.fail}})
+              if (redirect){
+                return cb(null, {http$: {status: 301,redirect:redirect.fail}})
+              }
+              else{
+                return cb(null, { ok: false, why: err } )
+              }
             }
 
             try {
               req.logout()
             } catch(err) {
               seneca.log('error',err)
-              return cb(null, {http$: {status: 301,redirect:redirect.fail}})
+              if (redirect){
+                return cb(null, {http$: {status: 301,redirect:redirect.fail}})
+              }
+              else{
+                return cb(null, { ok: false, why: err } )
+              }
             }
 
-            return cb(null, { http$: { status: 301,redirect: redirect.win } } )
+            if (redirect){
+              return cb(null, { http$: { status: 301,redirect: redirect.win } } )
+            }
+            else{
+              return cb(null, { ok: true } )
+            }
           })
         })
       })
