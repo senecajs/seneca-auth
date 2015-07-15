@@ -12,14 +12,14 @@
   ],
   "author": {
     "name": "Richard Rodger",
-    "email":"richard@ricebridge.com",
-    "url" : "http://richardrodger.com/"
+    "email": "richard@ricebridge.com",
+    "url": "http://richardrodger.com/"
   },
   "contributors": [
     {
       "name": "Mircea Alexandru",
-      "email":"mircea.alexandru@gmail.com",
-      "url" : "https://github.com/mirceaalexandru"
+      "email": "mircea.alexandru@gmail.com",
+      "url": "https://github.com/mirceaalexandru"
     }
   ],
   "license": "MIT",
@@ -39,13 +39,12 @@
     "dispatch": "~1.0.0",
     "eraro": "^0.4.1",
     "gex": "~0.1.4",
+    "lodash": "^3.10.0",
     "passport": "~0.2.0",
+    "seneca-auth-redirect": "mirceaalexandru/seneca-auth-redirect",
     "seneca-auth-token-cookie": "mirceaalexandru/seneca-auth-token-cookie",
     "seneca-local-auth": "mirceaalexandru/seneca-local-auth",
-    "seneca-auth-redirect": "mirceaalexandru/seneca-auth-redirect",
-    "serve-static": "~1.3.0",
-    "string": "~1.9.0",
-    "underscore": "~1.6.0"
+    "string": "~1.9.0"
   },
   "repository": {
     "type": "git",
@@ -53,6 +52,11 @@
   },
   "devDependencies": {
     "assert": "^1.3.0",
+    "cookie-parser": "^1.3.5",
+    "express": "^4.13.1",
+    "express-session": "^1.11.3",
+    "body-parser": "^1.13.2",
+    "request": "^2.58.0",
     "seneca-user": "~0.2.10",
     "lab": "^5.13.0",
     "seneca": "~0.5.19"
