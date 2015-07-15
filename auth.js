@@ -349,6 +349,10 @@ module.exports = function auth( options ) {
     var user  = args.user
     var login = args.login
 
+//    if (!user && !login){
+//      return done( null, {ok: false})
+//    }
+//
     seneca.act({ role:plugin, cmd:'clean', user:user, login:login}, function( err, out ){
       if( err ) {
         return done( err );
@@ -455,27 +459,20 @@ module.exports = function auth( options ) {
         for( var cI = 0; cI < checks.length; cI++ ) {
           var restrict = checks[cI](req)
           if( restrict && !(req.seneca && req.seneca.user) ) {
-
-
-            var redirect = false
-            var ct = (req.headers['content-type']||'').split(';')[0]
-
-            if( 'application/json' == ct ) {
-              redirect = false
-            }
-            else redirect = true;
-
-
-            if( redirect ) {
-              return next(null, {http$: {status: 302,redirect:options.redirect.restrict}})
-            }
-            else {
-              return next(null, { ok:false, why:'restricted', http$: {status: 401} })
-            }
+            seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: req.url}, function(err, redirect){
+              if( redirect ) {
+                return next(null, {http$: {status: 302,redirect:options.redirect.restrict}})
+              }
+              else {
+                return next(null, { ok:false, why:'restricted', http$: {status: 401} })
+              }
+            })
             break;
           }
         }
-        if( cI == checks.length ) next();
+        if( cI == checks.length ) {
+          next();
+        }
       }
     })();
 
@@ -500,12 +497,7 @@ module.exports = function auth( options ) {
             return next(err);
           }
 
-          restriction( req, res, function(err){
-            if( err) {
-              return next(err);
-            }
-          })
-          next()
+          restriction( req, res, next)
         })
       })
     }
@@ -648,7 +640,7 @@ module.exports = function auth( options ) {
     })
   }
 //LOGIN END
-  f
+
 
 //LOGOUT START
   function cmd_logout(args, cb) {
