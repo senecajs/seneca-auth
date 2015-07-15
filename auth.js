@@ -11,6 +11,8 @@ var Cookies       = require('cookies')
 var passport      = require('passport')
 var seneca_auth_token
   = require('seneca-auth-token-cookie')
+var seneca_auth_redirect
+  = require('seneca-auth-redirect')
 var localAuth     = require('seneca-local-auth')
 var default_options
   = require('./default-options.js')
@@ -79,6 +81,7 @@ module.exports = function auth( options ) {
 
   function loadDefaultPlugins(){
     seneca.use(seneca_auth_token)
+    seneca.use(seneca_auth_redirect, options.redirect || {})
   }
 
   function urlmatcher( spec ) {
@@ -375,34 +378,6 @@ module.exports = function auth( options ) {
     return done(null,{ user:user, login:login })
   }
 
-  function redirection( req, res, kind, cb ) {
-    var redirect = false
-    var ct = (req.headers['content-type']||'').split(';')[0]
-
-    if( options.redirect.always ) {
-      redirect = true
-    }
-    else if( !_.isUndefined(req.query.redirect) ) {
-      redirect = S(req.query.redirect).toBoolean()
-    }
-    else if( 'application/x-www-form-urlencoded' == ct || 'multipart/form-data' == ct ) {
-      redirect = true
-    }
-    else if( 'application/json' == ct ) {
-      redirect = false
-    }
-    else redirect = true;
-
-    if( redirect ) {
-      redirect = {
-        win:  _.isString(req.query.win) ? req.query.win : (options.redirect[kind]? options.redirect[kind].win: undefined) ,
-        fail: _.isString(req.query.fail) ? req.query.fail : (options.redirect[kind]? options.redirect[kind].fail: undefined)
-      }
-    }
-
-    cb(null, redirect)
-  }
-
   var pp_auth = {}
 
   function configureServices(service, conf){
@@ -542,7 +517,7 @@ module.exports = function auth( options ) {
   }
 
   function authcontext( req, res, args, act, respond ) {
-    redirection( req, res, args.cmd, function(err, redirect){
+    seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: args.cmd}, function(err, redirect){
       var user = req.seneca && req.seneca.user
       if( user ) {
         args.user = user
@@ -589,7 +564,7 @@ module.exports = function auth( options ) {
       return next(null, {http$: {status: 302,redirect:redirect.fail}})
     }
 
-    redirection( req, res, 'login', function(err, redirect){
+    seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'login'}, function(err, redirect){
       // req.user actually == {ok:,user:,login:}
       if( req.user && req.user.ok ) {
         // rename passport req.user prop
@@ -658,7 +633,7 @@ module.exports = function auth( options ) {
 
       pp_auth.local(req, res, function (err) {
         if (err){
-          redirection( req, res, 'login', function(err, redirect){
+          seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'login'}, function(err, redirect){
             return cb(null, {http$: {status: 302,redirect:redirect.fail}})
           })
         }
@@ -689,7 +664,7 @@ module.exports = function auth( options ) {
         }
 
         var token = clienttoken || servertoken || ''
-        redirection(req, res, 'logout', function(err, redirect){
+        seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'logout'}, function(err, redirect){
           seneca.act({role:'user',cmd:'logout', token: token}, function(err) {
             if( err ) {
               seneca.log('error',err)
