@@ -79,9 +79,6 @@ module.exports = function auth( options ) {
 
   function loadDefaultPlugins(){
     seneca.use(seneca_auth_token)
-
-    var service_init = localAuth
-    service_init.call(seneca, {}, passport, function(){})
   }
 
   function urlmatcher( spec ) {
@@ -155,7 +152,7 @@ module.exports = function auth( options ) {
     var seneca = this
 
     if (!args.user){
-      return done( 'no_user' )
+      return done( null, {ok: false, why: 'no-user'} )
     }
 
     var userData = args.user
@@ -164,16 +161,16 @@ module.exports = function auth( options ) {
       q[ args.service + '_id' ] = userData.identifier
     }
     else {
-      return done( 'no_identifier' )
+      return done( null, {ok: false, why: 'no-identifier'} )
     }
 
     userent.load$(q,function(err,user){
-      if( err ) return done(err);
+      if( err ) return done( null, {ok: false, why: 'no-identifier'} );
 
       if( !user ) {
         seneca.act(_.extend({role:'user',cmd:'register'}, userData), function(err,out){
           if( err ) {
-            return done( err );
+            return done( null, {ok: false, why: err} )
           }
 
           done( null, out.user )
@@ -398,8 +395,8 @@ module.exports = function auth( options ) {
 
     if( redirect ) {
       redirect = {
-        win:  _.isString(req.query.win) ? req.query.win : options.redirect.win ,
-        fail: _.isString(req.query.fail) ? req.query.fail : options.redirect.fail
+        win:  _.isString(req.query.win) ? req.query.win : (options.redirect[kind]? options.redirect[kind].win: undefined) ,
+        fail: _.isString(req.query.fail) ? req.query.fail : (options.redirect[kind]? options.redirect[kind].fail: undefined)
       }
     }
 
