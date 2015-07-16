@@ -349,10 +349,10 @@ module.exports = function auth( options ) {
     var user  = args.user
     var login = args.login
 
-//    if (!user && !login){
-//      return done( null, {ok: false})
-//    }
-//
+    if (!user || !login || !login.active){
+      return done( null, {ok: false})
+    }
+
     seneca.act({ role:plugin, cmd:'clean', user:user, login:login}, function( err, out ){
       if( err ) {
         return done( err );
@@ -704,13 +704,13 @@ module.exports = function auth( options ) {
     login:           { POST: true, GET: true, data: true, alias: options.urlpath.login },
     logout:          { POST: true, GET: true, data: true, alias: options.urlpath.logout },
     register:        { POST:authcontext, data:true, alias: options.urlpath.register },
-    instance:        { GET: authcontext/*,            alias: options.urlpath.instance*/},
-    create_reset:    { POST:authcontext, data:true, /*alias: options.urlpath.create_reset*/ },
-    load_reset:      { POST:authcontext, data:true, /*alias: options.urlpath.load_reset*/ },
-    execute_reset:   { POST:authcontext, data:true, /*alias: options.urlpath.execute_reset*/ },
-    confirm:         { POST:authcontext, data:true, /*alias: options.urlpath.confirm*/ },
-    update_user:     { POST:authcontext, data:true, /*alias: options.urlpath.update_user*/ },
-    change_password: { POST:authcontext, data:true, /*alias: options.urlpath.change_password*/ }
+    instance:        { GET: authcontext,            alias: options.urlpath.instance},
+    create_reset:    { POST:authcontext, data:true, alias: options.urlpath.create_reset },
+    load_reset:      { POST:authcontext, data:true, alias: options.urlpath.load_reset },
+    execute_reset:   { POST:authcontext, data:true, alias: options.urlpath.execute_reset },
+    confirm:         { POST:authcontext, data:true, alias: options.urlpath.confirm },
+    update_user:     { POST:authcontext, data:true, alias: options.urlpath.update_user },
+    change_password: { POST:authcontext, data:true, alias: options.urlpath.change_password }
   }
 
   var _login_service = function (service, args, next) {
