@@ -12,6 +12,7 @@ var session      = require('express-session')
 var seneca = require('seneca')(/*{log: 'print'}*/)
 seneca.use( 'user' )
 seneca.use( require('..'), {secure:true} )
+seneca.use('seneca-local-auth', {})
 var app
 
 function initServer(cb){
@@ -40,7 +41,7 @@ suite('register/logout suite: ', function() {
   before({}, function(done){
     initServer(done)
   })
-  test('auth login test', function(done) {
+  test('auth/instance with no login test', function(done) {
 
     var request = require('supertest')
     request(app)
@@ -51,8 +52,37 @@ suite('register/logout suite: ', function() {
         done(err)
       })
   })
+  test('auth/login test', function(done) {
+    var request = require('supertest')
+    request(app)
+      .post('/auth/login')
+      .send({ nick: 'u1', password: 'u1' })
+      .expect(200)
+      .expect(checkCookie)
+      .expect(checkLoginAnswer)
+      .end(function (err, res){
+        log(res)
+        done(err)
+      })
+  })
 })
 
+
+function checkLoginAnswer(res) {
+  if (!('user' in res.body)) throw  new Error("missing user in body")
+  if (!('login' in res.body)) throw  new Error("missing login in body")
+  if (!(res.body.ok)) throw  new Error("login response not ok")
+}
+
+function checkCookie(res) {
+  console.log("", res.header['set-cookie'])
+  for (var i in res.header['set-cookie']){
+    if (res.header['set-cookie'][i].indexOf('seneca-login') === 0){
+      return
+    }
+  }
+  throw  new Error("missing seneca-login cookie")
+}
 
 function log(res){
   console.log('****************************************')
