@@ -1,3 +1,5 @@
+var assert = require('assert')
+
 exports.init = function(cb){
   var agent
   var request = require('supertest')
@@ -26,7 +28,7 @@ exports.init = function(cb){
 
     app.use( web )
     agent = request(app)
-    cb(null, agent)
+    cb(null, agent, si)
   })
 }
 
@@ -48,5 +50,10 @@ exports.checkCookie = function(res) {
     }
   }
   throw new Error("missing seneca-login cookie")
+}
+
+exports.checkHeader = function(res) {
+  assert(res.header['seneca-login'])
+  return res.header['seneca-login']
 }
 
