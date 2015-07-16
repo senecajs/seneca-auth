@@ -4,55 +4,30 @@ var assert = require('assert')
 var Lab = require('lab')
 var lab = exports.lab = Lab.script()
 
-var http = require('http')
 var express = require('express')
 var cookieparser = require('cookie-parser')
 var bodyparser   = require('body-parser')
 var session      = require('express-session')
-var request = require('request');
 
 var seneca = require('seneca')(/*{log: 'print'}*/)
 seneca.use( 'user' )
 seneca.use( require('..'), {secure:true} )
-
-var options = {
-  port: 3333
-}
+var app
 
 function initServer(cb){
   seneca.ready(function(err){
     if( err ) return process.exit( !console.error(err) );
 
-    var u = seneca.pin({role:'user',cmd:'*'})
-
-    u.register({nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true}, function(err,out){})
-    u.register({nick:'u2',name:'nu2',email:'u2@example.com',password:'u2',active:true})
-    u.register({nick:'a1',name:'na1',email:'a1@example.com',password:'a1',active:true,admin:true})
+    seneca.act({role:'user', cmd:'register', nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true}, function(err,out){})
 
     var web = seneca.export('web')
 
-    var app = express()
+    app = express()
     app.use( cookieparser() )
     app.use( bodyparser.json() )
     app.use( session({secret:'seneca', resave: true, saveUninitialized: true }) )
 
     app.use( web )
-
-    app.use( function( req, res, next ){
-      if( 0 == req.url.indexOf('/reset') ||
-        0 == req.url.indexOf('/confirm') )
-      {
-        req.url = '/'
-      }
-
-      next()
-    })
-
-    var server = http.createServer(app)
-    console.log('Listen on ' + options.port)
-    server.listen( options.port )
-    seneca.log.info('listen',options.port)
-    seneca.listen()
     cb()
   })
 }
@@ -66,34 +41,23 @@ suite('register/logout suite: ', function() {
     initServer(done)
   })
   test('auth login test', function(done) {
-    sendHTTPRequest('get', {url: '/auth/instance'}, function(err, response, body){
-      logResponse(err, response, body)
 
-      assert(body)
-      body = JSON.parse(body)
-      assert(body.ok)
-      assert(body.http$)
-      assert.equal(body.http$.status, 200)
-      assert.equal(body.user, null)
-      assert.equal(body.login, null)
-
-      done()
-    })
+    var request = require('supertest')
+    request(app)
+      .get('/auth/instance')
+      .expect(200, {user: null, login: null, ok: true, 'http$': { status: 200 }})
+      .end(function (err, res){
+        log(res)
+        done(err)
+      })
   })
 })
 
-function logResponse(err, response, body){
-  console.log('**************')
-  console.log('ERR: ' + err)
-  console.log('RESPONSE: ' + JSON.stringify(response))
-  console.log('BODY: ' + body)
-  console.log('**************')
-}
 
-function sendHTTPRequest(method, req, cb){
-  console.log('URL: ' + 'http://localhost:' + options.port + req.url)
-  request(
-    'http://localhost:' + options.port + req.url,
-    cb
-  );
+function log(res){
+  console.log('****************************************')
+  console.log('STATUS  : ', JSON.stringify(res))
+  console.log('STATUS  : ', JSON.stringify(res.status))
+  console.log('RESPONSE: ', JSON.stringify(res.text))
+  console.log('****************************************')
 }
