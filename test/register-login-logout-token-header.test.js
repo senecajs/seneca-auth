@@ -18,7 +18,7 @@ suite('register-login-logout header token suite tests ', function() {
   before({}, function(done){
     util.init(function(err, agentData, si){
       agent = agentData
-      si.use( 'seneca-auth-token-header', {} )
+      si.use( 'seneca-auth-token-header', {tokenkey: 'x-auth-token'} )
       done()
     })
   })
@@ -57,7 +57,7 @@ suite('register-login-logout header token suite tests ', function() {
   test('auth/instance after register', function(done) {
     agent
       .get('/auth/instance')
-      .set('seneca-login', token)
+      .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res){
         util.log(res)
@@ -71,7 +71,7 @@ suite('register-login-logout header token suite tests ', function() {
   test('auth/logout test', function(done) {
     agent
       .post('/auth/logout')
-      .set('seneca-login', token)
+      .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res){
         util.log(res)
@@ -103,7 +103,7 @@ suite('register-login-logout header token suite tests ', function() {
   test('auth/instance with login test', function(done) {
     agent
       .get('/auth/instance')
-      .set('seneca-login', token)
+      .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res){
         util.log(res)

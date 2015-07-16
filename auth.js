@@ -39,6 +39,9 @@ module.exports = function auth( options ) {
     if (options.email){
       throw error('<email> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth')
     }
+    if (options.tokenkey){
+      seneca.log('<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth')
+    }
   }
   migrateOptions()
   loadDefaultPlugins()

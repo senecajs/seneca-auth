@@ -53,7 +53,7 @@ exports.checkCookie = function(res) {
 }
 
 exports.checkHeader = function(res) {
-  assert(res.header['seneca-login'])
-  return res.header['seneca-login']
+  assert(res.header['x-auth-token'])
+  return res.header['x-auth-token']
 }
 

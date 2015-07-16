@@ -3,8 +3,6 @@ module.exports = {
     "local": false
   },
 
-  "tokenkey": "seneca-login", // name of cookie
-
   prefix: '/auth/',
 
   urlpath: {

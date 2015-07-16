@@ -55,6 +55,7 @@
     "express": "^4.13.1",
     "express-session": "^1.11.3",
     "seneca-auth-token-header": "mirceaalexandru/seneca-auth-token-header",
+    "seneca-local-auth": "mirceaalexandru/seneca-local-auth",
     "body-parser": "^1.13.2",
     "seneca-user": "~0.2.10",
     "lab": "^5.13.0",
