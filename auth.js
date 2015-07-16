@@ -701,16 +701,16 @@ module.exports = function auth( options ) {
 
   // seneca web endpoints map
   var map = {
-    login:           { POST: true, GET: true, data: true, alias: options.urlpath.login },
-    logout:          { POST: true, GET: true, data: true, alias: options.urlpath.logout },
-    register:        { POST:authcontext, data:true, alias: options.urlpath.register },
-    instance:        { GET: authcontext,            alias: options.urlpath.instance},
+    login:           { POST: true, GET: true, data: true/*, alias: options.urlpath.login */},
+    logout:          { POST: true, GET: true, data: true/*, alias: options.urlpath.logout */},
+    register:        { POST:authcontext, data:true/*, alias: options.urlpath.register */},
+    instance:        { GET: authcontext/*,            alias: options.urlpath.instance*/},
     create_reset:    { POST:authcontext, data:true, alias: options.urlpath.create_reset },
     load_reset:      { POST:authcontext, data:true, alias: options.urlpath.load_reset },
     execute_reset:   { POST:authcontext, data:true, alias: options.urlpath.execute_reset },
     confirm:         { POST:authcontext, data:true, alias: options.urlpath.confirm },
     update_user:     { POST:authcontext, data:true, alias: options.urlpath.update_user },
-    change_password: { POST:authcontext, data:true, alias: options.urlpath.change_password }
+    change_password: { POST:authcontext, data:true/*, alias: options.urlpath.change_password */}
   }
 
   var _login_service = function (service, args, next) {

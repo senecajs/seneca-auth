@@ -1,6 +1,7 @@
 "use strict";
 
 var assert = require('assert')
+var _ = require('lodash')
 var agent
 
 var Lab = require('lab')
@@ -13,8 +14,10 @@ var after = lab.after;
 var util = require('./util.js')
 
 var cookie
+var user = {nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true}
+var newName = 'nu2'
 
-suite('register-login-logout suite tests ', function() {
+suite('register-update suite tests ', function() {
   before({}, function(done){
     util.init(function(err, agentData){
       agent = agentData
@@ -25,7 +28,7 @@ suite('register-login-logout suite tests ', function() {
   test('auth/register test', function(done) {
     agent
       .post('/auth/register')
-      .send({nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true})
+      .send(user)
       .expect(200)
       .end(function (err, res){
         util.log(res)
@@ -39,68 +42,38 @@ suite('register-login-logout suite tests ', function() {
 
   test('verify cookie exists after register', function(done) {
     assert(cookie)
-    console.log('Cookie: ' + cookie)
     done()
   })
 
-  test('auth/change_password test', function(done) {
+  test('auth/update_user test', function(done) {
     agent
-      .post('/auth/change_password')
-      .send({password:'uu1',repeat:'uu1'})
+      .post('/auth/update_user')
       .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        done(err)
-      })
-  })
-
-  test('auth/logout test', function(done) {
-    agent
-      .post('/auth/logout')
-      .set('Cookie', ['seneca-login=' + cookie])
+      .send({nick:user.nick, name:newName})
       .expect(200)
       .end(function (err, res){
         util.log(res)
         assert(res.body.ok)
+        assert(res.body.user, 'No user in response')
+        assert(res.body.user.name, newName, 'New name is not correct')
         done(err)
       })
   })
 
-  test('auth/login with old password test', function(done) {
+  test('auth/instance after update-user', function(done) {
     agent
-      .post('/auth/login')
-      .send({ nick: 'u1', password: 'u1' })
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(!res.body.ok, 'Not OK')
-        done(err)
-      })
-  })
-
-  test('auth/login test', function(done) {
-    agent
-      .post('/auth/login')
-      .send({ nick: 'u1', password: 'uu1' })
+      .get('/auth/instance')
+      .set('Cookie', ['seneca-login=' + cookie])
       .expect(200)
       .end(function (err, res){
         util.log(res)
         assert(res.body.ok, 'Not OK')
         assert(res.body.user, 'No user in response')
         assert(res.body.login, 'No login in response')
-        cookie = util.checkCookie(res)
+        assert(res.body.user.name, newName, 'New name is not correct')
         done(err)
       })
   })
-
-  test('verify cookie exists after register', function(done) {
-    assert(cookie)
-    done()
-  })
-
 })
 
 
