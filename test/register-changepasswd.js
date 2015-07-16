@@ -22,17 +22,6 @@ suite('register-login-logout suite tests ', function() {
     })
   })
 
-  test('auth/instance with no login test', function(done) {
-    agent
-      .get('/auth/instance')
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(!res.body.ok, 'Response has OK=true')
-        done(err)
-      })
-  })
-
   test('auth/register test', function(done) {
     agent
       .post('/auth/register')
@@ -50,19 +39,20 @@ suite('register-login-logout suite tests ', function() {
 
   test('verify cookie exists after register', function(done) {
     assert(cookie)
+    console.log('Cookie: ' + cookie)
     done()
   })
 
-  test('auth/instance after register', function(done) {
+  test('auth/change_password test', function(done) {
     agent
-      .get('/auth/instance')
+      .post('/auth/change_password')
+      .send({password:'uu1',repeat:'uu1'})
       .set('Cookie', ['seneca-login=' + cookie])
       .expect(200)
       .end(function (err, res){
         util.log(res)
         assert(res.body.ok, 'Not OK')
         assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
         done(err)
       })
   })
@@ -79,10 +69,22 @@ suite('register-login-logout suite tests ', function() {
       })
   })
 
-  test('auth/login test', function(done) {
+  test('auth/login with old password test', function(done) {
     agent
       .post('/auth/login')
       .send({ nick: 'u1', password: 'u1' })
+      .expect(200)
+      .end(function (err, res){
+        util.log(res)
+        assert(!res.body.ok, 'Not OK')
+        done(err)
+      })
+  })
+
+  test('auth/login test', function(done) {
+    agent
+      .post('/auth/login')
+      .send({ nick: 'u1', password: 'uu1' })
       .expect(200)
       .end(function (err, res){
         util.log(res)
@@ -94,50 +96,11 @@ suite('register-login-logout suite tests ', function() {
       })
   })
 
-  test('verify cookie exists after login', function(done) {
+  test('verify cookie exists after register', function(done) {
     assert(cookie)
     done()
   })
 
-  test('auth/instance with login test', function(done) {
-    agent
-      .get('/auth/instance')
-      .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
-        done(err)
-      })
-  })
-
-  test('auth/logout test', function(done) {
-    agent
-      .post('/auth/logout')
-      .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(res.body.ok)
-        done(err)
-      })
-  })
-
-  test('auth/instance with no login test', function(done) {
-    agent
-      .get('/auth/instance')
-      .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(!res.body.ok, 'Not OK')
-        assert(!res.body.user, 'User in response')
-        assert(!res.body.login, 'Login in response')
-        done(err)
-      })
-  })
 })
 
 
