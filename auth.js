@@ -13,7 +13,6 @@ var seneca_auth_token
   = require('seneca-auth-token-cookie')
 var seneca_auth_redirect
   = require('seneca-auth-redirect')
-var localAuth     = require('seneca-local-auth')
 var default_options
   = require('./default-options.js')
 var error         = require('eraro')({
@@ -26,7 +25,6 @@ module.exports = function auth( options ) {
   var plugin = 'auth'
 
   seneca.depends(plugin,['web','user'])
-
 
   // using seneca.util.deepextend here, as there are sub properties
   options = seneca.util.deepextend( default_options, options )
@@ -50,9 +48,9 @@ module.exports = function auth( options ) {
     options.prefix = m[1]
   }
 
-  _.each(options.urlpath,function(v,k){
-    options.urlpath[k] = '/'==v[0] ? v : options.prefix+'/'+v
-  })
+//  _.each(options.urlpath,function(v,k){
+//    options.urlpath[k] = '/'==v[0] ? v : options.prefix+'/'+v
+//  })
 
 
   // define seneca actions
@@ -77,7 +75,7 @@ module.exports = function auth( options ) {
   seneca.add({role: plugin, cmd:'register_service' },
     cmd_register_service)
 
-  seneca.add({role: plugin, cmd: 'mapFields'},  aliasfields)
+  seneca.add({role: plugin, cmd: 'mapFields'},    aliasfields)
 
   function loadDefaultPlugins(){
     seneca.use(seneca_auth_token)
@@ -541,14 +539,13 @@ module.exports = function auth( options ) {
     })
   }
 
-
   var config = {prefix:options.prefix,redirects:{}}
 
-  if( options.defaultpages ) {
-    _.each(options.loginpages, function(loginpage){
-      config.redirects[loginpage.path]={redirect:loginpage.redirect,title:loginpage.title}
-    })
-  }
+//  if( options.defaultpages ) {
+//    _.each(options.loginpages, function(loginpage){
+//      config.redirects[loginpage.path]={redirect:loginpage.redirect,title:loginpage.title}
+//    })
+//  }
 
 //LOGIN START
   function afterlogin( err, next, req, res ) {
@@ -701,16 +698,16 @@ module.exports = function auth( options ) {
 
   // seneca web endpoints map
   var map = {
-    login:           { POST: true, GET: true, data: true/*, alias: options.urlpath.login */},
-    logout:          { POST: true, GET: true, data: true/*, alias: options.urlpath.logout */},
-    register:        { POST:authcontext, data:true/*, alias: options.urlpath.register */},
-    instance:        { GET: authcontext/*,            alias: options.urlpath.instance*/},
+    login:           { POST: true, GET: true, data: true, alias: options.urlpath.login},
+    logout:          { POST: true, GET: true, data: true, alias: options.urlpath.logout},
+    register:        { POST:authcontext, data:true, alias: options.urlpath.register},
+    instance:        { GET: authcontext,            alias: options.urlpath.instance},
     create_reset:    { POST:authcontext, data:true, alias: options.urlpath.create_reset },
     load_reset:      { POST:authcontext, data:true, alias: options.urlpath.load_reset },
     execute_reset:   { POST:authcontext, data:true, alias: options.urlpath.execute_reset },
     confirm:         { POST:authcontext, data:true, alias: options.urlpath.confirm },
     update_user:     { POST:authcontext, data:true, alias: options.urlpath.update_user },
-    change_password: { POST:authcontext, data:true/*, alias: options.urlpath.change_password */}
+    change_password: { POST:authcontext, data:true, alias: options.urlpath.change_password }
   }
 
   var _login_service = function (service, args, next) {

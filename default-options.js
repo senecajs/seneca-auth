@@ -5,16 +5,19 @@ module.exports = {
 
   "tokenkey": "seneca-login", // name of cookie
 
-  prefix: '/auth',
+  prefix: '/auth/',
 
   urlpath: {
-    login: '/login',
-    logout: '/logout',
-    instance: '/instance',
-    register: '/register',
-    reset_create: '/reset_create',
-    reset_load: '/reset_load',
-    reset_execute: '/reset_execute'
+    login:        'login',
+    logout:       'logout',
+    instance:     'instance',
+    register:     'register',
+    create_reset: 'create_reset',
+    load_reset:   'load_reset',
+    execute_reset:'execute_reset',
+    confirm:      'confirm',
+    update_user:  'update_user',
+    change_password:'change_password'
   },
 
   restrict: '/account',
@@ -35,22 +38,22 @@ module.exports = {
     fail: '/',
     restrict: '/',
 
-    login: {win: '/account', fail: '/'},
-    logout: {win: '/', fail: '/'},
-    register: {win: '/account', fail: '/'},
-    reset_create: {win: '/', fail: '/'},
-    reset_load: {win: '/', fail: '/'},
-    reset_execute: {win: '/', fail: '/'},
-    confirm: {win: '/', fail: '/'}
+    login:        {win: '/account', fail: '/'},
+    logout:       {win: '/',        fail: '/'},
+    register:     {win: '/account', fail: '/'},
+    reset_create: {win: '/',        fail: '/'},
+    reset_load:   {win: '/',        fail: '/'},
+    reset_execute:{win: '/',        fail: '/'},
+    confirm:      {win: '/',        fail: '/'}
   },
 
   user: {
     updatefields: ['name', 'email']
   },
 
-  loginpages: [
-    { path: '/login/admin', redirect: '/admin', title: 'Administration' },
-    { path: '/login', redirect: '/account', title: 'Account' }
-  ]
+//  loginpages: [
+//    { path: '/login/admin', redirect: '/admin', title: 'Administration' },
+//    { path: '/login', redirect: '/account', title: 'Account' }
+//  ]
 
 }
