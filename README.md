@@ -48,7 +48,7 @@ A large part of the internal functionality of seneca-auth is now implemented as 
 | Header token            | No                | [seneca-auth-token-header](https://github.com/mirceaalexandru/seneca-auth-token-header) |
 | Url matcher             | Yes               | [seneca-auth-urlmatcher](https://github.com/mirceaalexandru/seneca-auth-urlmatcher)     |
 
-Check the documentation for each plugin for details.
+Check the documentation of each plugin for details.
 
 ### Options deprecated or no longer supported
 
@@ -94,4 +94,52 @@ Get the details of an existing, logged in user.
 
    * default url path: _/auth/instance_
    * options property: _urlpath.instance_
+
+### register
+
+Register a user and login automatically.
+
+   * default url path: _/auth/register_
+   * options property: _urlpath.register_
+   * body should contain user information. Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at cmd: register documentation for details.
+
+### create reset
+
+Create a reset token
+
+   * default url path: _/auth/create_reset_
+   * options property: _urlpath.create_reset_
+   * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at cmd: create_reset documentation for details.
+
+### load reset
+
+Load a user entity using a reset token.
+
+   * default url path: _/auth/load_reset_
+   * options property: _urlpath.load_reset_
+   * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at cmd: load_reset documentation for details.
+
+### execute reset
+
+Execute a password reset action.
+
+   * default url path: _/auth/execute_reset_
+   * options property: _urlpath.execute_reset_
+   * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at cmd: execute_reset documentation for details.
+
+### update user
+
+Update user data.
+
+   * default url path: _/auth/update_user_
+   * options property: _urlpath.update_user_
+   * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at cmd: update_user documentation for details.
+
+### change password
+
+Change user password.
+
+   * default url path: _/auth/change_password_
+   * options property: _urlpath.change_password_
+   * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at cmd: change_password documentation for details.
 
