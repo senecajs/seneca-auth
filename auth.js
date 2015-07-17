@@ -6,13 +6,14 @@ var util          = require('util')
 var _             = require('lodash')
 var async         = require('async')
 var S             = require('string')
-var gex           = require('gex')
 var Cookies       = require('cookies')
 var passport      = require('passport')
 var seneca_auth_token
   = require('seneca-auth-token-cookie')
 var seneca_auth_redirect
   = require('seneca-auth-redirect')
+var seneca_auth_urlmatcher
+  = require('seneca-auth-urlmatcher')
 var default_options
   = require('./default-options.js')
 var error         = require('eraro')({
@@ -83,63 +84,38 @@ module.exports = function auth( options ) {
   function loadDefaultPlugins(){
     seneca.use(seneca_auth_token)
     seneca.use(seneca_auth_redirect, options.redirect || {})
+    seneca.use(seneca_auth_urlmatcher)
   }
 
-  function urlmatcher( spec ) {
-    spec = _.isArray(spec) ? spec : [spec]
-    var checks = []
-
-    _.each(spec,function(path){
-      if( _.isFunction(path) ) return checks.push(path);
-      if( _.isRegExp(path) ) return checks.push( function(req) { return path.test(req.url) } );
-      if( !_.isString(path) ) return;
-
-      path = ~path.indexOf(':') ? path : 'prefix:'+path
-      var parts = path.split(':')
-      var kind  = parts[0]
-      var spec  = parts.slice(1)
-
-      function regex() {
-        var pat = spec, mod = '', re
-        var m = /^\/(.*)\/([^\/]*)$/.exec(spec)
-        if(m) {
-          pat = m[1]
-          mod = m[2]
-          re = new RegExp(pat,mod)
-          return function(req){return re.test(req.url)}
+  function checkurl( match, cb ) {
+    seneca.act({role:'auth', cmd: 'urlmatcher', spec: match}, function(err, checks){
+      return cb (null, function(req) {
+        for( var i = 0; i < checks.length; i++ ) {
+          if( checks[i](req) ) {
+            return true
+          }
         }
-        else return function(){return false};
-      }
+        return false
+      })
+    } )
+  }
 
-      var pass = {
-        prefix:   function(req) { return gex(spec+'*').on(req.url) },
-        suffix:   function(req) { return gex('*'+spec).on(req.url) },
-        contains: function(req) { return gex('*'+spec+'*').on(req.url) },
-        gex:      function(req) { return gex(spec).on(req.url) },
-        exact:    function(req) { return spec === req.url },
-        regex:    regex()
-      }
-      pass.re = pass.regexp = pass.regex
-      checks.push(pass[kind])
+  var exclude_url
+  checkurl(options.exclude, function(err, response){
+    exclude_url = response
+  })
+
+  var include_url
+  checkurl(options.include, function(err, response){
+    include_url = response
+  })
+
+  var checks
+  if( !_.isFunction(options.restrict) ) {
+    seneca.act({role:'auth', cmd: 'urlmatcher', spec: options.restrict}, function(err, result){
+      checks = result
     })
-
-    return checks
   }
-
-  function checkurl( match ) {
-    var checks = urlmatcher( match )
-    return function(req) {
-      for( var i = 0; i < checks.length; i++ ) {
-        if( checks[i](req) ) {
-          return true
-        }
-      }
-      return false
-    }
-  }
-
-  var exclude_url = checkurl(options.exclude)
-  var include_url = checkurl(options.include)
 
   var userent = seneca.make$('sys/user')
 
@@ -453,8 +429,6 @@ module.exports = function auth( options ) {
 
     var restriction = (function(){
       if( _.isFunction(options.restrict) ) return options.restrict;
-
-      var checks = urlmatcher(options.restrict)
 
       return function( req, res, next ) {
         for( var cI = 0; cI < checks.length; cI++ ) {
