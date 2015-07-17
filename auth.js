@@ -8,12 +8,7 @@ var async         = require('async')
 var S             = require('string')
 var Cookies       = require('cookies')
 var passport      = require('passport')
-var seneca_auth_token
-  = require('seneca-auth-token-cookie')
-var seneca_auth_redirect
-  = require('seneca-auth-redirect')
-var seneca_auth_urlmatcher
-  = require('seneca-auth-urlmatcher')
+
 var default_options
   = require('./default-options.js')
 var error         = require('eraro')({
@@ -82,9 +77,9 @@ module.exports = function auth( options ) {
   seneca.add({role: plugin, cmd: 'mapFields'},    aliasfields)
 
   function loadDefaultPlugins(){
-    seneca.use(seneca_auth_token)
-    seneca.use(seneca_auth_redirect, options.redirect || {})
-    seneca.use(seneca_auth_urlmatcher)
+    seneca.use('seneca-auth-token-cookie')
+    seneca.use('seneca-auth-redirect', options.redirect || {})
+    seneca.use('seneca-auth-urlmatcher')
   }
 
   function checkurl( match, cb ) {

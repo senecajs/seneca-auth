@@ -30,7 +30,8 @@
   "files": [
     "LICENSE.txt",
     "README.md",
-    "auth.js"
+    "auth.js",
+    "default-options.js"
   ],
   "dependencies": {
     "async": "~0.9.0",
