@@ -13,7 +13,7 @@ exports.init = function(cb){
 
   si = seneca(/*{log: 'print'}*/)
   si.use( 'user' )
-  si.use( require('..'), {secure:true} )
+  si.use( require('..'), {secure:true, restrict: '/api'} )
   si.use( 'seneca-local-auth', {} )
 
   si.ready(function(err){
@@ -28,6 +28,26 @@ exports.init = function(cb){
 
     app.use( web )
     agent = request(app)
+
+
+    si.add({role: 'test', cmd:'service'}, function(args, cb){
+      return cb(null, {ok: true, test: true})
+    })
+    si.act({
+      role:'web',
+      plugin:'test',
+      use:{
+        prefix:'/api',
+        pin:{role:'test',cmd:'*'},
+        map: {
+          service: { GET: true }
+        }
+      }
+    })
+
+
+
+
     cb(null, agent, si)
   })
 }

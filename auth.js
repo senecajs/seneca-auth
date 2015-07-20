@@ -438,10 +438,10 @@ module.exports = function auth( options ) {
           if( restrict && !(req.seneca && req.seneca.user) ) {
             seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: req.url}, function(err, redirect){
               if( redirect ) {
-                return next(null, {http$: {status: 302,redirect:options.redirect.restrict}})
+                return next({http$: {status: 302,redirect:options.redirect.restrict}})
               }
               else {
-                return next(null, { ok:false, why:'restricted', http$: {status: 401} })
+                return next({ ok:false, why:'restricted', http$: {status: 401} })
               }
             })
             break;

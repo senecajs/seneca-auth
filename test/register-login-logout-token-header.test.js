@@ -26,7 +26,7 @@ suite('register-login-logout header token suite tests ', function() {
   test('auth/instance with no login test', function(done) {
     agent
       .get('/auth/instance')
-      .expect(200)
+      .expect(400)
       .end(function (err, res){
         util.log(res)
         assert(!res.body.ok, 'Response has OK=true')

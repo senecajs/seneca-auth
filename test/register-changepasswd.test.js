@@ -72,7 +72,7 @@ suite('register-login-logout suite tests ', function() {
     agent
       .post('/auth/login')
       .send({ nick: 'u1', password: 'u1' })
-      .expect(200)
+      .expect(401)
       .end(function (err, res){
         util.log(res)
         assert(!res.body.ok, 'Not OK')
