@@ -60,7 +60,7 @@ module.exports = function auth( options ) {
 
 
   // define seneca actions
-  seneca.add({ role:plugin, wrap:'user' },      wrap_user)
+//  seneca.add({ role:plugin, wrap:'user' },      wrap_user)
   seneca.add({ init:plugin },                   init)
 
   seneca.add({role:plugin,cmd:'register'},      cmd_register)
@@ -119,8 +119,6 @@ module.exports = function auth( options ) {
     })
   }
 
-  var userent = seneca.make$('sys/user')
-
   passport.serializeUser(function(user, done) {
     done(null, user.user.id);
   })
@@ -146,7 +144,7 @@ module.exports = function auth( options ) {
       return done( null, {ok: false, why: 'no-identifier'} )
     }
 
-    userent.load$(q,function(err,user){
+    seneca.act({role: 'user', cmd: 'load_user', q: q},function( err, user ){
       if( err ) return done( null, {ok: false, why: 'no-identifier'} );
 
       if( !user ) {
@@ -159,8 +157,13 @@ module.exports = function auth( options ) {
         })
       }
       else {
-        user.data$( seneca.util.deepextend( user.data$(), userData) )
-        user.save$( done )
+        seneca.act(_.extend({role:'user',cmd:'update'}, userData), function(err,out){
+          if( err ) {
+            return done( null, {ok: false, why: err} )
+          }
+
+          done( null, out.user )
+        })
       }
     })
   }
@@ -195,24 +198,24 @@ module.exports = function auth( options ) {
     configureServices(service, conf)
   }
 
-  function wrap_user( args, done ) {
-    this.act({
-      role:'util',
-      cmd:'ensure_entity',
-      pin:args.pin,
-      entmap:{
-        user:userent
-      }
-    })
-
-    this.wrap(args.pin, function( args, done ){
-      args.user = args.user || (args.req$ && args.req$.seneca && args.req$.seneca.user ) || null
-      this.parent(args,done)
-    })
-
-    done()
-  }
-
+//  function wrap_user( args, done ) {
+//    this.act({
+//      role:'util',
+//      cmd:'ensure_entity',
+//      pin:args.pin,
+//      entmap:{
+//        user:userent
+//      }
+//    })
+//
+//    this.wrap(args.pin, function( args, done ){
+//      args.user = args.user || (args.req$ && args.req$.seneca && args.req$.seneca.user ) || null
+//      this.parent(args,done)
+//    })
+//
+//    done()
+//  }
+//
   function aliasfields(userData, cb){
     var data = userData.data
     data.nick =
