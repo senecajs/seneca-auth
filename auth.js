@@ -248,7 +248,7 @@ module.exports = function auth( options ) {
             req.seneca.login = out.login
 
             if( res ) {
-              seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id, req: req, res: res}, function(err){
+              req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id}, function(err){
                 return done(null, {
                   ok:    out.ok,
                   user:  out.user,
@@ -396,7 +396,7 @@ module.exports = function auth( options ) {
     var pp_init = passport.initialize()
 
     function init_session( req, res, cb ) {
-      seneca.act({role: 'auth', get: 'token', tokenkey: options.tokenkey, req: req, res: res}, function(err, result){
+      req.seneca.act({role: 'auth', get: 'token', tokenkey: options.tokenkey}, function(err, result){
         var token
         if (result){
           token = result.token
@@ -419,7 +419,7 @@ module.exports = function auth( options ) {
             }
             else {
               // dead login - get rid of the token
-              seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, req: req, res: res}, function(){
+              req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey}, function(){
                 return cb();
               })
 
@@ -542,7 +542,7 @@ module.exports = function auth( options ) {
         req.seneca.user = req.user.user
         req.seneca.login = req.user.login
 
-        seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id, req: req, res: res}, function(){
+        req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id}, function(){
           return do_respond(null, redirect, next)
         })
       }
@@ -627,10 +627,10 @@ module.exports = function auth( options ) {
     var res = args.res$
 
     // get token from request
-    seneca.act({role: 'auth', get: 'token', tokenkey: options.tokenkey, req: req, res: res}, function(err, clienttoken){
+    req.seneca.act({role: 'auth', get: 'token', tokenkey: options.tokenkey}, function(err, clienttoken){
       clienttoken = clienttoken.token
       // delete token
-      seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, req: req, res: res}, function(){
+      req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey}, function(){
         var servertoken
         if( req.seneca ) {
           servertoken = req.seneca.login && req.seneca.login.token
