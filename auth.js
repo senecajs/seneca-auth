@@ -63,7 +63,7 @@ module.exports = function auth( options ) {
   seneca.add({ init:plugin },                   init)
 
   seneca.add({role:plugin,cmd:'register'},      cmd_register)
-  seneca.add({role:plugin,cmd:'instance'},      cmd_instance)
+  seneca.add({role:plugin,cmd:'user'},          cmd_user)
   seneca.add({role:plugin,cmd:'clean'},         cmd_clean)
 
   seneca.add({role:plugin,cmd:'create_reset'},  cmd_create_reset)
@@ -324,7 +324,7 @@ module.exports = function auth( options ) {
     seneca.act({role:'user',cmd:'change_password', user:user, password:args.data.password, repeat:args.data.repeat }, done )
   }
 
-  function cmd_instance( args, done ) {
+  function cmd_user( args, done ) {
     var seneca = this
 
     var user  = args.user
@@ -678,7 +678,7 @@ module.exports = function auth( options ) {
     login:           { POST: true, GET: true, data: true, alias: options.urlpath.login},
     logout:          { POST: true, GET: true, data: true, alias: options.urlpath.logout},
     register:        { POST:authcontext, data:true, alias: options.urlpath.register},
-    instance:        { GET: authcontext,            alias: options.urlpath.instance},
+    user:            { GET: authcontext,            alias: options.urlpath.user},
     create_reset:    { POST:authcontext, data:true, alias: options.urlpath.create_reset },
     load_reset:      { POST:authcontext, data:true, alias: options.urlpath.load_reset },
     execute_reset:   { POST:authcontext, data:true, alias: options.urlpath.execute_reset },

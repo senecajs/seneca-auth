@@ -23,9 +23,9 @@ suite('register-login-logout header token suite tests ', function() {
     })
   })
 
-  test('auth/instance with no login test', function(done) {
+  test('auth/user with no login test', function(done) {
     agent
-      .get('/auth/instance')
+      .get('/auth/user')
       .expect(400)
       .end(function (err, res){
         util.log(res)
@@ -54,9 +54,9 @@ suite('register-login-logout header token suite tests ', function() {
     done()
   })
 
-  test('auth/instance after register', function(done) {
+  test('auth/user after register', function(done) {
     agent
-      .get('/auth/instance')
+      .get('/auth/user')
       .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res){
@@ -100,9 +100,9 @@ suite('register-login-logout header token suite tests ', function() {
     done()
   })
 
-  test('auth/instance with login test', function(done) {
+  test('auth/user with login test', function(done) {
     agent
-      .get('/auth/instance')
+      .get('/auth/user')
       .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res){

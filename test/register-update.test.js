@@ -60,9 +60,9 @@ suite('register-update suite tests ', function() {
       })
   })
 
-  test('auth/instance after update-user', function(done) {
+  test('auth/user after update-user', function(done) {
     agent
-      .get('/auth/instance')
+      .get('/auth/user')
       .set('Cookie', ['seneca-login=' + cookie])
       .expect(200)
       .end(function (err, res){

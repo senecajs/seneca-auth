@@ -8,7 +8,7 @@ module.exports = {
   urlpath: {
     login:        'login',
     logout:       'logout',
-    instance:     'instance',
+    user:         'user',
     register:     'register',
     create_reset: 'create_reset',
     load_reset:   'load_reset',
