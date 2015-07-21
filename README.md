@@ -143,3 +143,9 @@ Change user password.
    * options property: _urlpath.change_password_
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at cmd: change_password documentation for details.
 
+## Test
+
+```sh
+lab
+```
+
