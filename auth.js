@@ -6,7 +6,6 @@ var util          = require('util')
 var _             = require('lodash')
 var async         = require('async')
 var S             = require('string')
-var Cookies       = require('cookies')
 var passport      = require('passport')
 
 var seneca_auth_token
@@ -402,8 +401,6 @@ module.exports = function auth( options ) {
           token = result.token
         }
 
-//      var token = req.seneca.cookies.get( options.tokenkey )
-
         if( token ) {
           seneca.act({role:'user',cmd:'auth', token:token}, function(err, out){
             if( err ) {
@@ -464,8 +461,6 @@ module.exports = function auth( options ) {
       if (!req.seneca){
         return next('Cannot process, seneca-web dependency problem');
       }
-
-      req.seneca.cookies = new Cookies(req,res)
 
       pp_init( req, res, function(err){
         if( err) {
