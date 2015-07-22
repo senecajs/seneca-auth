@@ -143,9 +143,12 @@ module.exports = function auth( options ) {
       return done( null, {ok: false, why: 'no-identifier'} )
     }
 
-    seneca.act({role: 'user', cmd: 'load_user', q: q},function( err, user ){
+    seneca.act({role: 'user', get: 'user', q: q},function( err, data ){
       if( err ) return done( null, {ok: false, why: 'no-identifier'} );
 
+      if( !data.ok ) return done( null, {ok: false, why: data.why} );
+
+      var user = data.user
       if( !user ) {
         seneca.act(_.extend({role:'user',cmd:'register'}, userData), function(err,out){
           if( err ) {
@@ -635,6 +638,7 @@ module.exports = function auth( options ) {
 
         var token = clienttoken || servertoken || ''
         seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'logout'}, function(err, redirect){
+          console.log('redirect: ', redirect)
           seneca.act({role:'user',cmd:'logout', token: token}, function(err) {
             if( err ) {
               seneca.log('error',err)

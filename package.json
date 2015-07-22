@@ -42,9 +42,9 @@
     "gex": "~0.1.4",
     "lodash": "^3.10.0",
     "passport": "~0.2.0",
-    "seneca-auth-redirect": "^0.2.0",
-    "seneca-auth-token-cookie": "0.0.1",
-    "seneca-auth-urlmatcher": "0.0.1",
+    "seneca-auth-redirect": "~0.2.0",
+    "seneca-auth-token-cookie": "~0.0.1",
+    "seneca-auth-urlmatcher": "~0.0.1",
     "string": "~1.9.0"
   },
   "repository": {
@@ -58,8 +58,8 @@
     "express": "^4.13.1",
     "express-session": "^1.11.3",
     "lab": "^5.13.0",
-    "seneca-auth-token-header": "0.0.1",
-    "seneca-local-auth": "0.0.2",
+    "seneca-auth-token-header": "~0.0.1",
+    "seneca-local-auth": "~0.0.2",
     "seneca-user": "~0.2.10",
     "supertest": "~1.0.1",
     "seneca": "~0.6.3"
