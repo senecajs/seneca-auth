@@ -25,10 +25,12 @@ suite('register-login-logout suite tests ', function() {
   test('auth/user with no login test', function(done) {
     agent
       .get('/auth/user')
-      .expect(400)
+      .expect(200)
       .end(function (err, res){
         util.log(res)
-        assert(!res.body.ok, 'Response has OK=true')
+        assert(res.body.ok, 'Response has OK=true')
+        assert(!res.body.user, 'User present')
+        assert(!res.body.login, 'Login present')
         done(err)
       })
   })
@@ -75,6 +77,8 @@ suite('register-login-logout suite tests ', function() {
       .end(function (err, res){
         util.log(res)
         assert(res.body.ok)
+        assert(!res.body.user, 'User in response')
+        assert(!res.body.login, 'Login in response')
         done(err)
       })
   })
@@ -129,10 +133,10 @@ suite('register-login-logout suite tests ', function() {
     agent
       .get('/auth/user')
       .set('Cookie', ['seneca-login=' + cookie])
-      .expect(400)
+      .expect(200)
       .end(function (err, res){
         util.log(res)
-        assert(!res.body.ok, 'Not OK')
+        assert(res.body.ok, 'Not OK')
         assert(!res.body.user, 'User in response')
         assert(!res.body.login, 'Login in response')
         done(err)

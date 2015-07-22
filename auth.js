@@ -331,7 +331,7 @@ module.exports = function auth( options ) {
     var login = args.login
 
     if (!user || !login || !login.active){
-      return done( null, {ok: false})
+      return done( null, {ok: true})
     }
 
     seneca.act({ role:plugin, cmd:'clean', user:user, login:login}, function( err, out ){
