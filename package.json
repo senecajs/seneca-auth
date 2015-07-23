@@ -58,11 +58,12 @@
     "express": "^4.13.1",
     "express-session": "^1.11.3",
     "lab": "^5.13.0",
+    "seneca": "~0.6.3",
+    "seneca-auth-restrict-login": "0.0.1",
     "seneca-auth-token-header": "~0.0.1",
     "seneca-local-auth": "~0.0.2",
     "seneca-user": "~0.2.10",
-    "supertest": "~1.0.1",
-    "seneca": "~0.6.3"
+    "supertest": "~1.0.1"
   },
   "peerDependencies": {
     "seneca": "*",
