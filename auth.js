@@ -439,7 +439,7 @@ module.exports = function auth( options ) {
         for( var cI = 0; cI < checks.length; cI++ ) {
           var restrict = checks[cI](req)
           if( restrict && !(req.seneca && req.seneca.user) ) {
-            seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: req.url}, function(err, redirect){
+            req.seneca.act({role: 'auth', cmd: 'redirect', kind: req.url}, function(err, redirect){
               if( redirect ) {
                 return next({http$: {status: 302,redirect:options.redirect.restrict}})
               }
@@ -487,7 +487,7 @@ module.exports = function auth( options ) {
   }
 
   function authcontext( req, res, args, act, respond ) {
-    seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: args.cmd}, function(err, redirect){
+    req.seneca.act({role: 'auth', cmd: 'redirect', kind: args.cmd}, function(err, redirect){
       var user = req.seneca && req.seneca.user
       if( user ) {
         args.user = user
@@ -529,7 +529,7 @@ module.exports = function auth( options ) {
 
 //LOGIN START
   function afterlogin( err, next, req, res ) {
-    seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'login'}, function(redirectErr, redirect){
+    req.seneca.act({role: 'auth', cmd: 'redirect', kind: 'login'}, function(redirectErr, redirect){
       // req.user actually == {ok:,user:,login:}
       if( err && !err.why ) {
         return next(null, {http$: {status: 301,redirect:redirect.fail}})
@@ -601,18 +601,20 @@ module.exports = function auth( options ) {
 
 
       pp_auth.local(req, res, function (loginerr, out) {
-        if (loginerr){
-          seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'login'}, function(err, redirect){
-            if ( redirect ){
-              return cb(null, { http$: { status: 301, redirect:redirect.fail }})
-            }else{
-              return cb(null, { http$: { status: 401 }, ok: false, why: loginerr})
-            }
-          })
-        }
-        else{
-          afterlogin(err, cb, req, res)
-        }
+        req.seneca.act({role: 'auth', restrict: 'login', default$: {ok: true, why: 'no-restrict'}}, function(err, out){
+          if (loginerr || err || !(out && out.ok)){
+            req.seneca.act({role: 'auth', cmd: 'redirect', kind: 'login'}, function(err, redirect){
+              if ( redirect ){
+                return cb(null, { http$: { status: 301, redirect:redirect.fail }})
+              }else{
+                return cb(null, { http$: { status: 401 }, ok: false, why: loginerr || err || (out && out.why) })
+              }
+            })
+          }
+          else{
+            afterlogin(err, cb, req, res)
+          }
+        })
       })
     })
   }
@@ -637,7 +639,7 @@ module.exports = function auth( options ) {
         }
 
         var token = clienttoken || servertoken || ''
-        seneca.act({role: 'auth', cmd: 'redirect', req: req, res: res, kind: 'logout'}, function(err, redirect){
+        req.seneca.act({role: 'auth', cmd: 'redirect', kind: 'logout'}, function(err, redirect){
           console.log('redirect: ', redirect)
           seneca.act({role:'user',cmd:'logout', token: token}, function(err) {
             if( err ) {

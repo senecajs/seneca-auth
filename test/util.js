@@ -45,9 +45,6 @@ exports.init = function(cb){
       }
     })
 
-
-
-
     cb(null, agent, si)
   })
 }
