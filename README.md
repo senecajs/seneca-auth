@@ -35,18 +35,19 @@ A large part of the internal functionality of seneca-auth is now implemented as 
 
 ### Plugins
 
-|        Functionality    | Loaded by default |                                 plugin                                                  |
-|-------------------------|-------------------|-----------------------------------------------------------------------------------------|
-| Local strategy auth     | No                | [seneca-local-auth](https://github.com/mirceaalexandru/seneca-local-auth)               |
-| Facebook  strategy auth | No                | [seneca-facebook-auth](https://github.com/nherment/seneca-facebook-auth)                |
-| Github strategy auth    | No                | [seneca-github-auth](https://github.com/nherment/seneca-github-auth)                    |
-| Google  strategy auth   | No                | [seneca-google-auth](https://github.com/nherment/seneca-google-auth)                    |
-| LinkedIn strategy auth  | No                | [seneca-linkedin-auth](https://github.com/nherment/seneca-linkedin-auth)                |
-| Twitter strategy auth   | No                | [seneca-twitter-auth](https://github.com/nherment/seneca-twitter-auth)                  |
-| Redirect                | Yes               | [seneca-auth-redirect](https://github.com/mirceaalexandru/seneca-auth-redirect)         |
-| Cookie token            | Yes               | [seneca-auth-token-cookie](https://github.com/mirceaalexandru/seneca-auth-token-cookie) |
-| Header token            | No                | [seneca-auth-token-header](https://github.com/mirceaalexandru/seneca-auth-token-header) |
-| Url matcher             | Yes               | [seneca-auth-urlmatcher](https://github.com/mirceaalexandru/seneca-auth-urlmatcher)     |
+|        Functionality    | Loaded by default |                                 plugin                                                      |
+|-------------------------|-------------------|---------------------------------------------------------------------------------------------|
+| Local strategy auth     | No                | [seneca-local-auth](https://github.com/mirceaalexandru/seneca-local-auth)                   |
+| Facebook  strategy auth | No                | [seneca-facebook-auth](https://github.com/nherment/seneca-facebook-auth)                    |
+| Github strategy auth    | No                | [seneca-github-auth](https://github.com/nherment/seneca-github-auth)                        |
+| Google  strategy auth   | No                | [seneca-google-auth](https://github.com/nherment/seneca-google-auth)                        |
+| LinkedIn strategy auth  | No                | [seneca-linkedin-auth](https://github.com/nherment/seneca-linkedin-auth)                    |
+| Twitter strategy auth   | No                | [seneca-twitter-auth](https://github.com/nherment/seneca-twitter-auth)                      |
+| Redirect                | Yes               | [seneca-auth-redirect](https://github.com/mirceaalexandru/seneca-auth-redirect)             |
+| Cookie token            | Yes               | [seneca-auth-token-cookie](https://github.com/mirceaalexandru/seneca-auth-token-cookie)     |
+| Header token            | No                | [seneca-auth-token-header](https://github.com/mirceaalexandru/seneca-auth-token-header)     |
+| Url matcher             | Yes               | [seneca-auth-urlmatcher](https://github.com/mirceaalexandru/seneca-auth-urlmatcher)         |
+| Restrict Login          | No                | [seneca-auth-restrict-login](https://github.com/mirceaalexandru/seneca-auth-restrict-login) |
 
 Check the documentation of each plugin for details.
 
@@ -61,6 +62,23 @@ When one of these parameters are provided to seneca-auth it will be considered a
 
 Some options are deprecated:
    * tokenkey - this parameter is deprecated. It is now an option for one of the two plugins that are used for storing/retrieving the auth-token from request/response - [seneca-auth-token-cookie](https://github.com/mirceaalexandru/seneca-auth-token-cookie) or [seneca-auth-token-header](https://github.com/mirceaalexandru/seneca-auth-token-header)
+
+## Restrict Login
+
+Different conditions for login can be added by simply overriding the default behavior of seneca action with pattern:
+
+role: 'auth', restrict: 'login'
+
+This function must return:
+
+   * an object with at least {ok: true} in case that login is allowed based on the implemented rules
+   * an object with at least {ok: false, why: 'reason'} in case that login is not allowed based on the implemented rules.
+
+An example of this implementation is provided by the plugin [seneca-auth-restrict-login](https://github.com/mirceaalexandru/seneca-auth-restrict-login).
+The restrict condition implemented by this plugin is based on the existence of a cookie value in the request.
+
+If more conditions are required these can be implemented in separated seneca actions. All actions can then be added to seneca but make sure
+to call seneca.prior from each action to make sure that all conditions in the chain are verified.
 
 ## JSON API and Redirects
 
