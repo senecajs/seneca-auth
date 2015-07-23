@@ -30,6 +30,7 @@ suite('restrict suite tests ', function() {
       .end(function (err, res){
         util.log(res)
         assert(!res.body.ok, 'OK response')
+        assert.equal('restricted', res.body.why, 'Why should be restricted')
         done(err)
       })
   })
