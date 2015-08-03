@@ -4,8 +4,6 @@
 
 var util          = require('util')
 var _             = require('lodash')
-var async         = require('async')
-var S             = require('string')
 var passport      = require('passport')
 
 var seneca_auth_token
@@ -53,13 +51,8 @@ module.exports = function auth( options ) {
     options.prefix = m[1]
   }
 
-//  _.each(options.urlpath,function(v,k){
-//    options.urlpath[k] = '/'==v[0] ? v : options.prefix+'/'+v
-//  })
-
-
   // define seneca actions
-//  seneca.add({ role:plugin, wrap:'user' },      wrap_user)
+  // seneca.add({ role:plugin, wrap:'user' },      wrap_user)
   seneca.add({ init:plugin },                   init)
 
   seneca.add({role:plugin,cmd:'register'},      cmd_register)
