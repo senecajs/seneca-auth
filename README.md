@@ -106,12 +106,14 @@ Logout an existing user with an active login. The login entity is updated to ref
    * options property: _urlpath.logout_
 
 
-### instance
+### user - previously instance
 
 Get the details of an existing, logged in user.
 
-   * default url path: _/auth/instance_
-   * options property: _urlpath.instance_
+   * default url path: _/auth/user_
+   * options property: _urlpath.user_
+
+This was previously the _/auth/instance_
 
 ### register
 
