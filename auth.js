@@ -29,7 +29,7 @@ module.exports = function auth( options ) {
   seneca.depends(plugin,['web','user'])
 
   // using seneca.util.deepextend here, as there are sub properties
-  options = seneca.util.deepextend( default_options, options )
+  options = _.extend( {}, default_options, options )
 
   function migrateOptions(){
     if (options.service){
