@@ -7,8 +7,7 @@ A user authentication plugin, using [PassportJS](http://passportjs.org).
 
 [![Build Status](https://travis-ci.org/rjrodger/seneca-auth.png?branch=master)](https://travis-ci.org/rjrodger/seneca-auth)
 
-[![NPM](https://nodei.co/npm/seneca-auth.png)](https://nodei.co/npm/seneca-auth/)
-[![NPM](https://nodei.co/npm-dl/seneca-auth.png)](https://nodei.co/npm-dl/seneca-auth/)
+[![Gitter chat](https://badges.gitter.im/rjrodger/seneca-auth.png)](https://gitter.im/rjrodger/seneca-auth)
 
 For a gentle introduction to Seneca itself, see the
 [senecajs.org](http://senecajs.org) site.
