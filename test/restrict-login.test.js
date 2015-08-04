@@ -78,7 +78,7 @@ suite('restrict suite tests ', function() {
     agent
       .post('/auth/login')
       .send({nick: user.nick, password: user.password})
-      .expect(401)
+      .expect(200)
       .end(function (err, res){
         util.log(res)
         assert(!res.body.ok, 'OK response')
@@ -96,7 +96,7 @@ suite('restrict suite tests ', function() {
     agent
       .post('/auth/login')
       .send({nick: user.nick, password: user.password})
-      .expect(401)
+      .expect(200)
       .end(function (err, res){
         util.log(res)
         assert(!res.body.ok, 'OK response')
@@ -136,7 +136,7 @@ suite('restrict suite tests ', function() {
     agent
       .post('/auth/login')
       .send({nick: user.nick, password: user.password})
-      .expect(401)
+      .expect(200)
       .end(function (err, res){
         util.log(res)
         assert(!res.body.ok, 'OK response')

@@ -15,7 +15,7 @@ var util = require('./util.js')
 var cookie
 var user = {nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true}
 
-suite('restrict suite tests ', function() {
+suite('restricted suite tests ', function() {
   before({}, function(done){
     util.init(function(err, agentData){
       agent = agentData

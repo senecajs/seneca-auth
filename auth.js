@@ -230,27 +230,21 @@ module.exports = function auth( options ) {
 
       seneca.act(_.extend({role:'user',cmd:'register'}, details), function( err, out ){
         if( err || !out.ok ) {
-          return done( err, out );
+          return do_respond( err || (out ? out.why: 'Internal server error'), 'register', req, done )
         }
 
         seneca.act(_.extend({role:'user',cmd:'login'}, { nick:out.user.nick, auto:true }), function( err, out ){
           if( err || !out.ok ) {
-            return done( err, out );
+            return do_respond( err || (out ? out.why: 'Internal server error'), 'register', req, done )
           }
 
           if( req && req.seneca ) {
             req.seneca.user  = out.user
             req.seneca.login = out.login
 
-            if( res ) {
-              req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id}, function(err){
-                return done(null, {
-                  ok:    out.ok,
-                  user:  out.user,
-                  login: out.login
-                })
-              })
-            }
+            req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id}, function(err){
+              return do_respond( err, 'register', req, done )
+            })
           }
           else{
             done(null, {
@@ -480,99 +474,77 @@ module.exports = function auth( options ) {
   }
 
   function authcontext( req, res, args, act, respond ) {
-    req.seneca.act({role: 'auth', cmd: 'redirect', kind: args.cmd}, function(err, redirect){
-      var user = req.seneca && req.seneca.user
-      if( user ) {
-        args.user = user
+    var user = req.seneca && req.seneca.user
+    if( user ) {
+      args.user = user
+    }
+
+    var login = req.seneca && req.seneca.login
+    if( login ) {
+      args.login = login
+    }
+
+    act(args,function( err, out ){
+      if( err ) {
+        seneca.log.debug(err)
+        out = out || {}
       }
 
-      var login = req.seneca && req.seneca.login
-      if( login ) {
-        args.login = login
-      }
-
-      act(args,function( err, out ){
-        if( err ) {
-          seneca.log.debug(err)
-          out = out || {}
-          out.http$ = {
-            status: 400,
-            redirect: redirect && redirect.fail
-          }
-          return respond(null, out);
-        }
-
-        out.http$ = {
-          status: out.ok ? 200 : 400,
-          redirect: redirect && redirect.win
-        }
-
-        respond(null,out)
-      })
+      return respond(null,out)
     })
   }
 
   var config = {prefix:options.prefix,redirects:{}}
 
-//  if( options.defaultpages ) {
-//    _.each(options.loginpages, function(loginpage){
-//      config.redirects[loginpage.path]={redirect:loginpage.redirect,title:loginpage.title}
-//    })
-//  }
 
-//LOGIN START
-  function afterlogin( err, next, req, res ) {
-    req.seneca.act({role: 'auth', cmd: 'redirect', kind: 'login'}, function(redirectErr, redirect){
-      // req.user actually == {ok:,user:,login:}
-      if( err && !err.why ) {
-        return next(null, {http$: {status: 301,redirect:redirect.fail}})
-      }
-
-      if( req.user && req.user.ok ) {
-        // rename passport req.user prop
-        req.seneca.user = req.user.user
-        req.seneca.login = req.user.login
-
-        req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id}, function(){
-          return do_respond(null, redirect, next)
-        })
-      }
-      else {
-        //var out = {ok:false,why:(req.user&&req.user.why)||'no-user'}
-        //delete req.user
-        var out = { ok:false, why: (err ? err.why : 'Unknown error') }
+  function do_respond(err, action, req, next, forceStatus, forceRedirect) {
+    req.seneca.act({role: 'auth', cmd: 'redirect', kind: action}, function(errRedirect, redirect){
+      if( err) {
         if( redirect ) {
-          req.seneca.log.debug( 'redirect', 'login', 'fail', redirect.fail )
-
-          return next(null, {http$: {status: 301,redirect:redirect.fail}})
+          req.seneca.log.debug( 'redirect', 'fail', redirect.fail )
+          return next(null, {http$: {status: forceStatus || 301, redirect:forceRedirect || redirect.fail}})
         }
         else {
-          return next(null, out)
+          return next(null, {http$: {status: forceStatus || 200, redirect:forceRedirect}, ok: false, why: err})
+        }
+      }
+      else{
+        if( redirect ) {
+          req.seneca.log.debug( 'redirect', 'win', redirect.win )
+          return next(null, {http$: {status: forceStatus || 301,redirect:forceRedirect || redirect.win}})
+        }
+        else {
+          seneca.act({role:plugin, cmd:'clean', user:req.seneca.user, login:req.seneca.login},function(err, out){
+            out.ok = true
+            out.http$ = {status: forceStatus || 200, redirect:forceRedirect}
+            return next(null, out)
+          })
         }
       }
     })
+  }
 
-    function do_respond(err, redirect, cb) {
-      if( err) {
-        return cb(null, {http$: { status: 302 } })
-      }
+//LOGIN START
+  function afterlogin( err, next, req, res ) {
+    if( err ) {
+      return do_respond(err, 'login', req, next)
+    }
 
-      if( redirect ) {
-        req.seneca.log.debug( 'redirect', 'login', 'win', redirect.win )
-        return cb(null, {http$: {status: 301,redirect:redirect.win}})
-      }
-      else {
-        // FIX: this should call instance
-        // FIX: how to handle errors here?
-        seneca.act({role:plugin, cmd:'clean', user:req.seneca.user, login:req.seneca.login},function(err, out){
-          out.ok = true
-          return cb(null, out)
-        })
-      }
+    if( req.user && req.user.ok ) {
+      // rename passport req.user prop
+      req.seneca.user = req.user.user
+      req.seneca.login = req.user.login
+
+      req.seneca.act({role: 'auth', set: 'token', tokenkey: options.tokenkey, token: req.seneca.login.id}, function(){
+        return do_respond(null, 'login', req, next)
+      })
+    }
+    else {
+      do_respond((err ? err.why : 'Unknown error'), 'login', req, next)
     }
   }
 
-  function cmd_login(args, cb) {
+  function cmd_login(args, next) {
     var req = args.req$
     var res = args.res$
 
@@ -596,16 +568,10 @@ module.exports = function auth( options ) {
       pp_auth.local(req, res, function (loginerr, out) {
         req.seneca.act({role: 'auth', restrict: 'login', default$: {ok: true, why: 'no-restrict'}}, function(err, out){
           if (loginerr || err || !(out && out.ok)){
-            req.seneca.act({role: 'auth', cmd: 'redirect', kind: 'login'}, function(err, redirect){
-              if ( redirect ){
-                return cb(null, { http$: { status: 301, redirect:redirect.fail }})
-              }else{
-                return cb(null, { http$: { status: 401 }, ok: false, why: loginerr || err || (out && out.why) })
-              }
-            })
+            do_respond( loginerr || err || (out && out.why), 'login', req, next )
           }
           else{
-            afterlogin(err, cb, req, res)
+            afterlogin(err, next, req, res)
           }
         })
       })
@@ -615,7 +581,7 @@ module.exports = function auth( options ) {
 
 
 //LOGOUT START
-  function cmd_logout(args, cb) {
+  function cmd_logout(args, next) {
     var req = args.req$
     var res = args.res$
 
@@ -638,10 +604,10 @@ module.exports = function auth( options ) {
             if( err ) {
               seneca.log('error',err)
               if (redirect){
-                return cb(null, {http$: {status: 301,redirect:redirect.fail}})
+                return next(null, {http$: {status: 301,redirect:redirect.fail}})
               }
               else{
-                return cb(null, { ok: false, why: err } )
+                return next(null, { ok: false, why: err } )
               }
             }
 
@@ -650,18 +616,18 @@ module.exports = function auth( options ) {
             } catch(err) {
               seneca.log('error',err)
               if (redirect){
-                return cb(null, {http$: {status: 301,redirect:redirect.fail}})
+                return next(null, {http$: {status: 301,redirect:redirect.fail}})
               }
               else{
-                return cb(null, { ok: false, why: err } )
+                return next(null, { ok: false, why: err } )
               }
             }
 
             if (redirect){
-              return cb(null, { http$: { status: 301,redirect: redirect.win } } )
+              return next(null, { http$: { status: 301,redirect: redirect.win } } )
             }
             else{
-              return cb(null, { ok: true } )
+              return next(null, { ok: true } )
             }
           })
         })
