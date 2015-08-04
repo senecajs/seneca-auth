@@ -18,7 +18,7 @@ var user = {nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:tru
 suite('restrict suite tests ', function() {
   var seneca
   before({}, function(done){
-    util.init(function(err, agentData, si){
+    util.init({}, function(err, agentData, si){
       agent = agentData
       seneca = si
       done()
@@ -109,7 +109,7 @@ suite('restrict suite tests ', function() {
 suite('restrict suite tests ', function() {
   var seneca
   before({}, function(done){
-    util.init(function(err, agentData, si){
+    util.init({}, function(err, agentData, si){
       agent = agentData
       seneca = si
       seneca.use('auth-restrict-login')

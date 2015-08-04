@@ -8,15 +8,37 @@ var lab = exports.lab = Lab.script()
 var suite = lab.suite;
 var test = lab.test;
 var before = lab.before;
-var after = lab.after;
 
 var util = require('./util.js')
 
 var cookie
 
-suite('register-login-logout suite tests ', function() {
+var options = {
+  redirect:{
+    always: true,
+    register: {
+      win:  '/register_OK',
+      fail: '/register_failed'
+    },
+    logout: {
+      win:  '/logout_OK',
+      fail: '/logout_failed'
+    },
+    login: {
+      win:  '/login_OK',
+      fail: '/login_failed'
+    }
+
+  }
+}
+
+var user = {nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true}
+
+var reset
+
+suite('register-login-logout with redirect suite tests ', function() {
   before({}, function(done){
-    util.init({}, function(err, agentData){
+    util.init(options, function(err, agentData){
       agent = agentData
       done()
     })
@@ -38,33 +60,24 @@ suite('register-login-logout suite tests ', function() {
   test('auth/register test', function(done) {
     agent
       .post('/auth/register')
-      .send({nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true})
-      .expect(200)
+      .send(user)
+      .expect(301)
       .end(function (err, res){
         util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
+        assert.equal(options.redirect.register.win, res.header.location, 'Location')
         cookie = util.checkCookie(res)
         done(err)
       })
   })
 
-  test('verify cookie exists after register', function(done) {
-    assert(cookie)
-    done()
-  })
-
-  test('auth/user after register', function(done) {
+  test('auth/register test', function(done) {
     agent
-      .get('/auth/user')
-      .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
+      .post('/auth/register')
+      .send({nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:true})
+      .expect(301)
       .end(function (err, res){
         util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
+        assert.equal(options.redirect.register.fail, res.header.location, 'Location')
         done(err)
       })
   })
@@ -73,12 +86,10 @@ suite('register-login-logout suite tests ', function() {
     agent
       .post('/auth/logout')
       .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
+      .expect(301)
       .end(function (err, res){
         util.log(res)
-        assert(res.body.ok)
-        assert(!res.body.user, 'User in response')
-        assert(!res.body.login, 'Login in response')
+        assert.equal(options.redirect.logout.win, res.header.location, 'Location')
         done(err)
       })
   })
@@ -87,12 +98,10 @@ suite('register-login-logout suite tests ', function() {
     agent
       .post('/auth/login')
       .send({ nick: 'u1', password: 'u1' })
-      .expect(200)
+      .expect(301)
       .end(function (err, res){
         util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
+        assert.equal(options.redirect.login.win, res.header.location, 'Location')
         cookie = util.checkCookie(res)
         done(err)
       })
@@ -113,32 +122,6 @@ suite('register-login-logout suite tests ', function() {
         assert(res.body.ok, 'Not OK')
         assert(res.body.user, 'No user in response')
         assert(res.body.login, 'No login in response')
-        done(err)
-      })
-  })
-
-  test('auth/logout test', function(done) {
-    agent
-      .post('/auth/logout')
-      .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(res.body.ok)
-        done(err)
-      })
-  })
-
-  test('auth/user with no login test', function(done) {
-    agent
-      .get('/auth/user')
-      .set('Cookie', ['seneca-login=' + cookie])
-      .expect(200)
-      .end(function (err, res){
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(!res.body.user, 'User in response')
-        assert(!res.body.login, 'Login in response')
         done(err)
       })
   })

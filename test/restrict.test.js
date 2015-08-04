@@ -17,7 +17,7 @@ var user = {nick:'u1',name:'nu1',email:'u1@example.com',password:'u1',active:tru
 
 suite('restricted suite tests ', function() {
   before({}, function(done){
-    util.init(function(err, agentData){
+    util.init({}, function(err, agentData){
       agent = agentData
       done()
     })

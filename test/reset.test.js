@@ -19,7 +19,7 @@ var newPwd = 'uuu1'
 
 suite('reset suite tests ', function() {
   before({}, function(done){
-    util.init(function(err, agentData){
+    util.init({}, function(err, agentData){
       agent = agentData
       done()
     })

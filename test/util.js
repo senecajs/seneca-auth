@@ -1,6 +1,7 @@
 var assert = require('assert')
+var _ = require('lodash')
 
-exports.init = function(cb){
+exports.init = function(options, cb){
   var agent
   var request = require('supertest')
   var express = require('express')
@@ -13,7 +14,7 @@ exports.init = function(cb){
 
   si = seneca(/*{log: 'print'}*/)
   si.use( 'user' )
-  si.use( require('..'), {secure:true, restrict: '/api'} )
+  si.use( require('..'), _.extend({secure:true, restrict: '/api'}, options || {}) )
   si.use( 'seneca-local-auth', {} )
 
   si.ready(function(err){
@@ -51,7 +52,7 @@ exports.init = function(cb){
 
 exports.log = function (res){
   // comment next line for logging of req/responses
-  return
+  //return
   console.log('\n****************************************')
   console.log('REQUEST URL : ', JSON.stringify(res.req.path))
   console.log('REQUEST     : ', JSON.stringify(res))
