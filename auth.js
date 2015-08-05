@@ -136,7 +136,7 @@ module.exports = function auth( options ) {
       return done( null, {ok: false, why: 'no-identifier'} )
     }
 
-    seneca.act({role: 'user', get: 'user', q: q},function( err, data ){
+    seneca.act(_.extend({role: 'user', get: 'user'}, q),function( err, data ){
       if( err ) return done( null, {ok: false, why: 'no-identifier'} );
 
       if( !data.ok ) return done( null, {ok: false, why: data.why} );
@@ -362,6 +362,9 @@ module.exports = function auth( options ) {
     pp_auth[service] = function( req, res, next ){
       if (service != 'local') {
         func = function (err, user, info) {
+          if (err){
+            return afterlogin( err, next, req, res )
+          }
           seneca.act(_.extend({},{role: 'auth', trigger: 'service-login-' + service, service: service, user: user}),
             function (err, user) {
               if (err) {
@@ -488,6 +491,8 @@ module.exports = function auth( options ) {
       if( err ) {
         seneca.log.debug(err)
         out = out || {}
+
+        return respond(null, out);
       }
 
       return respond(null,out)
