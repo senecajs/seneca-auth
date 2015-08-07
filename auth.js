@@ -131,6 +131,7 @@ module.exports = function auth( options ) {
     var q = {}
     if( userData.identifier ) {
       q[ args.service + '_id' ] = userData.identifier
+      userData[args.service + '_id'] = userData.identifier
     }
     else {
       return done( null, {ok: false, why: 'no-identifier'} )
@@ -672,13 +673,7 @@ module.exports = function auth( options ) {
   var _service_callback = function (service, args, next) {
     var req = args.req$
     var res = args.res$
-    pp_auth[service](req, res, function (err) {
-      if (err) {
-        return next(err);
-      }
-
-      afterlogin(err, next, req, res)
-    })
+    pp_auth[service](req, res, next)
   }
 
   seneca.act({
