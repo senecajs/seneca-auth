@@ -349,6 +349,7 @@ module.exports = function auth( options ) {
       delete user.active
       delete user.accounts
       delete user.confirmcode
+      delete user.repeat
     }
 
     return done(null,{ user:user, login:login })
@@ -604,38 +605,21 @@ module.exports = function auth( options ) {
         }
 
         var token = clienttoken || servertoken || ''
-        req.seneca.act({role: 'auth', cmd: 'redirect', kind: 'logout'}, function(err, redirect){
-          console.log('redirect: ', redirect)
-          seneca.act({role:'user',cmd:'logout', token: token}, function(err) {
-            if( err ) {
-              seneca.log('error',err)
-              if (redirect){
-                return next(null, {http$: {status: 301,redirect:redirect.fail}})
-              }
-              else{
-                return next(null, { ok: false, why: err } )
-              }
-            }
+        seneca.act({role:'user',cmd:'logout', token: token}, function(err) {
+          if( err ) {
+            seneca.log('error',err)
 
-            try {
-              req.logout()
-            } catch(err) {
-              seneca.log('error',err)
-              if (redirect){
-                return next(null, {http$: {status: 301,redirect:redirect.fail}})
-              }
-              else{
-                return next(null, { ok: false, why: err } )
-              }
-            }
+            return do_respond(err, 'logout', req, next)
+          }
 
-            if (redirect){
-              return next(null, { http$: { status: 301,redirect: redirect.win } } )
-            }
-            else{
-              return next(null, { ok: true } )
-            }
-          })
+          try {
+            req.logout()
+          } catch(err) {
+            seneca.log('error',err)
+            return do_respond(err, 'logout', req, next)
+          }
+
+          return do_respond(err, 'logout', req, next)
         })
       })
     })
