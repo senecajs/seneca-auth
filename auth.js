@@ -57,6 +57,7 @@ module.exports = function auth( options ) {
 
   seneca.add({role:plugin,cmd:'register'},      cmd_register)
   seneca.add({role:plugin,cmd:'user'},          cmd_user)
+  seneca.add({role:plugin,cmd:'instance'},      cmd_user)
   seneca.add({role:plugin,cmd:'clean'},         cmd_clean)
 
   seneca.add({role:plugin,cmd:'create_reset'},  cmd_create_reset)
@@ -634,6 +635,7 @@ module.exports = function auth( options ) {
     logout:          { POST: true, GET: true, data: true, alias: options.urlpath.logout},
     register:        { POST:authcontext, data:true, alias: options.urlpath.register},
     user:            { GET: authcontext,            alias: options.urlpath.user},
+    instance:        { GET: authcontext,            alias: options.urlpath.instance},// this is deprecated - use user instead
     create_reset:    { POST:authcontext, data:true, alias: options.urlpath.create_reset },
     load_reset:      { POST:authcontext, data:true, alias: options.urlpath.load_reset },
     execute_reset:   { POST:authcontext, data:true, alias: options.urlpath.execute_reset },
