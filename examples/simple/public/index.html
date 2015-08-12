@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="/js/user-accounts.js"></script>
+</head>
+<body>
+
+<span id="errorMsg" style="color:red"></span>
+<span id="msg" style="color:green"></span>
+
+<div id="content_register" class="content" style="display:none">
+    <h1>Register</h1>
+
+    <form id="register_form" action="/auth/register" method="post">
+
+        <p>
+            <label for="name">Name:</label><br/>
+            <input id="name" name="name"/>
+        </p>
+
+        <p>
+            <label for="email">Email:</label><br/>
+            <input id="email" name="email"/>
+        </p>
+
+        <p>
+            <label for="password">Password:</label><br/>
+            <input type="password" id="password" name="password"/>
+        </p>
+
+        <p>
+            <label for="repeat">Repeat Password:</label><br/>
+            <input type="password" id="repeat" name="repeat"/>
+        </p>
+
+        <p>
+            <input type="submit" value="Register User">
+        </p>
+    </form>
+
+    <button id="show_login"> Go to login</button>
+</div>
+
+<div id="content_login" class="content">
+    <h1>Login</h1>
+
+    <form id="login" action="/auth/login" method="post">
+        <p>
+            <label for="login_username">Username:</label><br/>
+            <input id="login_username" name="login_username"/>
+        </p>
+
+        <p>
+            <label for="login_password">Password:</label><br/>
+            <input type="login_password" id="login_password" name="password"/>
+        </p>
+
+        <p>
+            <input type="submit" value="Login">
+        </p>
+    </form>
+
+    <button id="show_register">Go to register</button>
+</div>
+
+<div id="content_account" class="content" style="display:none">
+    <h1>Account</h1>
+
+    <form id="update_form" action="/auth/update_user" method="post">
+
+        <p>
+            <label for="name">Name:</label><br/>
+            <input id="user_name" name="user_name"/>
+        </p>
+
+        <p>
+            <label for="email">Email/Username:</label><br/>
+            <input id="user_email" name="user_email"/>
+        </p>
+
+        <p>
+            <input type="submit" value="Update User">
+        </p>
+    </form>
+    <button id="logout">Logout</button>
+</div>
+
+
+</body>
+</html>
