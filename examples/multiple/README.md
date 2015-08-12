@@ -1,7 +1,7 @@
-seneca-auth examples
-====================
+seneca-auth twitter examples
+============================
 
-### Simple example
+### Twitter example
 
 Notes:
 
@@ -10,6 +10,10 @@ This example shows the usage of:
 		* The user plugin
 		* The auth plugin
 		* The local-auth plugin
+		* The twitter-auth plugin
+		* The google-auth plugin
+		* The github-auth plugin
+		* The facebook-auth plugin
 
 An express server serves the static login page as the starting-point
 of the example.
@@ -20,6 +24,11 @@ plugin, which takes the requests to 'auth/*', verifies the inputs.
 The single-page login shows how to verify users using client-side ajax calls
 to seneca-auth.  Notice how it still uses a call to the /auth/login action 
 internally, and then manipulates the DOM through the callback function.
+
+There are also options for logging in with Twitter, Facebook, Google and Github.  This
+option are available by creating a config.mine.js file with TwitterOAuth keys.
+seneca-auth uses these keys to authenticate the user,
+using the same pattern as regular user authentication.
 
 As db store the implementation uses the mem-store as default store for seneca. Please take in consideration
 that when you restart the server all data will be lost.
