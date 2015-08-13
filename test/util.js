@@ -8,11 +8,8 @@ exports.init = function(options, cb){
   var cookieparser = require('cookie-parser')
   var bodyparser   = require('body-parser')
   var session      = require('express-session')
-  var seneca = require('seneca')
 
-  var si
-
-  si = seneca(/*{log: 'print'}*/)
+  var si = require('seneca')(/*{log: 'print'}*/)
   si.use( 'user' )
   si.use( require('..'), _.extend({secure:true, restrict: '/api'}, options || {}) )
   si.use( 'seneca-local-auth', {} )

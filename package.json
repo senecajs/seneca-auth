@@ -25,7 +25,7 @@
   "license": "MIT",
   "main": "auth.js",
   "scripts": {
-    "test": "lab"
+    "test": "lab -v -L -c -P test"
   },
   "files": [
     "LICENSE.txt",
