@@ -22,9 +22,8 @@ var error         = require('eraro')({
 
 module.exports = function auth( options ) {
   var seneca = this
-  var plugin = 'auth'
 
-  seneca.depends(plugin,['web','user'])
+  seneca.depends('auth',['web','user'])
 
   // using seneca.util.deepextend here, as there are sub properties
   options = _.extend( {}, default_options, options )
@@ -52,29 +51,29 @@ module.exports = function auth( options ) {
   }
 
   // define seneca actions
-  // seneca.add({ role:plugin, wrap:'user' },      wrap_user)
-  seneca.add({ init:plugin },                   init)
+  // seneca.add({ role:'auth', wrap:'user' },      wrap_user)
+  seneca.add({ init:'auth' },                   init)
 
-  seneca.add({role:plugin,cmd:'register'},      cmd_register)
-  seneca.add({role:plugin,cmd:'user'},          cmd_user)
-  seneca.add({role:plugin,cmd:'instance'},      cmd_user)
-  seneca.add({role:plugin,cmd:'clean'},         cmd_clean)
+  seneca.add({role:'auth',cmd:'register'},      cmd_register)
+  seneca.add({role:'auth',cmd:'user'},          cmd_user)
+  seneca.add({role:'auth',cmd:'instance'},      cmd_user)
+  seneca.add({role:'auth',cmd:'clean'},         cmd_clean)
 
-  seneca.add({role:plugin,cmd:'create_reset'},  cmd_create_reset)
-  seneca.add({role:plugin,cmd:'load_reset'},    cmd_load_reset)
-  seneca.add({role:plugin,cmd:'execute_reset'}, cmd_execute_reset)
-  seneca.add({role:plugin,cmd:'confirm'},       cmd_confirm)
+  seneca.add({role:'auth',cmd:'create_reset'},  cmd_create_reset)
+  seneca.add({role:'auth',cmd:'load_reset'},    cmd_load_reset)
+  seneca.add({role:'auth',cmd:'execute_reset'}, cmd_execute_reset)
+  seneca.add({role:'auth',cmd:'confirm'},       cmd_confirm)
 
-  seneca.add({role:plugin,cmd:'update_user'},    cmd_update_user)
-  seneca.add({role:plugin,cmd:'change_password'},cmd_change_password)
+  seneca.add({role:'auth',cmd:'update_user'},    cmd_update_user)
+  seneca.add({role:'auth',cmd:'change_password'},cmd_change_password)
 
-  seneca.add({role: plugin, cmd:'login'},        cmd_login)
-  seneca.add({role: plugin, cmd:'logout'},       cmd_logout)
+  seneca.add({role: 'auth', cmd:'login'},        cmd_login)
+  seneca.add({role: 'auth', cmd:'logout'},       cmd_logout)
 
-  seneca.add({role: plugin, cmd:'register_service' },
+  seneca.add({role: 'auth', cmd:'register_service' },
     cmd_register_service)
 
-  seneca.add({role: plugin, cmd: 'mapFields'},    aliasfields)
+  seneca.add({role: 'auth', cmd: 'mapFields'},    aliasfields)
 
   function loadDefaultPlugins(){
     seneca.use(seneca_auth_token)
@@ -173,8 +172,8 @@ module.exports = function auth( options ) {
   }
 
   function registerService(service, conf){
-    seneca.add({role: plugin, cmd: 'auth-' + service}, _login_service.bind(this, service))
-    seneca.add({role: plugin, cmd: 'auth-' + service + '-callback'}, _service_callback.bind(this, service))
+    seneca.add({role: 'auth', cmd: 'auth-' + service}, _login_service.bind(this, service))
+    seneca.add({role: 'auth', cmd: 'auth-' + service + '-callback'}, _service_callback.bind(this, service))
 
     var map = {}
     map['auth-' + service] = {GET: true, POST: true, alias: '/' + service, responder: _blank_responder}
@@ -182,16 +181,16 @@ module.exports = function auth( options ) {
 
     seneca.act({
       role:'web',
-      plugin:plugin,
+      plugin:'auth',
       config:config,
       use:{
         prefix:options.prefix,
-        pin:{role:plugin,cmd:'*'},
+        pin:{role:'auth',cmd:'*'},
         map: map
       }
     })
 
-    seneca.add({ role:plugin, trigger:'service-login-' + service }, trigger_service_login)
+    seneca.add({ role:'auth', trigger:'service-login-' + service }, trigger_service_login)
     configureServices(service, conf)
   }
 
@@ -226,7 +225,7 @@ module.exports = function auth( options ) {
 
   function cmd_register( args, done ) {
     var seneca = this
-    seneca.act({role: plugin, cmd: 'mapFields', action: 'register', data: args.data}, function(err, details){
+    seneca.act({role: 'auth', cmd: 'mapFields', action: 'register', data: args.data}, function(err, details){
       var req = args.req$
       var res = args.res$
 
@@ -261,7 +260,7 @@ module.exports = function auth( options ) {
   }
 
   function cmd_create_reset( args, done ) {
-    seneca.act({role: plugin, cmd: 'mapFields', action: 'create_reset', data: args.data}, function(err, userData){
+    seneca.act({role: 'auth', cmd: 'mapFields', action: 'create_reset', data: args.data}, function(err, userData){
       var nick  = userData.nick
       var email = userData.email
 
@@ -305,7 +304,7 @@ module.exports = function auth( options ) {
   }
 
   function cmd_update_user( args, done ) {
-    seneca.act({role: plugin, cmd: 'mapFields', action: 'update', data: args.data}, function(err, userData){
+    seneca.act({role: 'auth', cmd: 'mapFields', action: 'update', data: args.data}, function(err, userData){
       seneca.act(_.extend({role:'user',cmd:'update'}, userData), done)
     })
   }
@@ -326,7 +325,7 @@ module.exports = function auth( options ) {
       return done( null, {ok: true})
     }
 
-    seneca.act({ role:plugin, cmd:'clean', user:user, login:login}, function( err, out ){
+    seneca.act({ role:'auth', cmd:'clean', user:user, login:login}, function( err, out ){
       if( err ) {
         return done( err );
       }
@@ -522,7 +521,7 @@ module.exports = function auth( options ) {
           return next(null, {http$: {status: forceStatus || 301,redirect:forceRedirect || redirect.win}})
         }
         else {
-          seneca.act({role:plugin, cmd:'clean', user:req.seneca.user, login:req.seneca.login},function(err, out){
+          seneca.act({role:'auth', cmd:'clean', user:req.seneca.user, login:req.seneca.login},function(err, out){
             out.ok = true
             out.http$ = {status: forceStatus || 200, redirect:forceRedirect}
             return next(null, out)
@@ -558,7 +557,7 @@ module.exports = function auth( options ) {
 
     req.query = _.extend( {}, req.query || {}, req.body || {} )
 
-    seneca.act({role: plugin, cmd: 'mapFields', action: 'login', data: args.data}, function(err, userData){
+    seneca.act({role: 'auth', cmd: 'mapFields', action: 'login', data: args.data}, function(err, userData){
       req.query.username =
         req.query.username ?
           req.query.username :
@@ -664,17 +663,17 @@ module.exports = function auth( options ) {
 
   seneca.act({
     role:'web',
-    plugin:plugin,
+    plugin:'auth',
     config:config,
     use:{
       prefix:options.prefix,
-      pin:{role:plugin,cmd:'*'},
+      pin:{role:'auth',cmd:'*'},
       startware:buildservice(),
       map: map
     }
   })
 
   return {
-    name:plugin
+    name:'auth'
   }
 }

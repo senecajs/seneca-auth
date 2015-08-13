@@ -52,7 +52,7 @@ exports.init = function(options, cb){
 
 exports.log = function (res){
   // comment next line for logging of req/responses
-  //return
+  return
   console.log('\n****************************************')
   console.log('REQUEST URL : ', JSON.stringify(res.req.path))
   console.log('REQUEST     : ', JSON.stringify(res))
