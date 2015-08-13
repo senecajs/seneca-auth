@@ -28,7 +28,7 @@ module.exports = function auth( options ) {
   // using seneca.util.deepextend here, as there are sub properties
   options = seneca.util.deepextend( default_options, options )
 
-  function migrateOptions(){
+  function migrate_options(){
     if ( options.service ) {
       throw error('<service> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth')
     }
@@ -42,7 +42,7 @@ module.exports = function auth( options ) {
       seneca.log('<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth')
     }
   }
-  migrateOptions()
+  migrate_options()
   load_default_plugins()
 
   var m
