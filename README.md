@@ -33,7 +33,7 @@ Please see bellow the migration guide from older version to 0.4.x or above versi
 
 A large part of the internal functionality of seneca-auth is now implemented as external plugins. Some of them are loaded by default in order to offer the basic functionality, some must be loaded explicitly.
 
-### Plugins
+### Plugins and modules
 
 |        Functionality    | Loaded by default |                                 plugin                                                      |
 |-------------------------|-------------------|---------------------------------------------------------------------------------------------|
@@ -43,10 +43,10 @@ A large part of the internal functionality of seneca-auth is now implemented as 
 | Google  strategy auth   | No                | [seneca-google-auth](https://github.com/nherment/seneca-google-auth)                        |
 | LinkedIn strategy auth  | No                | [seneca-linkedin-auth](https://github.com/nherment/seneca-linkedin-auth)                    |
 | Twitter strategy auth   | No                | [seneca-twitter-auth](https://github.com/nherment/seneca-twitter-auth)                      |
-| Redirect                | Yes               | [seneca-auth-redirect](https://github.com/mirceaalexandru/seneca-auth-redirect)             |
-| Cookie token            | Yes               | [seneca-auth-token-cookie](https://github.com/mirceaalexandru/seneca-auth-token-cookie)     |
+| Redirect                | Yes               | [auth-redirect](https://github.com/mirceaalexandru/auth-redirect)                           |
+| Cookie token            | Yes               | [auth-token-cookie](https://github.com/mirceaalexandru/auth-token-cookie)                   |
 | Header token            | No                | [seneca-auth-token-header](https://github.com/mirceaalexandru/seneca-auth-token-header)     |
-| Url matcher             | Yes               | [seneca-auth-urlmatcher](https://github.com/mirceaalexandru/seneca-auth-urlmatcher)         |
+| Url matcher             | Yes               | [auth-urlmatcher](https://github.com/mirceaalexandru/auth-urlmatcher)                       |
 | Restrict Login          | No                | [seneca-auth-restrict-login](https://github.com/mirceaalexandru/seneca-auth-restrict-login) |
 
 Check the documentation of each plugin for details.
@@ -86,9 +86,9 @@ NOTE: Take a look at the <a href="http://github.com/rjrodger/seneca-examples">us
 
 ### Redirect
 
-The redirect functionality is now implemented as a separate plugin. Please see [seneca-auth-redirect](https://github.com/mirceaalexandru/seneca-auth-redirect) documentation for details.
+The redirect functionality is now implemented as a separate module. Please see [auth-redirect](https://github.com/mirceaalexandru/auth-redirect) documentation for details.
 
-The redirect plugin is loaded by default by seneca-auth.
+The redirect module is loaded by default by seneca-auth.
 
 ### login
 

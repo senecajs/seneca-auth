@@ -38,9 +38,9 @@
     "eraro": "^0.4.1",
     "lodash": "^3.10.0",
     "passport": "~0.2.0",
-    "seneca-auth-redirect": "~0.2.0",
-    "seneca-auth-token-cookie": "~0.0.1",
-    "seneca-auth-urlmatcher": "~0.0.1"
+    "auth-redirect": "~0.0.1",
+    "auth-token-cookie": "~0.0.1",
+    "auth-urlmatcher": "~0.0.1"
   },
   "repository": {
     "type": "git",

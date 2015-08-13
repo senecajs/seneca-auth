@@ -11,12 +11,9 @@ var default_options
   = require( './default-options.js' )
 
 // External seneca-auth modules
-var seneca_auth_token
-  = require( 'seneca-auth-token-cookie' )
-var seneca_auth_redirect
-  = require( 'seneca-auth-redirect' )
-var seneca_auth_urlmatcher
-  = require( 'seneca-auth-urlmatcher' )
+var auth_token    = require( 'auth-token-cookie' )
+var auth_redirect = require( 'auth-redirect' )
+var auth_urlmatcher = require( 'auth-urlmatcher' )
 
 var error         = require( 'eraro' )({
   package: 'auth'
@@ -79,9 +76,9 @@ module.exports = function auth( options ) {
 
 
   function load_default_plugins() {
-    seneca.use( seneca_auth_token )
-    seneca.use( seneca_auth_redirect, options.redirect || {} )
-    seneca.use( seneca_auth_urlmatcher )
+    auth_token( seneca )
+    auth_redirect( seneca, options.redirect || {} )
+    auth_urlmatcher ( seneca, {} )
   }
 
 
