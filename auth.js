@@ -168,8 +168,8 @@ module.exports = function auth( options ) {
   }
 
   function registerService( service, conf ) {
-    seneca.add( {role: 'auth', cmd: 'auth-' + service}, _login_service.bind( this, service ) )
-    seneca.add( {role: 'auth', cmd: 'auth-' + service + '-callback'}, _service_callback.bind( this, service ) )
+    seneca.add( {role: 'auth', cmd: 'auth-' + service}, _login_service( service ) )
+    seneca.add( {role: 'auth', cmd: 'auth-' + service + '-callback'}, _service_callback( service ) )
 
     var map = {}
     map['auth-' + service] = {GET: true, POST: true, alias: '/' + service, responder: _blank_responder}
@@ -639,22 +639,26 @@ module.exports = function auth( options ) {
     change_password: { POST:authcontext, data:true, alias: options.urlpath.change_password }
   }
 
-  var _login_service = function ( service, msg, respond ) {
-    var req = msg.req$
-    var res = msg.res$
-    pp_auth[service]( req, res, function ( err ) {
-    } )
-    respond()
+  var _login_service = function ( service ) {
+    return function( msg, respond ) {
+      var req = msg.req$
+      var res = msg.res$
+      pp_auth[service]( req, res, function ( err ) {
+      } )
+      respond()
+    }
   }
 
   var _blank_responder = function( req, res, err, out ) {
     // no need to do anything here as all response data is set by passport strategy
   }
 
-  var _service_callback = function ( service, msg, respond ) {
-    var req = msg.req$
-    var res = msg.res$
-    pp_auth[service]( req, res, respond )
+  var _service_callback = function ( service ) {
+    return function( msg, respond ) {
+      var req = msg.req$
+      var res = msg.res$
+      pp_auth[service]( req, res, respond )
+    }
   }
 
   seneca.act( {
