@@ -166,6 +166,6 @@ Change user password.
 ## Test
 
 ```sh
-lab
+npm test
 ```
 

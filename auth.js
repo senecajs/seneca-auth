@@ -1,10 +1,16 @@
 /* Copyright (c) 2012-2014 Richard Rodger, MIT License */
 "use strict";
 
+// External modules.
 var util          = require( 'util' )
 var _             = require( 'lodash' )
 var passport      = require( 'passport' )
 
+// Load configuration
+var default_options
+  = require( './default-options.js' )
+
+// External seneca-auth modules
 var seneca_auth_token
   = require( 'seneca-auth-token-cookie' )
 var seneca_auth_redirect
@@ -12,8 +18,6 @@ var seneca_auth_redirect
 var seneca_auth_urlmatcher
   = require( 'seneca-auth-urlmatcher' )
 
-var default_options
-  = require( './default-options.js' )
 var error         = require( 'eraro' )({
   package: 'auth'
 })
