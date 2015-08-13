@@ -43,7 +43,7 @@ module.exports = function auth( options ) {
     }
   }
   migrateOptions()
-  loadDefaultPlugins()
+  load_default_plugins()
 
   var m
   if( (m = options.prefix.match(/^(.*)\/+$/)) ) {
@@ -73,9 +73,9 @@ module.exports = function auth( options ) {
   seneca.add( {role: 'auth', cmd:'register_service' },
     cmd_register_service )
 
-  seneca.add( {role: 'auth', cmd: 'mapFields'},    aliasfields )
+  seneca.add( {role: 'auth', cmd: 'map_fields'},    alias_fields )
 
-  function loadDefaultPlugins(){
+  function load_default_plugins(){
     seneca.use(seneca_auth_token)
     seneca.use(seneca_auth_redirect, options.redirect || {})
     seneca.use(seneca_auth_urlmatcher)
@@ -127,11 +127,11 @@ module.exports = function auth( options ) {
       return done( null, {ok: false, why: 'no-user'} )
     }
 
-    var userData = args.user
+    var user_data = args.user
     var q = {}
-    if( userData.identifier ) {
-      q[ args.service + '_id' ] = userData.identifier
-      userData[args.service + '_id'] = userData.identifier
+    if( user_data.identifier ) {
+      q[ args.service + '_id' ] = user_data.identifier
+      user_data[args.service + '_id'] = user_data.identifier
     }
     else {
       return done( null, {ok: false, why: 'no-identifier'} )
@@ -144,7 +144,7 @@ module.exports = function auth( options ) {
 
       var user = data.user
       if( !user ) {
-        seneca.act( _.extend( {role:'user',cmd:'register'}, userData ), function( err, out ) {
+        seneca.act( _.extend( {role:'user',cmd:'register'}, user_data ), function( err, out ) {
           if( err ) {
             return done( null, {ok: false, why: err} )
           }
@@ -153,7 +153,7 @@ module.exports = function auth( options ) {
         })
       }
       else {
-        seneca.act( _.extend( {role:'user',cmd:'update'}, userData ), function( err, out ) {
+        seneca.act( _.extend( {role:'user',cmd:'update'}, user_data ), function( err, out ) {
           if( err ) {
             return done( null, {ok: false, why: err} )
           }
@@ -191,7 +191,7 @@ module.exports = function auth( options ) {
     } )
 
     seneca.add( { role:'auth', trigger:'service-login-' + service }, trigger_service_login )
-    configureServices( service, conf )
+    configure_services( service, conf )
   }
 
 //  function wrap_user( args, done ) {
@@ -212,7 +212,7 @@ module.exports = function auth( options ) {
 //    done()
 //  }
 //
-  function aliasfields( userData, cb ){
+  function alias_fields( userData, cb ){
     var data = userData.data
     data.nick =
       data.nick ?
@@ -225,7 +225,7 @@ module.exports = function auth( options ) {
 
   function cmd_register( args, done ) {
     var seneca = this
-    seneca.act( {role: 'auth', cmd: 'mapFields', action: 'register', data: args.data}, function( err, details ) {
+    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'register', data: args.data}, function( err, details ) {
       var req = args.req$
       var res = args.res$
 
@@ -260,7 +260,7 @@ module.exports = function auth( options ) {
   }
 
   function cmd_create_reset( args, done ) {
-    seneca.act( {role: 'auth', cmd: 'mapFields', action: 'create_reset', data: args.data}, function( err, userData ) {
+    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'create_reset', data: args.data}, function( err, userData ) {
       var nick  = userData.nick
       var email = userData.email
 
@@ -304,7 +304,7 @@ module.exports = function auth( options ) {
   }
 
   function cmd_update_user( args, done ) {
-    seneca.act({role: 'auth', cmd: 'mapFields', action: 'update', data: args.data}, function(err, userData){
+    seneca.act({role: 'auth', cmd: 'map_fields', action: 'update', data: args.data}, function(err, userData){
       seneca.act(_.extend({role:'user',cmd:'update'}, userData), done)
     })
   }
@@ -357,7 +357,7 @@ module.exports = function auth( options ) {
 
   var pp_auth = {}
 
-  function configureServices( service, conf ){
+  function configure_services( service, conf ){
     conf = conf || {}
     var func = null
 
@@ -557,7 +557,7 @@ module.exports = function auth( options ) {
 
     req.query = _.extend( {}, req.query || {}, req.body || {} )
 
-    seneca.act( {role: 'auth', cmd: 'mapFields', action: 'login', data: args.data}, function( err, userData ) {
+    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'login', data: args.data}, function( err, userData ) {
       req.query.username =
         req.query.username ?
           req.query.username :
