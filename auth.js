@@ -29,17 +29,13 @@ module.exports = function auth( options ) {
   options = seneca.util.deepextend( default_options, options )
 
   function migrate_options(){
-    if ( options.service ) {
-      throw error('<service> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth')
+    if ( options.service || options.sendemail || options.email ) {
+      throw error( "<" + (options.service ? 'service': (options.sendemail ? 'sendemail': 'email')) +
+        "> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth" )
     }
-    if ( options.sendemail ) {
-      throw error('<sendemail> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth')
-    }
-    if ( options.email ) {
-      throw error('<email> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth')
-    }
+
     if ( options.tokenkey ) {
-      seneca.log('<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth')
+      seneca.log( '<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth' )
     }
   }
   migrate_options()
