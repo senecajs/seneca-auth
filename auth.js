@@ -1,7 +1,6 @@
 /* Copyright (c) 2012-2014 Richard Rodger, MIT License */
 "use strict";
 
-
 var util          = require( 'util' )
 var _             = require( 'lodash' )
 var passport      = require( 'passport' )
@@ -38,6 +37,8 @@ module.exports = function auth( options ) {
       seneca.log( '<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth' )
     }
   }
+
+
   migrate_options()
   load_default_plugins()
 
@@ -45,6 +46,7 @@ module.exports = function auth( options ) {
   if( (m = options.prefix.match(/^(.*)\/+$/)) ) {
     options.prefix = m[1]
   }
+
 
   // define seneca actions
   // seneca.add({ role:'auth', wrap:'user' },      wrap_user)
@@ -71,11 +73,13 @@ module.exports = function auth( options ) {
 
   seneca.add( {role: 'auth', cmd: 'map_fields'},    alias_fields )
 
+
   function load_default_plugins() {
     seneca.use( seneca_auth_token )
     seneca.use( seneca_auth_redirect, options.redirect || {} )
     seneca.use( seneca_auth_urlmatcher )
   }
+
 
   function checkurl( match, done ) {
     seneca.act( {role:'auth', cmd: 'urlmatcher', spec: match}, function( err, checks ){
@@ -90,15 +94,18 @@ module.exports = function auth( options ) {
     } )
   }
 
+
   var exclude_url
   checkurl( options.exclude, function( err, response ) {
     exclude_url = response
   })
 
+
   var include_url
   checkurl( options.include, function( err, response ) {
     include_url = response
   })
+
 
   var checks
   if( !_.isFunction(options.restrict) ) {
@@ -107,13 +114,16 @@ module.exports = function auth( options ) {
     })
   }
 
+
   passport.serializeUser( function( user, done ) {
     done( null, user.user.id );
   })
 
+
   passport.deserializeUser( function( id, done ) {
     done( null )
   })
+
 
   // default service login trigger
   function trigger_service_login( msg, respond ) {
@@ -160,12 +170,14 @@ module.exports = function auth( options ) {
     })
   }
 
+
   function cmd_register_service( msg, respond ) {
     seneca.log.info( 'registering auth service [' + msg.service + ']' )
     passport.use( msg.service, msg.plugin )
     registerService( msg.service, msg.conf )
     respond()
   }
+
 
   function registerService( service, conf ) {
     seneca.add( {role: 'auth', cmd: 'auth-' + service}, _login_service( service ) )
@@ -208,6 +220,8 @@ module.exports = function auth( options ) {
 //    done()
 //  }
 //
+
+
   function alias_fields( userData, respond ){
     var data = userData.data
     data.nick =
@@ -218,6 +232,7 @@ module.exports = function auth( options ) {
           data.email
     return respond( null, data )
   }
+
 
   function cmd_register( msg, respond ) {
     var seneca = this
@@ -255,6 +270,7 @@ module.exports = function auth( options ) {
     })
   }
 
+
   function cmd_create_reset( msg, respond ) {
     seneca.act( {role: 'auth', cmd: 'map_fields', action: 'create_reset', data: msg.data}, function( err, userData ) {
       var nick  = userData.nick
@@ -267,6 +283,7 @@ module.exports = function auth( options ) {
       seneca.act( _.extend( {role:'user',cmd:'create_reset'}, args ), respond )
     })
   }
+
 
   function cmd_load_reset( msg, respond ) {
     var token = msg.data.token
@@ -299,17 +316,20 @@ module.exports = function auth( options ) {
     seneca.act( {role:'user',cmd:'confirm', code:code}, respond )
   }
 
+
   function cmd_update_user( msg, respond ) {
     seneca.act({role: 'auth', cmd: 'map_fields', action: 'update', data: msg.data}, function(err, userData){
       seneca.act(_.extend({role:'user',cmd:'update'}, userData), respond)
     })
   }
 
+
   function cmd_change_password( msg, respond ) {
     var user = msg.user
 
     seneca.act({role:'user',cmd:'change_password', user:user, password:msg.data.password, repeat:msg.data.repeat }, respond )
   }
+
 
   function cmd_user( msg, respond ) {
     var seneca = this
@@ -333,6 +353,7 @@ module.exports = function auth( options ) {
     })
   }
 
+
   function cmd_clean( msg, respond ) {
     var seneca = this
 
@@ -352,6 +373,7 @@ module.exports = function auth( options ) {
   }
 
   var pp_auth = {}
+
 
   function configure_services( service, conf ) {
     conf = conf || {}
@@ -381,6 +403,7 @@ module.exports = function auth( options ) {
       passport.authenticate( service, conf, func )( req, res, next )
     }
   }
+
 
   function buildservice() {
     var pp_init = passport.initialize()
@@ -474,6 +497,7 @@ module.exports = function auth( options ) {
     respond()
   }
 
+
   function authcontext( req, res, msg, act, respond ) {
     var user = req.seneca && req.seneca.user
     if( user ) {
@@ -527,7 +551,8 @@ module.exports = function auth( options ) {
     })
   }
 
-//LOGIN START
+
+  //LOGIN START
   function afterlogin( err, next, req, res ) {
     if( err ) {
       return do_respond( err, 'login', req, next )
@@ -546,6 +571,7 @@ module.exports = function auth( options ) {
       do_respond( ( err ? err.why : 'Unknown error' ), 'login', req, next )
     }
   }
+
 
   function cmd_login( msg, respond ) {
     var req = msg.req$
@@ -580,10 +606,10 @@ module.exports = function auth( options ) {
       })
     })
   }
-//LOGIN END
+  //LOGIN END
 
 
-//LOGOUT START
+  //LOGOUT START
   function cmd_logout( msg, respond ) {
     var req = msg.req$
     var res = msg.res$
@@ -621,7 +647,7 @@ module.exports = function auth( options ) {
     } )
   }
 
-//LOGOUT END
+  //LOGOUT END
 
 
   // seneca web endpoints map
@@ -639,7 +665,8 @@ module.exports = function auth( options ) {
     change_password: { POST:authcontext, data:true, alias: options.urlpath.change_password }
   }
 
-  var _login_service = function ( service ) {
+
+  function _login_service ( service ) {
     return function( msg, respond ) {
       var req = msg.req$
       var res = msg.res$
@@ -649,17 +676,20 @@ module.exports = function auth( options ) {
     }
   }
 
-  var _blank_responder = function( req, res, err, out ) {
+
+  function _blank_responder( req, res, err, out ) {
     // no need to do anything here as all response data is set by passport strategy
   }
 
-  var _service_callback = function ( service ) {
+
+  function _service_callback( service ) {
     return function( msg, respond ) {
       var req = msg.req$
       var res = msg.res$
       pp_auth[service]( req, res, respond )
     }
   }
+
 
   seneca.act( {
     role:'web',
@@ -672,6 +702,7 @@ module.exports = function auth( options ) {
       map: map
     }
   } )
+
 
   return {
     name:'auth'
