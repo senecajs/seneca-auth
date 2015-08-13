@@ -116,18 +116,18 @@ module.exports = function auth( options ) {
   })
 
   // default service login trigger
-  function trigger_service_login( args, done ) {
+  function trigger_service_login( msg, done ) {
     var seneca = this
 
-    if ( !args.user ){
+    if ( !msg.user ){
       return done( null, {ok: false, why: 'no-user'} )
     }
 
-    var user_data = args.user
+    var user_data = msg.user
     var q = {}
     if( user_data.identifier ) {
-      q[ args.service + '_id' ] = user_data.identifier
-      user_data[args.service + '_id'] = user_data.identifier
+      q[ msg.service + '_id' ] = user_data.identifier
+      user_data[msg.service + '_id'] = user_data.identifier
     }
     else {
       return done( null, {ok: false, why: 'no-identifier'} )
@@ -160,10 +160,10 @@ module.exports = function auth( options ) {
     })
   }
 
-  function cmd_register_service( args, cb ) {
-    seneca.log.info( 'registering auth service [' + args.service + ']' )
-    passport.use( args.service, args.plugin )
-    registerService( args.service, args.conf )
+  function cmd_register_service( msg, cb ) {
+    seneca.log.info( 'registering auth service [' + msg.service + ']' )
+    passport.use( msg.service, msg.plugin )
+    registerService( msg.service, msg.conf )
     cb()
   }
 
@@ -219,11 +219,11 @@ module.exports = function auth( options ) {
     return cb( null, data )
   }
 
-  function cmd_register( args, done ) {
+  function cmd_register( msg, done ) {
     var seneca = this
-    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'register', data: args.data}, function( err, details ) {
-      var req = args.req$
-      var res = args.res$
+    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'register', data: msg.data}, function( err, details ) {
+      var req = msg.req$
+      var res = msg.res$
 
       seneca.act( _.extend( {role:'user',cmd:'register'}, details ), function( err, out ) {
         if( err || !out.ok ) {
@@ -255,8 +255,8 @@ module.exports = function auth( options ) {
     })
   }
 
-  function cmd_create_reset( args, done ) {
-    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'create_reset', data: args.data}, function( err, userData ) {
+  function cmd_create_reset( msg, done ) {
+    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'create_reset', data: msg.data}, function( err, userData ) {
       var nick  = userData.nick
       var email = userData.email
 
@@ -268,8 +268,8 @@ module.exports = function auth( options ) {
     })
   }
 
-  function cmd_load_reset( args, done ) {
-    var token = args.data.token
+  function cmd_load_reset( msg, done ) {
+    var token = msg.data.token
 
     seneca.act( {role:'user',cmd:'load_reset', token:token}, function( err, out ) {
       if( err || !out.ok ) {
@@ -284,38 +284,38 @@ module.exports = function auth( options ) {
   }
 
 
-  function cmd_execute_reset( args, done ) {
-    var token    = args.data.token
-    var password = args.data.password
-    var repeat   = args.data.repeat
+  function cmd_execute_reset( msg, done ) {
+    var token    = msg.data.token
+    var password = msg.data.password
+    var repeat   = msg.data.repeat
 
     seneca.act( {role:'user',cmd:'execute_reset', token:token, password:password, repeat:repeat}, done )
   }
 
 
-  function cmd_confirm( args, done ) {
-    var code = args.data.code
+  function cmd_confirm( msg, done ) {
+    var code = msg.data.code
 
     seneca.act( {role:'user',cmd:'confirm', code:code}, done )
   }
 
-  function cmd_update_user( args, done ) {
-    seneca.act({role: 'auth', cmd: 'map_fields', action: 'update', data: args.data}, function(err, userData){
+  function cmd_update_user( msg, done ) {
+    seneca.act({role: 'auth', cmd: 'map_fields', action: 'update', data: msg.data}, function(err, userData){
       seneca.act(_.extend({role:'user',cmd:'update'}, userData), done)
     })
   }
 
-  function cmd_change_password( args, done ) {
-    var user = args.user
+  function cmd_change_password( msg, done ) {
+    var user = msg.user
 
-    seneca.act({role:'user',cmd:'change_password', user:user, password:args.data.password, repeat:args.data.repeat }, done )
+    seneca.act({role:'user',cmd:'change_password', user:user, password:msg.data.password, repeat:msg.data.repeat }, done )
   }
 
-  function cmd_user( args, done ) {
+  function cmd_user( msg, done ) {
     var seneca = this
 
-    var user  = args.user
-    var login = args.login
+    var user  = msg.user
+    var login = msg.login
 
     if ( !user || !login || !login.active ) {
       return done( null, {ok: true} )
@@ -333,11 +333,11 @@ module.exports = function auth( options ) {
     })
   }
 
-  function cmd_clean( args, done ) {
+  function cmd_clean( msg, done ) {
     var seneca = this
 
-    var user  = args.user  && seneca.util.clean( args.user.data$() )  || null
-    var login = args.login && seneca.util.clean( args.login.data$() ) || null
+    var user  = msg.user  && seneca.util.clean( msg.user.data$() )  || null
+    var login = msg.login && seneca.util.clean( msg.login.data$() ) || null
 
     if( user ) {
       delete user.pass
@@ -470,22 +470,22 @@ module.exports = function auth( options ) {
   }
 
 
-  function init( args, done ) {
+  function init( msg, done ) {
     done()
   }
 
-  function authcontext( req, res, args, act, respond ) {
+  function authcontext( req, res, msg, act, respond ) {
     var user = req.seneca && req.seneca.user
     if( user ) {
-      args.user = user
+      msg.user = user
     }
 
     var login = req.seneca && req.seneca.login
     if( login ) {
-      args.login = login
+      msg.login = login
     }
 
-    act( args, function( err, out ) {
+    act( msg, function( err, out ) {
       if( err ) {
         seneca.log.debug(err)
         out = out || {}
@@ -547,13 +547,13 @@ module.exports = function auth( options ) {
     }
   }
 
-  function cmd_login( args, next ) {
-    var req = args.req$
-    var res = args.res$
+  function cmd_login( msg, next ) {
+    var req = msg.req$
+    var res = msg.res$
 
     req.query = _.extend( {}, req.query || {}, req.body || {} )
 
-    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'login', data: args.data}, function( err, userData ) {
+    seneca.act( {role: 'auth', cmd: 'map_fields', action: 'login', data: msg.data}, function( err, userData ) {
       req.query.username =
         req.query.username ?
           req.query.username :
@@ -584,9 +584,9 @@ module.exports = function auth( options ) {
 
 
 //LOGOUT START
-  function cmd_logout( args, next ) {
-    var req = args.req$
-    var res = args.res$
+  function cmd_logout( msg, next ) {
+    var req = msg.req$
+    var res = msg.res$
 
     // get token from request
     req.seneca.act( {role: 'auth', get: 'token', tokenkey: options.tokenkey}, function( err, clienttoken ) {
@@ -639,9 +639,9 @@ module.exports = function auth( options ) {
     change_password: { POST:authcontext, data:true, alias: options.urlpath.change_password }
   }
 
-  var _login_service = function ( service, args, next ) {
-    var req = args.req$
-    var res = args.res$
+  var _login_service = function ( service, msg, next ) {
+    var req = msg.req$
+    var res = msg.res$
     pp_auth[service]( req, res, function ( err ) {
     } )
     next()
@@ -651,9 +651,9 @@ module.exports = function auth( options ) {
     // no need to do anything here as all response data is set by passport strategy
   }
 
-  var _service_callback = function ( service, args, next ) {
-    var req = args.req$
-    var res = args.res$
+  var _service_callback = function ( service, msg, next ) {
+    var req = msg.req$
+    var res = msg.res$
     pp_auth[service]( req, res, next )
   }
 
