@@ -72,7 +72,7 @@ module.exports = function auth( options ) {
   seneca.add( {role: 'auth', cmd:'register_service' },
     cmd_register_service )
 
-  seneca.add( {role: 'auth', cmd: 'map_fields'},    alias_fields )
+  seneca.add( {role: 'auth', hook: 'map_fields'},  alias_fields )
 
 
   function load_default_plugins() {
@@ -238,7 +238,7 @@ module.exports = function auth( options ) {
 
   function cmd_register( msg, respond ) {
     var seneca = this
-    seneca.act( "role: 'auth', cmd: 'map_fields'", {action: 'register', data: msg.data}, function( err, details ) {
+    seneca.act( "role: 'auth', hook: 'map_fields'", {action: 'register', data: msg.data}, function( err, details ) {
       var req = msg.req$
       var res = msg.res$
 
@@ -274,7 +274,7 @@ module.exports = function auth( options ) {
 
 
   function cmd_create_reset( msg, respond ) {
-    seneca.act( "role: 'auth', cmd: 'map_fields'", {action: 'create_reset', data: msg.data}, function( err, userData ) {
+    seneca.act( "role: 'auth', hook: 'map_fields'", {action: 'create_reset', data: msg.data}, function( err, userData ) {
       var nick  = userData.nick
       var email = userData.email
 
@@ -321,7 +321,7 @@ module.exports = function auth( options ) {
 
 
   function cmd_update_user( msg, respond ) {
-    seneca.act( "role: 'auth', cmd: 'map_fields'", {action: 'update', data: msg.data}, function(err, userData ) {
+    seneca.act( "role: 'auth', hook: 'map_fields'", {action: 'update', data: msg.data}, function(err, userData ) {
       seneca.act( "role:'user',cmd:'update'", userData, respond )
     })
   }
@@ -582,7 +582,7 @@ module.exports = function auth( options ) {
 
     req.query = _.extend( {}, req.query || {}, req.body || {} )
 
-    seneca.act( "role: 'auth', cmd: 'map_fields'", {action: 'login', data: msg.data}, function( err, userData ) {
+    seneca.act( "role: 'auth', hook: 'map_fields'", {action: 'login', data: msg.data}, function( err, userData ) {
       req.query.username =
         req.query.username ?
           req.query.username :
