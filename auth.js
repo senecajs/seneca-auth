@@ -76,9 +76,9 @@ module.exports = function auth( options ) {
 
 
   function load_default_plugins() {
-    auth_token( seneca )
-    auth_redirect( seneca, options.redirect || {} )
-    auth_urlmatcher ( seneca, {} )
+    seneca.use( auth_token )
+    seneca.use( auth_redirect, options.redirect || {} )
+    seneca.use( auth_urlmatcher )
   }
 
 
@@ -330,7 +330,7 @@ module.exports = function auth( options ) {
   function cmd_change_password( msg, respond ) {
     var user = msg.user
 
-    seneca.act( "role:'user',cmd:'change_password'", {user:user, password:msg.data.password, repeat:msg.data.repeat }, respond )
+    seneca.act( "role:'user',cmd:'change_password'", { user:user, password:msg.data.password, repeat:msg.data.repeat }, respond )
   }
 
 
