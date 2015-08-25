@@ -297,6 +297,7 @@ module.exports = function auth( options ) {
 
       return respond( null, {
         ok: out.ok,
+        active: out.reset.active,
         nick: out.user.nick
       } )
     } )
