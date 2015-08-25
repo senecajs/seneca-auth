@@ -14,7 +14,6 @@ var default_options
 var auth_token    = require( 'auth-token-cookie' )
 var auth_redirect = require( 'auth-redirect' )
 var auth_urlmatcher = require( 'auth-urlmatcher' )
-var auth_token_plain = require( 'auth-token-plain' )
 
 var error         = require( 'eraro' )({
   package: 'auth'
@@ -80,7 +79,6 @@ module.exports = function auth( options ) {
     seneca.use( auth_token )
     seneca.use( auth_redirect, options.redirect || {} )
     seneca.use( auth_urlmatcher )
-    seneca.use( auth_token_plain )
   }
 
 
@@ -284,23 +282,7 @@ module.exports = function auth( options ) {
       if( void 0 != nick )  args.nick  = nick;
       if( void 0 != email ) args.email = email;
 
-      seneca.act( "role:'user',cmd:'create_reset'", args , function( err, out ) {
-        if ( err ) {
-          return respond ( err, out )
-        }
-
-        var token = out.reset.id
-        // first encrypt the token
-        seneca.act( "role: 'auth', encrypt: 'token'", {token: token}, function( err, tokenData ) {
-          if ( err ) {
-            return respond ( err, out )
-          }
-
-          out.reset.id = tokenData.token
-          respond( err, out )
-
-        })
-      })
+      seneca.act( "role:'user',cmd:'create_reset'", args , respond )
     })
   }
 
@@ -308,23 +290,15 @@ module.exports = function auth( options ) {
   function cmd_load_reset( msg, respond ) {
     var token = msg.data.token
 
-    // first decrypt the token
-    seneca.act( "role: 'auth', decrypt: 'token'", {token: token}, function( err, tokenData ) {
-      if( err ) {
-        return respond( err );
+    seneca.act( "role:'user',cmd:'load_reset'", {token:token}, function( err, out ) {
+      if( err || !out.ok ) {
+        return respond( err, out );
       }
-      token = tokenData.token
 
-      seneca.act( "role:'user',cmd:'load_reset'", {token:token}, function( err, out ) {
-        if( err || !out.ok ) {
-          return respond( err, out );
-        }
-
-        return respond( null, {
-          ok: out.ok,
-          active: out.reset.active,
-          nick: out.user.nick
-        } )
+      return respond( null, {
+        ok: out.ok,
+        active: out.reset.active,
+        nick: out.user.nick
       } )
     } )
   }
@@ -335,15 +309,7 @@ module.exports = function auth( options ) {
     var password = msg.data.password
     var repeat   = msg.data.repeat
 
-    // first decrypt the token
-    seneca.act( "role: 'auth', decrypt: 'token'", {token: token}, function( err, tokenData ) {
-      if( err ) {
-        return respond( err );
-      }
-      token = tokenData.token
-
-      seneca.act( "role:'user',cmd:'execute_reset'", {token:token, password:password, repeat:repeat}, respond )
-    })
+    seneca.act( "role:'user',cmd:'execute_reset'", {token:token, password:password, repeat:repeat}, respond )
   }
 
 
