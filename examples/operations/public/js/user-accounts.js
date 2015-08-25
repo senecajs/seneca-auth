@@ -58,6 +58,42 @@ $( function () {
     return false
   } )
 
+  $( '#execute_reset' ).click( function () {
+    var data = {
+      token: $( '#reset_token' ).val(),
+      password: $( '#new_password' ).val()
+    }
+    $.post( '/auth/execute_reset', data, function ( instance ) {
+      cleanMessages()
+      if ( !instance.ok ) {
+        $( '#errorMsg' ).text( 'Error: ' + instance.why )
+        return
+      }
+      else {
+        $( '#msg' ).text( 'Password updated successfully.' )
+      }
+      showLogin()
+    } )
+    return false
+  } )
+
+  $( '#load_reset' ).click( function () {
+    var data = {
+      token: $( '#reset_token' ).val()
+    }
+    $.post( '/auth/load_reset', data, function ( instance ) {
+      cleanMessages()
+      if ( !instance.ok ) {
+        $( '#errorMsg' ).text( 'Error: ' + instance.why )
+        return
+      }
+      else {
+        $( '#msg' ).text( 'Reset token ' + ( instance.active ? 'active' : 'not active' ) + '. User: ' + instance.nick )
+      }
+    } )
+    return false
+  } )
+
   $( '#logout' ).click( function () {
     cleanMessages()
     $.post( '/auth/logout', {}, function ( instance ) {
@@ -67,11 +103,29 @@ $( function () {
     } )
   } )
 
+  $( '#create_reset' ).click( function () {
+    cleanMessages()
+    $.post( '/auth/create_reset', {nick: $( '#login_username' ).val() }, function ( instance ) {
+      cleanMessages()
+      if ( !instance ) {
+        $( '#errorMsg' ).text( 'Reset password token error. Reason: Unknown reason' )
+        return
+      }
+      if ( instance.ok ) {
+        $( '#msg' ).text( 'Reset password token created successfully. The token should be sent on owner e-mail. For simplicity we are displaying the token here: ' + instance.reset.id )
+        showReset()
+      }
+      else {
+        $( '#errorMsg' ).text( 'Reset password token error. Reason: ' + ( instance.why || 'Unknown reason' ) )
+      }
+    } )
+  } )
+
   $.get( '/auth/user', showAccount )
 
   $( '#show_login' ).click( showLogin )
-
   $( '#show_register' ).click( showRegister )
+  $( '#show_account' ).click( showAccount )
 
   function cleanMessages() {
     $( '#errorMsg' ).text( '' )
@@ -79,8 +133,16 @@ $( function () {
   }
 
   function showRegister() {
-    $( '#content_login' ).slideUp();
     $( '#content_register' ).slideDown();
+    $( '#content_login' ).slideUp();
+    $( '#content_reset' ).slideUp();
+    $( '#content_account' ).slideUp();
+  }
+
+  function showReset() {
+    $( '#content_reset' ).slideDown();
+    $( '#content_login' ).slideUp();
+    $( '#content_register' ).slideUp();
     $( '#content_account' ).slideUp();
   }
 
@@ -90,17 +152,19 @@ $( function () {
       $( '#user_name' ).val( instance.user.name )
       $( '#user_email' ).val( instance.user.email )
 
+      $( '#content_account' ).slideDown()
       $( '#content_login' ).slideUp()
       $( '#content_register' ).slideUp()
-      $( '#content_account' ).slideDown()
+      $( '#content_reset' ).slideUp();
     }
     else {
       showLogin()
     }
   }
 
-  function showLogin( data ) {
+  function showLogin() {
     $( '#content_login' ).slideDown()
+    $( '#content_reset' ).slideUp();
     $( '#content_register' ).slideUp()
     $( '#content_account' ).slideUp()
   }
