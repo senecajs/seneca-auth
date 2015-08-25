@@ -18,7 +18,7 @@ suite('register-login-logout header token suite tests ', function() {
   before({}, function(done){
     util.init({}, function(err, agentData, si){
       agent = agentData
-      si.use( 'seneca-auth-token-header', {tokenkey: 'x-auth-token'} )
+      si.use( 'auth-token-header', {tokenkey: 'x-auth-token'} )
       done()
     })
   })
