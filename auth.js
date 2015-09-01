@@ -601,7 +601,7 @@ module.exports = function auth( options ) {
               (
                 userData.username ?
                   userData.username :
-                  userData.nick
+                  userData.email
                 )
             )
 
@@ -628,9 +628,17 @@ module.exports = function auth( options ) {
 
     // get token from request
     req.seneca.act( "role: 'auth', get: 'token'", {tokenkey: options.tokenkey}, function( err, clienttoken ) {
+      if ( err ) {
+        return do_respond( err, 'logout', req, respond )
+      }
+
       clienttoken = clienttoken.token
       // delete token
-      req.seneca.act( "role: 'auth', set: 'token'", {tokenkey: options.tokenkey}, function() {
+      req.seneca.act( "role: 'auth', set: 'token'", {tokenkey: options.tokenkey}, function( err ) {
+        if ( err ) {
+          return do_respond( err, 'logout', req, respond )
+        }
+
         var servertoken
         if( req.seneca ) {
           servertoken = req.seneca.login && req.seneca.login.token
