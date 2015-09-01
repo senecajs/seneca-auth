@@ -260,7 +260,9 @@ module.exports = function auth( options ) {
             req.seneca.user  = out.user
             req.seneca.login = out.login
 
-            req.seneca.act( "role: 'auth', set: 'token'", {tokenkey: options.tokenkey, token: req.seneca.login.id}, function( err ) {
+            req.seneca.act( "role: 'auth', set: 'token'", {
+              tokenkey: options.tokenkey, token: ( req.seneca.login.token || req.seneca.login.id )
+            }, function( err ) {
               return do_respond( err, 'register', req, respond )
             })
           }
@@ -575,7 +577,9 @@ module.exports = function auth( options ) {
       req.seneca.user = req.user.user
       req.seneca.login = req.user.login
 
-      req.seneca.act( "role: 'auth', set: 'token'", {tokenkey: options.tokenkey, token: req.seneca.login.id}, function( err ) {
+      req.seneca.act( "role: 'auth', set: 'token'", {tokenkey: options.tokenkey, token: (
+        req.seneca.login.id || req.seneca.login.id)
+      }, function( err ) {
         return do_respond( err, 'login', req, next )
       } )
     }
