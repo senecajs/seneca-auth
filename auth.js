@@ -575,8 +575,8 @@ module.exports = function auth( options ) {
       req.seneca.user = req.user.user
       req.seneca.login = req.user.login
 
-      req.seneca.act( "role: 'auth', set: 'token'", {tokenkey: options.tokenkey, token: req.seneca.login.id}, function() {
-        return do_respond( null, 'login', req, next )
+      req.seneca.act( "role: 'auth', set: 'token'", {tokenkey: options.tokenkey, token: req.seneca.login.id}, function( err ) {
+        return do_respond( err, 'login', req, next )
       } )
     }
     else {
