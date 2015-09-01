@@ -17,7 +17,7 @@ var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', ac
 
 suite( 'restricted suite tests ', function() {
   before( {}, function( done ) {
-    util.init( {}, function( err, agentData ) {
+    util.init( {restrict: restrict_fct}, function( err, agentData ) {
       agent = agentData
       done()
     } )
@@ -35,38 +35,23 @@ suite( 'restricted suite tests ', function() {
       } )
   } )
 
-  test( 'auth/register user', function( done ) {
+  test( 'api/service test without user login', function( done ) {
     agent
-      .post( '/auth/register' )
-      .send( user )
-      .expect( 200 )
-      .end( function( err, res ) {
-        util.log( res )
-        assert( res.body.ok, 'Not OK' )
-        assert( res.body.user, 'No user in response' )
-        assert( res.body.login, 'No login in response' )
-        cookie = util.checkCookie( res )
-        done( err )
-      } )
-  } )
-
-  test( 'verify cookie exists after register', function( done ) {
-    assert( cookie )
-    done()
-  } )
-
-  test( 'api/service test with user login', function( done ) {
-    agent
-      .get( '/api/service' )
-      .set( 'Cookie', ['seneca-login=' + cookie] )
+      .get( '/api/service2' )
       .expect( 200 )
       .end( function( err, res ) {
         util.log( res )
         assert( res.body.ok, 'OK response' )
-        assert( res.body.test, 'Test OK response' )
         done( err )
       } )
   } )
+
+  function restrict_fct( req, res, done ) {
+    if( '/api/service' === req.url ) {
+      return done( { ok: false, why: 'restricted', http$: {status: 401} } )
+    }
+    done()
+  }
 } )
 
 
