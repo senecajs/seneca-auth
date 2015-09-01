@@ -239,6 +239,10 @@ module.exports = function auth( options ) {
   function cmd_register( msg, respond ) {
     var seneca = this
     seneca.act( "role: 'auth', hook: 'map_fields'", {action: 'register', data: msg.data}, function( err, details ) {
+      if ( err ) {
+        return do_respond( err, req, respond )
+      }
+
       var req = msg.req$
       var res = msg.res$
 
