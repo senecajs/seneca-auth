@@ -243,7 +243,7 @@ module.exports = function auth( options ) {
       var res = msg.res$
 
       if ( err ) {
-        return do_respond( err, req, respond )
+        return do_respond( err, 'register', req, respond )
       }
 
       seneca.act( "role:'user',cmd:'register'", details , function( err, out ) {
@@ -326,6 +326,11 @@ module.exports = function auth( options ) {
 
   function cmd_update_user( msg, respond ) {
     seneca.act( "role: 'auth', hook: 'map_fields'", {action: 'update', data: msg.data}, function(err, userData ) {
+      var req = msg.req$
+
+      if ( err ) {
+        return do_respond( err, 'update', req, respond )
+      }
       seneca.act( "role:'user',cmd:'update'", userData, respond )
     })
   }
