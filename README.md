@@ -3,6 +3,8 @@ seneca-auth - a [Seneca](http://senecajs.org) plugin
 
 ## Seneca Auth Plugin
 
+Lead Maintainers: [Mircea Alexandru](https://github.com/mirceaalexandru) and [Mihai Dima](https://github.com/mihaidma)
+
 A user authentication plugin, using [PassportJS](http://passportjs.org).
 
 [![Build Status](https://travis-ci.org/senecajs/seneca-auth.png?branch=master)](https://travis-ci.org/senecajs/seneca-auth)
