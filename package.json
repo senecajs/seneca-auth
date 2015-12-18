@@ -46,7 +46,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rjrodger/seneca-auth.git"
+    "url": "https://github.com/senecajs/seneca-auth.git"
   },
   "devDependencies": {
     "assert": "^1.3.0",
