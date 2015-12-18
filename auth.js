@@ -715,6 +715,7 @@ module.exports = function auth( options ) {
   }
 
 
+  seneca.ready()
   seneca.act(
     "role:'web'",
     {
@@ -726,7 +727,7 @@ module.exports = function auth( options ) {
       startware:buildservice(),
       map: map
     }
-  } )
+  })
 
 
   return {
