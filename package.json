@@ -1,7 +1,7 @@
 {
   "name": "seneca-auth",
   "description": "User authentication plugin for the seneca module.",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "keywords": [
     "seneca",
     "auth",
@@ -10,42 +10,58 @@
     "authentication",
     "web"
   ],
-  "author": "Richard Rodger",
+  "author": {
+    "name": "Richard Rodger",
+    "email": "richard@ricebridge.com",
+    "url": "http://richardrodger.com/"
+  },
+  "contributors": [
+    {
+      "name": "Mircea Alexandru",
+      "email": "mircea.alexandru@gmail.com",
+      "url": "https://github.com/mirceaalexandru"
+    }
+  ],
   "license": "MIT",
-  "main": "lib/auth.js",
+  "main": "auth.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/*.test.js"
+    "pretest": "npm install",
+    "test": "lab -v -L -c -P test"
   },
   "files": [
     "LICENSE.txt",
     "README.md",
-    "lib"
+    "auth.js",
+    "default-options.js"
   ],
   "dependencies": {
-    "async": "~0.9.0",
     "connect": "~3.0.1",
-    "cookies": "~0.4.1",
-    "dispatch": "~1.0.0",
-    "gex": "~0.1.4",
+    "eraro": "^0.4.1",
+    "lodash": "^3.10.0",
     "passport": "~0.2.0",
-    "passport-facebook": "~1.0.3",
-    "passport-github": "~0.1.5",
-    "passport-google-oauth": "~0.1.5",
-    "passport-linkedin": "~0.1.3",
-    "passport-local": "~1.0.0",
-    "passport-twitter": "~1.0.2",
-    "serve-static": "~1.3.0",
-    "string": "~1.9.0",
-    "underscore": "~1.6.0"
+    "auth-redirect": "~0.0.1",
+    "auth-token-cookie": "~0.0.1",
+    "auth-urlmatcher": "~0.0.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rjrodger/seneca-auth.git"
   },
   "devDependencies": {
+    "async": "~0.9.0",
+    "assert": "^1.3.0",
+    "body-parser": "^1.13.2",
+    "cookie-parser": "^1.3.5",
+    "express": "^4.13.1",
+    "cookies": "~0.4.1",
+    "express-session": "^1.11.3",
+    "lab": "^5.13.0",
+    "seneca": "plugin",
+    "auth-restrict-login": "~0.0.1",
+    "auth-token-header": "~0.0.1",
+    "seneca-local-auth": "~0.0.2",
     "seneca-user": "~0.2.10",
-    "seneca": "~0.5.19",
-    "mocha": "~1.20.1"
+    "supertest": "~1.0.1"
   },
   "peerDependencies": {
     "seneca": "*",
