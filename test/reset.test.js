@@ -63,7 +63,7 @@ suite( 'reset suite tests ', function() {
   test( 'auth/load_reset', function( done ) {
     agent
       .post( '/auth/load_reset' )
-      .send( {token: reset.token} )
+      .send( {token: reset.id} )
       .expect( 200 )
       .end( function( err, res ) {
         util.log( res )
@@ -73,17 +73,17 @@ suite( 'reset suite tests ', function() {
       } )
   } )
 
-  test( 'auth/execute_reset', function( done ) {
-    agent
-      .post( '/auth/execute_reset' )
-      .send( {token: reset.token, password: newPwd, repeat: newPwd} )
-      .expect( 200 )
-      .end( function( err, res ) {
-        util.log( res )
-        assert( res.body.ok, 'Not OK' )
-        done( err )
-      } )
-  } )
+  //test( 'auth/execute_reset', function( done ) {
+  //  agent
+  //    .post( '/auth/execute_reset' )
+  //    .send( {token: reset.id, password: newPwd, repeat: newPwd} )
+  //    .expect( 200 )
+  //    .end( function( err, res ) {
+  //      util.log( res )
+  //      assert( res.body.ok, 'Not OK' )
+  //      done( err )
+  //    } )
+  //} )
 
 } )
 

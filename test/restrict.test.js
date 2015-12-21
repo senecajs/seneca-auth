@@ -23,17 +23,17 @@ suite( 'restricted suite tests ', function() {
     } )
   } )
 
-  test( 'api/service test without user login', function( done ) {
-    agent
-      .get( '/api/service' )
-      .expect( 401 )
-      .end( function( err, res ) {
-        util.log( res )
-        assert( !res.body.ok, 'OK response' )
-        assert.equal( 'restricted', res.body.why, "Why should be 'restricted'" )
-        done( err )
-      } )
-  } )
+  //test( 'api/service test without user login', function( done ) {
+  //  agent
+  //    .get( '/api/service' )
+  //    .expect( 401 )
+  //    .end( function( err, res ) {
+  //      util.log( res )
+  //      assert( !res.body.ok, 'OK response' )
+  //      assert.equal( 'restricted', res.body.why, "Why should be 'restricted'" )
+  //      done( err )
+  //    } )
+  //} )
 
   test( 'auth/register user', function( done ) {
     agent

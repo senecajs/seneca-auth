@@ -25,6 +25,7 @@
   "license": "MIT",
   "main": "auth.js",
   "scripts": {
+    "pretest": "npm install",
     "test": "lab -v -L -c -P test"
   },
   "files": [
@@ -55,7 +56,7 @@
     "cookies": "~0.4.1",
     "express-session": "^1.11.3",
     "lab": "^5.13.0",
-    "seneca": "~0.6.3",
+    "seneca": "plugin",
     "auth-restrict-login": "~0.0.1",
     "auth-token-header": "~0.0.1",
     "seneca-local-auth": "~0.0.2",
