@@ -1,25 +1,25 @@
-seneca-auth - a [Seneca](http://senecajs.org) plugin
-======================================================
+![Seneca](http://senecajs.org/files/assets/seneca-logo.png)
+> A [Seneca.js](http://senecajs.org) Auth Plugin
 
-## Seneca Auth Plugin
+# seneca-auth
 
 A user authentication plugin, using [PassportJS](http://passportjs.org).
 
-[![Build Status](https://travis-ci.org/rjrodger/seneca-auth.png?branch=master)](https://travis-ci.org/rjrodger/seneca-auth)
+[![npm version][npm-badge]][npm-url]
+[![Build Status][travis-badge]][travis-url]
+[![Coverage Status][coveralls-badge]][coveralls-status]
+[![Dependency Status][david-badge]][david-url]
+[![Gitter chat][gitter-badge]][gitter-url]
 
-[![NPM](https://nodei.co/npm/seneca-auth.png)](https://nodei.co/npm/seneca-auth/)
-[![NPM](https://nodei.co/npm-dl/seneca-auth.png)](https://nodei.co/npm-dl/seneca-auth/)
+A user authentication plugin, using [PassportJS](http://passportjs.org).
+
+Lead Maintainers: [Mircea Alexandru](https://github.com/mirceaalexandru) and [Mihai Dima](https://github.com/mihaidma)
 
 For a gentle introduction to Seneca itself, see the
 [senecajs.org](http://senecajs.org) site.
 
 If you're using this plugin module, feel free to contact me on twitter if you
 have any questions! :) [@rjrodger](http://twitter.com/rjrodger)
-
-Current Version: 0.4.0
-
-Tested on: Seneca 0.5.19, Node 0.10.29
-
 
 ### Install
 
@@ -169,3 +169,13 @@ Change user password.
 npm test
 ```
 
+[npm-badge]: https://badge.fury.io/js/seneca-auth.svg
+[npm-url]: https://badge.fury.io/js/seneca-auth
+[travis-badge]: https://api.travis-ci.org/senecajs/seneca-auth.svg
+[travis-url]: https://travis-ci.org/senecajs/seneca-auth
+[coveralls-badge]:https://coveralls.io/repos/senecajs/seneca-auth/badge.svg?branch=master&service=github
+[coveralls-url]: https://coveralls.io/github/senecajs/seneca-auth?branch=master
+[david-badge]: https://david-dm.org/senecajs/seneca-auth.svg
+[david-url]: https://david-dm.org/senecajs/seneca-auth
+[gitter-badge]: https://badges.gitter.im/senecajs/seneca.png
+[gitter-url]: https://gitter.im/senecajs/seneca
