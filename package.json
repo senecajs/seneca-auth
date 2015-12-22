@@ -25,9 +25,9 @@
   "license": "MIT",
   "main": "auth.js",
   "scripts": {
-    "pretest": "npm install",
-    "test": "lab -v -L -c -P test",
-    "coverage": "lab -s -P test -r lcov | coveralls"
+    "test": "lab test/*.test.js -r console -v -L -m 3000 -t 60",
+    "lint": "lab -dL",
+    "annotate": "docco auth.js -o doc"
   },
   "files": [
     "LICENSE.txt",
@@ -59,13 +59,16 @@
     "coveralls": "^2.11.6",
     "express": "^4.13.1",
     "express-session": "^1.11.3",
-    "lab": "^5.13.0",
+    "lab": "6.2.0",
+    "docco": "0.7.0",
     "seneca": "plugin",
     "auth-restrict-login": "~0.0.1",
     "auth-token-header": "~0.0.1",
     "seneca-local-auth": "~0.0.2",
     "seneca-user": "~0.2.10",
-    "supertest": "~1.0.1"
+    "supertest": "~1.0.1",
+    "eslint-config-seneca": "1.x.x",
+    "eslint-plugin-standard": "1.x.x"
   },
   "peerDependencies": {
     "seneca": "*",

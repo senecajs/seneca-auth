@@ -1,79 +1,78 @@
-"use strict";
+'use strict'
 
-var assert = require( 'assert' )
+var assert = require('assert')
 var agent
 
-var Lab = require( 'lab' )
+var Lab = require('lab')
 var lab = exports.lab = Lab.script()
-var suite = lab.suite;
-var test = lab.test;
-var before = lab.before;
-var after = lab.after;
+var suite = lab.suite
+var test = lab.test
+var before = lab.before
 
-var util = require( './util.js' )
+var util = require('./util.js')
 
 var cookie
 var reset
 var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
-var newPwd = 'uuu1'
+// var newPwd = 'uuu1'
 
-suite( 'reset suite tests ', function() {
-  before( {}, function( done ) {
-    util.init( {}, function( err, agentData ) {
+suite('reset suite tests ', function () {
+  before({}, function (done) {
+    util.init({}, function (err, agentData) {
       agent = agentData
       done()
-    } )
-  } )
+    })
+  })
 
-  test( 'auth/register test', function( done ) {
+  test('auth/register test', function (done) {
     agent
-      .post( '/auth/register' )
-      .send( user )
-      .expect( 200 )
-      .end( function( err, res ) {
-        util.log( res )
-        assert( res.body.ok, 'Not OK' )
-        assert( res.body.user, 'No user in response' )
-        assert( res.body.login, 'No login in response' )
-        cookie = util.checkCookie( res )
-        done( err )
-      } )
-  } )
+      .post('/auth/register')
+      .send(user)
+      .expect(200)
+      .end(function (err, res) {
+        util.log(res)
+        assert(res.body.ok, 'Not OK')
+        assert(res.body.user, 'No user in response')
+        assert(res.body.login, 'No login in response')
+        cookie = util.checkCookie(res)
+        done(err)
+      })
+  })
 
-  test( 'verify cookie exists after register', function( done ) {
-    assert( cookie )
+  test('verify cookie exists after register', function (done) {
+    assert(cookie)
     done()
-  } )
+  })
 
-  test( 'auth/create_reset', function( done ) {
+  test('auth/create_reset', function (done) {
     agent
-      .post( '/auth/create_reset' )
-      .send( {nick: user.nick} )
-      .expect( 200 )
-      .end( function( err, res ) {
-        util.log( res )
-        assert( res.body.ok, 'Not OK' )
-        assert( res.body.user, 'No user in response' )
-        assert( res.body.reset, 'No reset in response' )
+      .post('/auth/create_reset')
+      .send({nick: user.nick})
+      .expect(200)
+      .end(function (err, res) {
+        util.log(res)
+        assert(res.body.ok, 'Not OK')
+        assert(res.body.user, 'No user in response')
+        assert(res.body.reset, 'No reset in response')
         reset = res.body.reset
-        done( err )
-      } )
-  } )
+        done(err)
+      })
+  })
 
-  test( 'auth/load_reset', function( done ) {
+  test('auth/load_reset', function (done) {
     agent
-      .post( '/auth/load_reset' )
-      .send( {token: reset.id} )
-      .expect( 200 )
-      .end( function( err, res ) {
-        util.log( res )
-        assert( res.body.ok, 'Not OK' )
-        assert( res.body.nick, 'No nick in response' )
-        done( err )
-      } )
-  } )
+      .post('/auth/load_reset')
+      .send({token: reset.id})
+      .expect(200)
+      .end(function (err, res) {
+        util.log(res)
+        assert(res.body.ok, 'Not OK')
+        assert(res.body.nick, 'No nick in response')
+        done(err)
+      })
+  })
 
-  //test( 'auth/execute_reset', function( done ) {
+  // test( 'auth/execute_reset', function( done ) {
   //  agent
   //    .post( '/auth/execute_reset' )
   //    .send( {token: reset.id, password: newPwd, repeat: newPwd} )
@@ -83,9 +82,5 @@ suite( 'reset suite tests ', function() {
   //      assert( res.body.ok, 'Not OK' )
   //      done( err )
   //    } )
-  //} )
-
-} )
-
-
-
+  // } )
+})
