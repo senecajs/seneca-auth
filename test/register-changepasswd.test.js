@@ -16,7 +16,9 @@ var cookie
 suite('register-login-logout suite tests ', function () {
   before({}, function (done) {
     util.init({}, function (err, agentData) {
+      assert.ok(!err)
       agent = agentData
+
       done()
     })
   })

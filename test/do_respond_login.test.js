@@ -11,8 +11,6 @@ var before = lab.before
 
 var util = require('./util.js')
 
-var cookie
-
 var options = {
   redirect: {
     login: {
@@ -32,7 +30,9 @@ var options = {
 suite('register-login-logout suite tests ', function () {
   before({}, function (done) {
     util.init(options, function (err, agentData) {
+      assert.ok(!err)
       agent = agentData
+
       done()
     })
   })
@@ -57,7 +57,7 @@ suite('register-login-logout suite tests ', function () {
       .end(function (err, res) {
         util.log(res)
         assert(options.redirect.register.win, res.header.location, 'Redirect to win')
-        cookie = util.checkCookie(res)
+        util.checkCookie(res)
         done(err)
       })
   })

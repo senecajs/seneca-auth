@@ -11,16 +11,16 @@ var before = lab.before
 
 var util = require('./util.js')
 
-var cookie
-
 var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
 
 suite('restrict suite tests ', function () {
   var seneca
   before({}, function (done) {
     util.init({}, function (err, agentData, si) {
+      assert.ok(!err)
       agent = agentData
       seneca = si
+
       done()
     })
   })
@@ -35,7 +35,7 @@ suite('restrict suite tests ', function () {
         assert(res.body.ok, 'Not OK')
         assert(res.body.user, 'No user in response')
         assert(res.body.login, 'No login in response')
-        cookie = util.checkCookie(res)
+        util.checkCookie(res)
         done(err)
       })
   })
@@ -109,9 +109,11 @@ suite('restrict suite tests ', function () {
   var seneca
   before({}, function (done) {
     util.init({}, function (err, agentData, si) {
+      assert.ok(!err)
       agent = agentData
       seneca = si
       seneca.use('auth-restrict-login')
+
       done()
     })
   })
@@ -126,7 +128,7 @@ suite('restrict suite tests ', function () {
         assert(res.body.ok, 'Not OK')
         assert(res.body.user, 'No user in response')
         assert(res.body.login, 'No login in response')
-        cookie = util.checkCookie(res)
+        util.checkCookie(res)
         done(err)
       })
   })

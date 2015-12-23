@@ -8,7 +8,6 @@ var lab = exports.lab = Lab.script()
 var suite = lab.suite
 var test = lab.test
 var before = lab.before
-var after = lab.after
 
 var util = require('./util.js')
 
@@ -17,7 +16,9 @@ var cookie
 suite('register-login-logout suite tests ', function () {
   before({}, function (done) {
     util.init({}, function (err, agentData) {
+      assert.ok(!err)
       agent = agentData
+
       done()
     })
   })

@@ -16,8 +16,10 @@ var token
 suite('register-login-logout header token suite tests ', function () {
   before({}, function (done) {
     util.init({}, function (err, agentData, si) {
+      assert.ok(!err)
       agent = agentData
       si.use('auth-token-header', {tokenkey: 'x-auth-token'})
+
       done()
     })
   })

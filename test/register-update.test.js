@@ -18,7 +18,9 @@ var newName = 'nu2'
 suite('register-update suite tests ', function () {
   before({}, function (done) {
     util.init({}, function (err, agentData) {
+      assert.ok(!err)
       agent = agentData
+
       done()
     })
   })

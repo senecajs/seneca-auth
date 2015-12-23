@@ -28,7 +28,6 @@ var options = {
       win: '/login_OK',
       fail: '/login_failed'
     }
-
   }
 }
 
@@ -37,7 +36,9 @@ var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', ac
 suite('register-login-logout with redirect suite tests ', function () {
   before({}, function (done) {
     util.init(options, function (err, agentData) {
+      assert.ok(!err)
       agent = agentData
+
       done()
     })
   })

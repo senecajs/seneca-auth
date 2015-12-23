@@ -14,6 +14,8 @@ var util = require('./util.js')
 suite('restricted suite tests ', function () {
   before({}, function (done) {
     util.init({restrict: restrict_fct}, function (err, agentData) {
+      assert.ok(!err)
+
       agent = agentData
       done()
     })

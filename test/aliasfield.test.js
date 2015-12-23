@@ -1,7 +1,6 @@
 'use strict'
 
 var assert = require('assert')
-var agent
 
 var Lab = require('lab')
 var lab = exports.lab = Lab.script()
@@ -15,7 +14,8 @@ var seneca
 suite('restricted suite tests ', function () {
   before({}, function (done) {
     util.init({}, function (err, agentData, si) {
-      agent = agentData
+      assert.ok(!err)
+      // agent = agentData
 
       seneca = si
       done()
