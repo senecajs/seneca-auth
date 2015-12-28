@@ -453,7 +453,8 @@ module.exports = function auth (options) {
           if (restrict && !(req.seneca && req.seneca.user)) {
             req.seneca.act("role: 'auth', cmd: 'redirect'", {kind: req.url}, function (err, redirect) {
               if (err) {
-                // handle err
+                req.seneca.log.error('error ', err)
+                return next({http$: {status: 500}})
               }
 
               if (redirect) {
@@ -545,7 +546,8 @@ module.exports = function auth (options) {
         else {
           seneca.act("role:'auth', cmd:'clean'", {user: req.seneca.user, login: req.seneca.login}, function (err, out) {
             if (err) {
-              // handle error
+              req.seneca.log.error('error ', err)
+              return next({http$: {status: 500}})
             }
 
             out.ok = true
@@ -588,6 +590,7 @@ module.exports = function auth (options) {
 
     seneca.act("role: 'auth', hook: 'map_fields'", {action: 'login', data: msg.data}, function (err, userData) {
       if (err) {
+        seneca.log.error('error ', err)
         // handle error
       }
 
@@ -651,7 +654,7 @@ module.exports = function auth (options) {
         var token = clienttoken || servertoken || ''
         seneca.act("role:'user',cmd:'logout'", {token: token}, function (err) {
           if (err) {
-            seneca.log('error', err)
+            seneca.log('error ', err)
 
             return do_respond(err, 'logout', req, respond)
           }
@@ -660,7 +663,7 @@ module.exports = function auth (options) {
             req.logout()
           }
           catch (err) {
-            seneca.log('error', err)
+            seneca.log('error ', err)
             return do_respond(err, 'logout', req, respond)
           }
 
@@ -693,6 +696,7 @@ module.exports = function auth (options) {
       var res = msg.res$
       pp_auth[service](req, res, function (err) {
         if (err) {
+          seneca.log.error('error ', err)
           // handle error
         }
       })
