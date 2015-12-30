@@ -1,21 +1,21 @@
 module.exports = {
-  "admin": {
-    "local": false
+  'admin': {
+    'local': false
   },
 
   prefix: '/auth/',
 
   urlpath: {
-    login:        'login',
-    logout:       'logout',
-    user:         'user',
-    register:     'register',
+    login: 'login',
+    logout: 'logout',
+    user: 'user',
+    register: 'register',
     create_reset: 'create_reset',
-    load_reset:   'load_reset',
-    execute_reset:'execute_reset',
-    confirm:      'confirm',
-    update_user:  'update_user',
-    change_password:'change_password'
+    load_reset: 'load_reset',
+    execute_reset: 'execute_reset',
+    confirm: 'confirm',
+    update_user: 'update_user',
+    change_password: 'change_password'
   },
 
   restrict: '/account',
@@ -36,22 +36,21 @@ module.exports = {
     fail: '/',
     restrict: '/',
 
-    login:        {win: '/account', fail: '/'},
-    logout:       {win: '/',        fail: '/'},
-    register:     {win: '/account', fail: '/'},
-    reset_create: {win: '/',        fail: '/'},
-    reset_load:   {win: '/',        fail: '/'},
-    reset_execute:{win: '/',        fail: '/'},
-    confirm:      {win: '/',        fail: '/'}
+    login: {win: '/account', fail: '/'},
+    logout: {win: '/', fail: '/'},
+    register: {win: '/account', fail: '/'},
+    reset_create: {win: '/', fail: '/'},
+    reset_load: {win: '/', fail: '/'},
+    reset_execute: {win: '/', fail: '/'},
+    confirm: {win: '/', fail: '/'}
   },
 
   user: {
     updatefields: ['name', 'email']
-  },
+  }
 
 //  loginpages: [
 //    { path: '/login/admin', redirect: '/admin', title: 'Administration' },
 //    { path: '/login', redirect: '/account', title: 'Account' }
 //  ]
-
 }
