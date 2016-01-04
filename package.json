@@ -61,8 +61,6 @@
     "lab": "6.2.0",
     "docco": "0.7.0",
     "seneca": "plugin",
-    "auth-restrict-login": "~0.0.1",
-    "auth-token-header": "~0.0.1",
     "seneca-local-auth": "~0.0.2",
     "seneca-user": "~0.2.10",
     "supertest": "~1.0.1",
