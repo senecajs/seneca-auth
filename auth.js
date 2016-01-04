@@ -3,15 +3,15 @@
 
 // External modules.
 var _ = require('lodash')
-var passport = require('passport')
+var Passport = require('passport')
 
 // Load configuration
-var default_options = require('./default-options.js')
+var DefaultOptions = require('./default-options.js')
 
 // External seneca-auth modules
-var auth_token = require('auth-token-cookie')
-var auth_redirect = require('auth-redirect')
-var auth_urlmatcher = require('auth-urlmatcher')
+var AuthToken = require('auth-token-cookie')
+var AuthRedirect = require('auth-redirect')
+var AuthUrlmatcher = require('auth-urlmatcher')
 
 var error = require('eraro')({
   package: 'auth'
@@ -23,7 +23,7 @@ module.exports = function auth (options) {
   seneca.depends('auth', ['web', 'user'])
 
   // using seneca.util.deepextend here, as there are sub properties
-  options = seneca.util.deepextend(default_options, options)
+  options = seneca.util.deepextend(DefaultOptions, options)
 
   function migrate_options () {
     if (options.service || options.sendemail || options.email) {
@@ -70,9 +70,9 @@ module.exports = function auth (options) {
   seneca.add({role: 'auth', hook: 'map_fields'}, alias_fields)
 
   function load_default_plugins () {
-    seneca.use(auth_token)
-    seneca.use(auth_redirect, options.redirect || {})
-    seneca.use(auth_urlmatcher)
+    seneca.use(AuthToken)
+    seneca.use(AuthRedirect, options.redirect || {})
+    seneca.use(AuthUrlmatcher)
   }
 
   function checkurl (match, done) {
@@ -113,11 +113,11 @@ module.exports = function auth (options) {
     })
   }
 
-  passport.serializeUser(function (user, done) {
+  Passport.serializeUser(function (user, done) {
     done(null, user.user.id)
   })
 
-  passport.deserializeUser(function (id, done) {
+  Passport.deserializeUser(function (id, done) {
     done(null)
   })
 
@@ -168,7 +168,7 @@ module.exports = function auth (options) {
 
   function cmd_register_service (msg, respond) {
     seneca.log.info('registering auth service [' + msg.service + ']')
-    passport.use(msg.service, msg.plugin)
+    Passport.use(msg.service, msg.plugin)
     registerService(msg.service, msg.conf)
     respond()
   }
@@ -403,12 +403,12 @@ module.exports = function auth (options) {
         }
       }
 
-      passport.authenticate(service, conf, func)(req, res, next)
+      Passport.authenticate(service, conf, func)(req, res, next)
     }
   }
 
   function buildservice () {
-    var pp_init = passport.initialize()
+    var pp_init = Passport.initialize()
 
     function init_session (req, res, done) {
       req.seneca.act("role: 'auth', get: 'token'", {tokenkey: options.tokenkey}, function (err, result) {

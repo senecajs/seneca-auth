@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 
 var Lab = require('lab')
 var lab = exports.lab = Lab.script()
@@ -8,13 +8,13 @@ var suite = lab.suite
 var test = lab.test
 var before = lab.before
 
-var util = require('./util.js')
+var Util = require('./util.js')
 var seneca
 
 suite('restricted suite tests ', function () {
   before({}, function (done) {
-    util.init({}, function (err, agentData, si) {
-      assert.ok(!err)
+    Util.init({}, function (err, agentData, si) {
+      Assert.ok(!err)
       // agent = agentData
 
       seneca = si
@@ -28,8 +28,8 @@ suite('restricted suite tests ', function () {
       'role:"auth",hook:"map_fields"',
       {data: user},
       function (err, data) {
-        assert(!err, 'No error')
-        assert.equal(user.nick, data.nick)
+        Assert(!err, 'No error')
+        Assert.equal(user.nick, data.nick)
         done()
       })
   })
@@ -40,8 +40,8 @@ suite('restricted suite tests ', function () {
       'role:"auth",hook:"map_fields"',
       {data: user},
       function (err, data) {
-        assert(!err, 'No error')
-        assert.equal(user.username, data.nick)
+        Assert(!err, 'No error')
+        Assert.equal(user.username, data.nick)
         done()
       })
   })
@@ -52,8 +52,8 @@ suite('restricted suite tests ', function () {
       'role:"auth",hook:"map_fields"',
       {data: user},
       function (err, data) {
-        assert(!err, 'No error')
-        assert.equal(user.email, data.nick)
+        Assert(!err, 'No error')
+        Assert.equal(user.email, data.nick)
         done()
       })
   })

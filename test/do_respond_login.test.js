@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
@@ -9,7 +9,7 @@ var suite = lab.suite
 var test = lab.test
 var before = lab.before
 
-var util = require('./util.js')
+var Util = require('./util.js')
 
 var options = {
   redirect: {
@@ -29,8 +29,8 @@ var options = {
 
 suite('register-login-logout suite tests ', function () {
   before({}, function (done) {
-    util.init(options, function (err, agentData) {
-      assert.ok(!err)
+    Util.init(options, function (err, agentData) {
+      Assert.ok(!err)
       agent = agentData
 
       done()
@@ -43,8 +43,8 @@ suite('register-login-logout suite tests ', function () {
       .send({nick: 'u1', password: 'u1'})
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert(options.redirect.login.fail, res.header.location, 'Redirect to fail')
+        Util.log(res)
+        Assert(options.redirect.login.fail, res.header.location, 'Redirect to fail')
         done(err)
       })
   })
@@ -55,9 +55,9 @@ suite('register-login-logout suite tests ', function () {
       .send({nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true})
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert(options.redirect.register.win, res.header.location, 'Redirect to win')
-        util.checkCookie(res)
+        Util.log(res)
+        Assert(options.redirect.register.win, res.header.location, 'Redirect to win')
+        Util.checkCookie(res)
         done(err)
       })
   })
@@ -68,8 +68,8 @@ suite('register-login-logout suite tests ', function () {
       .send({nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true})
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert(options.redirect.register.fail, res.header.location, 'Redirect to fail')
+        Util.log(res)
+        Assert(options.redirect.register.fail, res.header.location, 'Redirect to fail')
         done(err)
       })
   })
@@ -80,8 +80,8 @@ suite('register-login-logout suite tests ', function () {
       .send({nick: 'u1', password: 'u1'})
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert(options.redirect.login.win, res.header.location, 'Redirect to fail')
+        Util.log(res)
+        Assert(options.redirect.login.win, res.header.location, 'Redirect to fail')
         done(err)
       })
   })

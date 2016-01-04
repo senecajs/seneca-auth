@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
@@ -9,7 +9,7 @@ var suite = lab.suite
 var test = lab.test
 var before = lab.before
 
-var util = require('./util.js')
+var Util = require('./util.js')
 
 var cookie
 var reset
@@ -18,8 +18,8 @@ var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', ac
 
 suite('reset suite tests ', function () {
   before({}, function (done) {
-    util.init({}, function (err, agentData) {
-      assert.ok(!err)
+    Util.init({}, function (err, agentData) {
+      Assert.ok(!err)
 
       agent = agentData
       done()
@@ -32,17 +32,17 @@ suite('reset suite tests ', function () {
       .send(user)
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
-        cookie = util.checkCookie(res)
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
+        cookie = Util.checkCookie(res)
         done(err)
       })
   })
 
   test('verify cookie exists after register', function (done) {
-    assert(cookie)
+    Assert(cookie)
     done()
   })
 
@@ -52,10 +52,10 @@ suite('reset suite tests ', function () {
       .send({nick: user.nick})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.reset, 'No reset in response')
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.reset, 'No reset in response')
         reset = res.body.reset
         done(err)
       })
@@ -67,9 +67,9 @@ suite('reset suite tests ', function () {
       .send({token: reset.id})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.nick, 'No nick in response')
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.nick, 'No nick in response')
         done(err)
       })
   })

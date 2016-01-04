@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 
 var lab = exports.lab = require('lab').script()
 var suite = lab.suite
@@ -20,7 +20,7 @@ suite('config suite tests ', function () {
       si.use(require('..'), config)
 
       function errhandler (err) {
-        assert.equal('auth: <' + cfg + '> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth', err.msg)
+        Assert.equal('auth: <' + cfg + '> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth', err.msg)
         done()
       }
     })

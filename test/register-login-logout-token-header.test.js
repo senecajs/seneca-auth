@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
@@ -9,14 +9,14 @@ var suite = lab.suite
 var test = lab.test
 var before = lab.before
 
-var util = require('./util.js')
+var Util = require('./util.js')
 
 var token
 
 suite('register-login-logout header token suite tests ', function () {
   before({}, function (done) {
-    util.init({}, function (err, agentData, si) {
-      assert.ok(!err)
+    Util.init({}, function (err, agentData, si) {
+      Assert.ok(!err)
       agent = agentData
       si.use('auth-token-header', {tokenkey: 'x-auth-token'})
 
@@ -29,10 +29,10 @@ suite('register-login-logout header token suite tests ', function () {
       .get('/auth/user')
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Response has OK=true')
-        assert(!res.body.user, 'User in response')
-        assert(!res.body.login, 'Login in response')
+        Util.log(res)
+        Assert(res.body.ok, 'Response has OK=true')
+        Assert(!res.body.user, 'User in response')
+        Assert(!res.body.login, 'Login in response')
         done(err)
       })
   })
@@ -43,17 +43,17 @@ suite('register-login-logout header token suite tests ', function () {
       .send({nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
-        token = util.checkHeader(res)
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
+        token = Util.checkHeader(res)
         done(err)
       })
   })
 
   test('verify token exists after register', function (done) {
-    assert(token)
+    Assert(token)
     done()
   })
 
@@ -63,10 +63,10 @@ suite('register-login-logout header token suite tests ', function () {
       .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
         done(err)
       })
   })
@@ -77,10 +77,10 @@ suite('register-login-logout header token suite tests ', function () {
       .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok)
-        assert(!res.body.user, 'User in response')
-        assert(!res.body.login, 'Login in response')
+        Util.log(res)
+        Assert(res.body.ok)
+        Assert(!res.body.user, 'User in response')
+        Assert(!res.body.login, 'Login in response')
         done(err)
       })
   })
@@ -91,17 +91,17 @@ suite('register-login-logout header token suite tests ', function () {
       .send({nick: 'u1', password: 'u1'})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
-        token = util.checkHeader(res)
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
+        token = Util.checkHeader(res)
         done(err)
       })
   })
 
   test('verify token exists after login', function (done) {
-    assert(token)
+    Assert(token)
     done()
   })
 
@@ -111,10 +111,10 @@ suite('register-login-logout header token suite tests ', function () {
       .set('x-auth-token', token)
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
         done(err)
       })
   })
