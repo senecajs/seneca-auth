@@ -26,6 +26,8 @@
   "main": "auth.js",
   "scripts": {
     "test": "lab test/*.test.js -r console -v -L -m 3000 -t 60",
+    "coverage": "lab -s test/*.test.js -r lcov | coveralls",
+    "lint": "lab -dL",
     "annotate": "docco auth.js -o doc"
   },
   "files": [
