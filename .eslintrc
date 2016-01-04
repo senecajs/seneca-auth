@@ -1,6 +1,3 @@
 {
-  "extends": "seneca",
-  "rules": {
-    "hapi/hapi-capitalize-modules": 0
-  }
+  "extends": "seneca"
 }

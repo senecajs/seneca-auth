@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
@@ -9,7 +9,7 @@ var suite = lab.suite
 var test = lab.test
 var before = lab.before
 
-var util = require('./util.js')
+var Util = require('./util.js')
 
 var cookie
 
@@ -35,8 +35,8 @@ var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', ac
 
 suite('register-login-logout with redirect suite tests ', function () {
   before({}, function (done) {
-    util.init(options, function (err, agentData) {
-      assert.ok(!err)
+    Util.init(options, function (err, agentData) {
+      Assert.ok(!err)
       agent = agentData
 
       done()
@@ -48,10 +48,10 @@ suite('register-login-logout with redirect suite tests ', function () {
       .get('/auth/user')
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Response has OK=true')
-        assert(!res.body.user, 'User present')
-        assert(!res.body.login, 'Login present')
+        Util.log(res)
+        Assert(res.body.ok, 'Response has OK=true')
+        Assert(!res.body.user, 'User present')
+        Assert(!res.body.login, 'Login present')
         done(err)
       })
   })
@@ -62,9 +62,9 @@ suite('register-login-logout with redirect suite tests ', function () {
       .send(user)
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert.equal(options.redirect.register.win, res.header.location, 'Location')
-        cookie = util.checkCookie(res)
+        Util.log(res)
+        Assert.equal(options.redirect.register.win, res.header.location, 'Location')
+        cookie = Util.checkCookie(res)
         done(err)
       })
   })
@@ -75,8 +75,8 @@ suite('register-login-logout with redirect suite tests ', function () {
       .send({nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true})
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert.equal(options.redirect.register.fail, res.header.location, 'Location')
+        Util.log(res)
+        Assert.equal(options.redirect.register.fail, res.header.location, 'Location')
         done(err)
       })
   })
@@ -87,8 +87,8 @@ suite('register-login-logout with redirect suite tests ', function () {
       .set('Cookie', ['seneca-login=' + cookie])
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert.equal(options.redirect.logout.win, res.header.location, 'Location')
+        Util.log(res)
+        Assert.equal(options.redirect.logout.win, res.header.location, 'Location')
         done(err)
       })
   })
@@ -99,15 +99,15 @@ suite('register-login-logout with redirect suite tests ', function () {
       .send({nick: 'u1', password: 'u1'})
       .expect(301)
       .end(function (err, res) {
-        util.log(res)
-        assert.equal(options.redirect.login.win, res.header.location, 'Location')
-        cookie = util.checkCookie(res)
+        Util.log(res)
+        Assert.equal(options.redirect.login.win, res.header.location, 'Location')
+        cookie = Util.checkCookie(res)
         done(err)
       })
   })
 
   test('verify cookie exists after login', function (done) {
-    assert(cookie)
+    Assert(cookie)
     done()
   })
 
@@ -117,10 +117,10 @@ suite('register-login-logout with redirect suite tests ', function () {
       .set('Cookie', ['seneca-login=' + cookie])
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
         done(err)
       })
   })

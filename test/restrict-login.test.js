@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
@@ -9,15 +9,15 @@ var suite = lab.suite
 var test = lab.test
 var before = lab.before
 
-var util = require('./util.js')
+var Util = require('./util.js')
 
 var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
 
 suite('restrict suite tests ', function () {
   var seneca
   before({}, function (done) {
-    util.init({}, function (err, agentData, si) {
-      assert.ok(!err)
+    Util.init({}, function (err, agentData, si) {
+      Assert.ok(!err)
       agent = agentData
       seneca = si
 
@@ -31,11 +31,11 @@ suite('restrict suite tests ', function () {
       .send(user)
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
-        util.checkCookie(res)
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
+        Util.checkCookie(res)
         done(err)
       })
   })
@@ -46,9 +46,9 @@ suite('restrict suite tests ', function () {
       .send({nick: user.nick, password: user.password})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'OK response')
-        assert(res.body.user, 'User OK response')
+        Util.log(res)
+        Assert(res.body.ok, 'OK response')
+        Assert(res.body.user, 'User OK response')
         done(err)
       })
   })
@@ -63,9 +63,9 @@ suite('restrict suite tests ', function () {
       .send({nick: user.nick, password: user.password})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'OK response')
-        assert(res.body.user, 'User OK response')
+        Util.log(res)
+        Assert(res.body.ok, 'OK response')
+        Assert(res.body.user, 'User OK response')
         done(err)
       })
   })
@@ -80,9 +80,9 @@ suite('restrict suite tests ', function () {
       .send({nick: user.nick, password: user.password})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(!res.body.ok, 'OK response')
-        assert.equal('not-allowed', res.body.why)
+        Util.log(res)
+        Assert(!res.body.ok, 'OK response')
+        Assert.equal('not-allowed', res.body.why)
         done(err)
       })
   })
@@ -97,9 +97,9 @@ suite('restrict suite tests ', function () {
       .send({nick: user.nick, password: user.password})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(!res.body.ok, 'OK response')
-        assert.equal('not-allowed', res.body.why)
+        Util.log(res)
+        Assert(!res.body.ok, 'OK response')
+        Assert.equal('not-allowed', res.body.why)
         done(err)
       })
   })
@@ -108,8 +108,8 @@ suite('restrict suite tests ', function () {
 suite('restrict suite tests ', function () {
   var seneca
   before({}, function (done) {
-    util.init({}, function (err, agentData, si) {
-      assert.ok(!err)
+    Util.init({}, function (err, agentData, si) {
+      Assert.ok(!err)
       agent = agentData
       seneca = si
       seneca.use('auth-restrict-login')
@@ -124,11 +124,11 @@ suite('restrict suite tests ', function () {
       .send(user)
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'Not OK')
-        assert(res.body.user, 'No user in response')
-        assert(res.body.login, 'No login in response')
-        util.checkCookie(res)
+        Util.log(res)
+        Assert(res.body.ok, 'Not OK')
+        Assert(res.body.user, 'No user in response')
+        Assert(res.body.login, 'No login in response')
+        Util.checkCookie(res)
         done(err)
       })
   })
@@ -139,9 +139,9 @@ suite('restrict suite tests ', function () {
       .send({nick: user.nick, password: user.password})
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(!res.body.ok, 'OK response')
-        assert.equal('not-allowed', res.body.why)
+        Util.log(res)
+        Assert(!res.body.ok, 'OK response')
+        Assert.equal('not-allowed', res.body.why)
         done(err)
       })
   })
@@ -153,9 +153,9 @@ suite('restrict suite tests ', function () {
       .set('Cookie', ['allow_login=' + 1])
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'OK response')
-        assert(res.body.user)
+        Util.log(res)
+        Assert(res.body.ok, 'OK response')
+        Assert(res.body.user)
         done(err)
       })
   })

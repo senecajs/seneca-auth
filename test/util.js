@@ -1,4 +1,4 @@
-var assert = require('assert')
+var Assert = require('assert')
 var _ = require('lodash')
 
 exports.init = function (options, cb) {
@@ -71,6 +71,6 @@ exports.checkCookie = function (res) {
 }
 
 exports.checkHeader = function (res) {
-  assert(res.header['x-auth-token'])
+  Assert(res.header['x-auth-token'])
   return res.header['x-auth-token']
 }

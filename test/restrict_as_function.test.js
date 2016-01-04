@@ -1,6 +1,6 @@
 'use strict'
 
-var assert = require('assert')
+var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
@@ -9,12 +9,12 @@ var suite = lab.suite
 var test = lab.test
 var before = lab.before
 
-var util = require('./util.js')
+var Util = require('./util.js')
 
 suite('restricted suite tests ', function () {
   before({}, function (done) {
-    util.init({restrict: restrict_fct}, function (err, agentData) {
-      assert.ok(!err)
+    Util.init({restrict: restrict_fct}, function (err, agentData) {
+      Assert.ok(!err)
 
       agent = agentData
       done()
@@ -38,8 +38,8 @@ suite('restricted suite tests ', function () {
       .get('/api/service2')
       .expect(200)
       .end(function (err, res) {
-        util.log(res)
-        assert(res.body.ok, 'OK response')
+        Util.log(res)
+        Assert(res.body.ok, 'OK response')
         done(err)
       })
   })
