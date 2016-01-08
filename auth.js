@@ -66,7 +66,7 @@ module.exports = function auth (options) {
     var AuthRedirect = require('auth-redirect')
 
     seneca.use(require('./lib/user-management'), options)
-    seneca.use(require('./lib/utility'))
+    seneca.use(require('./lib/express-utility'))
     seneca.use(AuthUrlmatcher)
     seneca.use(require('./lib/express-auth'), options)
     seneca.use(AuthToken)
@@ -76,9 +76,10 @@ module.exports = function auth (options) {
 
   function load_default_hapi_plugins () {
     seneca.use(require('./lib/user-management'), options)
-    seneca.use(require('./lib/utility'))
+    seneca.use(require('./lib/hapi-token-cookie'), options)
+    seneca.use(require('./lib/hapi-utility'))
     seneca.use(AuthUrlmatcher)
-    // seneca.use(require('./lib/express-auth'), options)
+    seneca.use(require('./lib/hapi-auth'), options)
     seneca.use(AuthUrlmatcher)
   }
 

@@ -4,7 +4,7 @@ var _ = require('lodash')
 var Chairo = require ( 'chairo' )
 var Hapi = require ( 'hapi' )
 
-exports.init = function (options, cb) {
+exports.init = function (options, done) {
   var server = new Hapi.Server ()
   server.connection()
 
@@ -12,10 +12,7 @@ exports.init = function (options, cb) {
     {
       register: Chairo,
       options: {
-        default_plugins: {
-          web: false,
-          webPlugin: require('seneca-web')
-        }
+        webPlugin: require('seneca-web')
       }
     }, function ( err ) {
       var si = server.seneca
@@ -40,10 +37,12 @@ exports.init = function (options, cb) {
             service2: {GET: true}
           }
         }
+      }, function (){
+        done(null, server)
       })
     })
 }
 
 exports.checkCookie = function (res) {
-  throw new Error('not implemented')
+  return res.headers['set-cookie'][0]
 }
