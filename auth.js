@@ -21,7 +21,7 @@ var accepted_servers = [
 module.exports = function auth (options) {
   var seneca = this
 
-  seneca.depends('auth', ['web', 'user'])
+  //seneca.depends('auth', ['web', 'user'])
 
   // using seneca.util.deepextend here, as there are sub properties
   options = seneca.util.deepextend(DefaultOptions, options)
