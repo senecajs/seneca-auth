@@ -34,7 +34,8 @@
     "LICENSE.txt",
     "README.md",
     "auth.js",
-    "default-options.js"
+    "default-options.js",
+    "lib"
   ],
   "dependencies": {
     "connect": "~3.0.1",
