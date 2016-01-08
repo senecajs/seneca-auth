@@ -1,17 +1,22 @@
 /* Copyright (c) 2012-2014 Richard Rodger, MIT License */
 'use strict'
 
+// External modules.
+var _ = require('lodash')
+
 // Load configuration
 var DefaultOptions = require('./default-options.js')
 
-// External seneca-auth modules
-var AuthToken = require('auth-token-cookie')
-var AuthRedirect = require('auth-redirect')
 var AuthUrlmatcher = require('auth-urlmatcher')
 
 var error = require('eraro')({
   package: 'auth'
 })
+
+var accepted_servers = [
+  'express',
+  'hapi'
+]
 
 module.exports = function auth (options) {
   var seneca = this
@@ -30,10 +35,21 @@ module.exports = function auth (options) {
     if (options.tokenkey) {
       seneca.log('<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth')
     }
+
+    if (_.indexOf(accepted_servers, options.server) === -1) {
+      throw error('Server type <' + options.server + '> not supported.')
+    }
   }
 
   migrate_options()
-  load_default_plugins()
+
+  if ('express' === options.server) {
+    load_default_express_plugins()
+  }
+  else {
+    load_default_hapi_plugins()
+  }
+
 
   var m
   if ((m = options.prefix.match(/^(.*)\/+$/))) {
@@ -44,13 +60,25 @@ module.exports = function auth (options) {
   // seneca.add({ role:'auth', wrap:'user' },      wrap_user)
   seneca.add({init: 'auth'}, init)
 
-  function load_default_plugins () {
+  function load_default_express_plugins () {
+    // External seneca-auth modules
+    var AuthToken = require('auth-token-cookie')
+    var AuthRedirect = require('auth-redirect')
+
     seneca.use(require('./lib/user-management'), options)
     seneca.use(require('./lib/utility'))
     seneca.use(AuthUrlmatcher)
     seneca.use(require('./lib/express-auth'), options)
     seneca.use(AuthToken)
     seneca.use(AuthRedirect, options.redirect || {})
+    seneca.use(AuthUrlmatcher)
+  }
+
+  function load_default_hapi_plugins () {
+    seneca.use(require('./lib/user-management'), options)
+    seneca.use(require('./lib/utility'))
+    seneca.use(AuthUrlmatcher)
+    // seneca.use(require('./lib/express-auth'), options)
     seneca.use(AuthUrlmatcher)
   }
 

@@ -3,6 +3,7 @@ module.exports = {
     'local': false
   },
 
+  server: 'express',
   prefix: '/auth/',
 
   urlpath: {
