@@ -46,6 +46,23 @@ suite('Hapi register-login-logout suite tests ', function () {
     })
   })
 
+  test('auth/logout test', function (done) {
+    var url = '/auth/logout'
+
+    server.inject({
+      url: url,
+      method: 'POST',
+      headers: { cookie: cookie }
+    }, function (res) {
+      Assert.equal(200, res.statusCode)
+      Assert(JSON.parse(res.payload).ok)
+      Assert(!JSON.parse(res.payload).user)
+      Assert(!JSON.parse(res.payload).login)
+
+      done()
+    })
+  })
+
   test('auth/login test', function (done) {
     var url = '/auth/login'
 
