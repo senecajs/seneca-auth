@@ -52,18 +52,18 @@ suite('Hapi register-login-logout suite tests ', function () {
     })
   })
 
-  test('auth/logout test', function (done) {
-    var url = '/auth/logout'
+  test('auth/change_password test', function (done) {
+    var url = '/auth/change_password'
 
     server.inject({
       url: url,
       method: 'POST',
+      payload: {password: 'uu1', repeat: 'uu1'},
       headers: { cookie: cookie }
     }, function (res) {
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
-      Assert(!JSON.parse(res.payload).user)
-      Assert(!JSON.parse(res.payload).login)
+      Assert(JSON.parse(res.payload).user)
 
       done()
     })
@@ -75,7 +75,7 @@ suite('Hapi register-login-logout suite tests ', function () {
     server.inject({
       url: url,
       method: 'POST',
-      payload: user
+      payload: {password: 'uu1', nick: 'u1', name: 'nu1', email: 'u1@example.com', }
     }, function (res) {
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
@@ -84,21 +84,6 @@ suite('Hapi register-login-logout suite tests ', function () {
 
       cookie = Util.checkCookie(res)
 
-      done()
-    })
-  })
-
-  test('auth/user after register', function (done) {
-    var url = '/auth/user'
-
-    server.inject({
-      url: url,
-      method: 'POST',
-      headers: { cookie: cookie }
-    }, function (res) {
-      Assert.equal(200, res.statusCode)
-      Assert(JSON.parse(res.payload).ok)
-      Assert(JSON.parse(res.payload).user)
       done()
     })
   })
