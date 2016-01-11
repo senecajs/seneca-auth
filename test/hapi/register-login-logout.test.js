@@ -46,4 +46,52 @@ suite('Hapi register-login-logout suite tests ', function () {
     })
   })
 
+  test('auth/login test', function (done) {
+    var url = '/auth/login'
+
+    server.inject({
+      url: url,
+      method: 'POST',
+      payload: user
+    }, function (res) {
+      Assert.equal(200, res.statusCode)
+      Assert(JSON.parse(res.payload).ok)
+      Assert(JSON.parse(res.payload).user)
+      Assert(JSON.parse(res.payload).login)
+
+      cookie = Util.checkCookie(res)
+
+      done()
+    })
+  })
+
+  //test('auth/user after register', function (done) {
+  //  agent
+  //    .get('/auth/user')
+  //    .set('Cookie', ['seneca-login=' + cookie])
+  //    .expect(200)
+  //    .end(function (err, res) {
+  //      Util.log(res)
+  //      Assert(res.body.ok, 'Not OK')
+  //      Assert(res.body.user, 'No user in response')
+  //      Assert(res.body.login, 'No login in response')
+  //      done(err)
+  //    })
+  //})
+  //
+  //test('auth/logout test', function (done) {
+  //  agent
+  //    .post('/auth/logout')
+  //    .set('Cookie', ['seneca-login=' + cookie])
+  //    .expect(200)
+  //    .end(function (err, res) {
+  //      Util.log(res)
+  //      Assert(res.body.ok)
+  //      Assert(!res.body.user, 'User in response')
+  //      Assert(!res.body.login, 'Login in response')
+  //      done(err)
+  //    })
+  //})
+  //
+
 })
