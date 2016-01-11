@@ -14,9 +14,10 @@ var Util = require('./util.js')
 
 var cookie
 
-suite('Hapi register-changepassword suite tests ', function () {
+suite('Hapi register-update-user suite tests ', function () {
   var server
   var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
+  var changed_user = {nick: 'u1', name: 'nu2', email: 'u1@example.com'}
   var cookie
 
   before({}, function (done) {
@@ -52,18 +53,19 @@ suite('Hapi register-changepassword suite tests ', function () {
     })
   })
 
-  test('auth/change_password test', function (done) {
-    var url = '/auth/change_password'
+  test('auth/update test', function (done) {
+    var url = '/auth/update_user'
 
     server.inject({
       url: url,
       method: 'POST',
-      payload: {password: 'uu1', repeat: 'uu1'},
+      payload: changed_user,
       headers: { cookie: cookie }
     }, function (res) {
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
       Assert(JSON.parse(res.payload).user)
+      Assert.equal(changed_user.name, JSON.parse(res.payload).user.name)
 
       done()
     })
@@ -75,12 +77,13 @@ suite('Hapi register-changepassword suite tests ', function () {
     server.inject({
       url: url,
       method: 'POST',
-      payload: {password: 'uu1', nick: 'u1', name: 'nu1', email: 'u1@example.com', }
+      payload: user,
     }, function (res) {
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
       Assert(JSON.parse(res.payload).user)
       Assert(JSON.parse(res.payload).login)
+      Assert.equal(changed_user.name, JSON.parse(res.payload).user.name)
 
       cookie = Util.checkCookie(res)
 
