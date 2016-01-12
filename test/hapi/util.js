@@ -3,22 +3,38 @@ var _ = require('lodash')
 
 var Chairo = require ( 'chairo' )
 var Hapi = require ( 'hapi' )
+var Bell = require('bell')
+var Hapi_Cookie = require('hapi-auth-cookie')
 
 exports.init = function (options, done) {
   var server = new Hapi.Server ()
   server.connection()
 
-  server.register(
-    {
-      register: Chairo,
-      options: {
-        webPlugin: require('seneca-web')
-      }
-    }, function ( err ) {
+  server.register([Hapi_Cookie, Bell, {
+    register: Chairo,
+    options: {
+      seneca_plugins: {
+        web: false
+      },
+      webPlugin: require('seneca-web')
+    }
+  }], function ( err ) {
       var si = server.seneca
 
       si.use('user')
-      si.use(require('../..'), _.extend({secure: true, restrict: '/api', server: 'hapi'}, options || {}))
+      si.use(
+        require('../..'),
+        _.extend(
+          {
+            secure: true,
+            restrict: '/api',
+            server: 'hapi',
+            strategies: [
+              {
+                provider: 'local'
+              }
+            ]
+          }, options || {}))
 
       si.add({role: 'test', cmd: 'service'}, function (args, cb) {
         return cb(null, {ok: true, test: true})
@@ -44,5 +60,8 @@ exports.init = function (options, done) {
 }
 
 exports.checkCookie = function (res) {
-  return res.headers['set-cookie'][0]
+  var cookie = res.headers['set-cookie'][0]
+  cookie = cookie.match(/(?:[^\x00-\x20\(\)<>@\,;\:\\"\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\"\,\;\\\x7F]*))/)[1]
+  console.log('cookie', cookie)
+  return cookie
 }

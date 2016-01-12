@@ -57,8 +57,8 @@ suite('Hapi register-login-logout suite tests ', function () {
 
     server.inject({
       url: url,
-      method: 'POST',
-      headers: { cookie: cookie }
+      method: 'GET',
+      headers: { cookie: 'seneca-login=' + cookie }
     }, function (res) {
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
