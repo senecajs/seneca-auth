@@ -41,8 +41,10 @@
     "auth-redirect": "~0.0.1",
     "auth-token-cookie": "~0.0.1",
     "auth-urlmatcher": "~0.0.1",
+    "bell": "6.0.0",
     "connect": "~3.0.1",
     "eraro": "^0.4.1",
+    "hapi-auth-cookie": "5.0.0",
     "lodash": "^3.10.0",
     "passport": "~0.2.0"
   },
