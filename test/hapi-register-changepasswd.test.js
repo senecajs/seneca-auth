@@ -10,7 +10,7 @@ var test = lab.test
 var before = lab.before
 var after = lab.after
 
-var Util = require('./util.js')
+var Util = require('./hapi-util')
 
 var cookie
 
@@ -59,8 +59,9 @@ suite('Hapi register-changepassword suite tests ', function () {
       url: url,
       method: 'POST',
       payload: {password: 'uu1', repeat: 'uu1'},
-      headers: { cookie: cookie }
+      headers: { cookie: 'seneca-login=' + cookie }
     }, function (res) {
+      console.log(res.payload)
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
       Assert(JSON.parse(res.payload).user)

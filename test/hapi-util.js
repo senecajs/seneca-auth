@@ -23,7 +23,7 @@ exports.init = function (options, done) {
 
       si.use('user')
       si.use(
-        require('../..'),
+        require('..'),
         _.extend(
           {
             secure: true,

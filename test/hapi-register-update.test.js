@@ -10,13 +10,14 @@ var test = lab.test
 var before = lab.before
 var after = lab.after
 
-var Util = require('./util.js')
+var Util = require('./hapi-util.js')
 
 var cookie
 
-suite('Hapi register-login-logout suite tests ', function () {
+suite('Hapi register-update-user suite tests ', function () {
   var server
   var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
+  var changed_user = {nick: 'u1', name: 'nu2', email: 'u1@example.com'}
   var cookie
 
   before({}, function (done) {
@@ -52,18 +53,19 @@ suite('Hapi register-login-logout suite tests ', function () {
     })
   })
 
-  test('auth/logout test', function (done) {
-    var url = '/auth/logout'
+  test('auth/update test', function (done) {
+    var url = '/auth/update_user'
 
     server.inject({
       url: url,
-      method: 'GET',
+      method: 'POST',
+      payload: changed_user,
       headers: { cookie: 'seneca-login=' + cookie }
     }, function (res) {
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
-      Assert(!JSON.parse(res.payload).user)
-      Assert(!JSON.parse(res.payload).login)
+      Assert(JSON.parse(res.payload).user)
+      Assert.equal(changed_user.name, JSON.parse(res.payload).user.name)
 
       done()
     })
@@ -75,30 +77,16 @@ suite('Hapi register-login-logout suite tests ', function () {
     server.inject({
       url: url,
       method: 'POST',
-      payload: user
+      payload: user,
     }, function (res) {
       Assert.equal(200, res.statusCode)
       Assert(JSON.parse(res.payload).ok)
       Assert(JSON.parse(res.payload).user)
       Assert(JSON.parse(res.payload).login)
+      Assert.equal(changed_user.name, JSON.parse(res.payload).user.name)
 
       cookie = Util.checkCookie(res)
 
-      done()
-    })
-  })
-
-  test('auth/user after register', function (done) {
-    var url = '/auth/user'
-
-    server.inject({
-      url: url,
-      method: 'POST',
-      headers: { cookie: cookie }
-    }, function (res) {
-      Assert.equal(200, res.statusCode)
-      Assert(JSON.parse(res.payload).ok)
-      Assert(JSON.parse(res.payload).user)
       done()
     })
   })
