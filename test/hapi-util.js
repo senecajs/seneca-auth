@@ -62,6 +62,5 @@ exports.init = function (options, done) {
 exports.checkCookie = function (res) {
   var cookie = res.headers['set-cookie'][0]
   cookie = cookie.match(/(?:[^\x00-\x20\(\)<>@\,;\:\\"\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\"\,\;\\\x7F]*))/)[1]
-  console.log('cookie', cookie)
   return cookie
 }
