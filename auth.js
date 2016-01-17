@@ -3,88 +3,83 @@
 
 // External modules.
 var _ = require('lodash')
+var AuthUrlmatcher = require('auth-urlmatcher')
+var AuthToken = require('auth-token-cookie')
 
 // Load configuration
 var DefaultOptions = require('./default-options.js')
-
-var AuthUrlmatcher = require('auth-urlmatcher')
 
 var error = require('eraro')({
   package: 'auth'
 })
 
-var accepted_servers = [
-  'express',
-  'hapi'
-]
-
-module.exports = function auth (options) {
+module.exports = function auth (opts) {
   var seneca = this
 
-  //seneca.depends('auth', ['web', 'user'])
+  var internals = {}
+  internals.accepted_framworks = [
+    'express',
+    'hapi'
+  ]
 
   // using seneca.util.deepextend here, as there are sub properties
-  options = seneca.util.deepextend(DefaultOptions, options)
+  internals.options = seneca.util.deepextend(DefaultOptions, opts)
 
-  function migrate_options () {
-    if (options.service || options.sendemail || options.email) {
-      throw error('<' + (options.service ? 'service' : (options.sendemail ? 'sendemail' : 'email')) +
+  internals.load_default_express_plugins = function () {
+    // External seneca-auth modules
+    var AuthRedirect = require('auth-redirect')
+
+    seneca.use(require('./lib/user-management'), internals.options)
+    seneca.use(require('./lib/express-utility'))
+    seneca.use(AuthUrlmatcher)
+    seneca.use(require('./lib/express-auth'), internals.options)
+    seneca.use(AuthToken, internals.options)
+    seneca.use(AuthRedirect, internals.options.redirect || {})
+    seneca.use(AuthUrlmatcher)
+  }
+
+  internals.load_default_hapi_plugins = function () {
+    seneca.use(require('./lib/user-management'), internals.options)
+    seneca.use(require('./lib/hapi-utility'))
+    seneca.use(AuthToken, internals.options)
+    seneca.use(AuthUrlmatcher)
+    seneca.use(require('./lib/hapi-auth'), internals.options)
+    seneca.use(AuthUrlmatcher)
+  }
+
+  internals.choose_framework = function (){
+    if ('express' === internals.options.framework) {
+      internals.load_default_express_plugins()
+    }
+    else {
+      internals.load_default_hapi_plugins()
+    }
+  }
+
+  internals.migrate_options = function() {
+    if (internals.options.service || internals.options.sendemail || internals.options.email) {
+      throw error('<' + (internals.options.service ? 'service' : (internals.options.sendemail ? 'sendemail' : 'email')) +
         '> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth')
     }
 
-    if (options.tokenkey) {
+    if (internals.options.tokenkey) {
       seneca.log('<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth')
     }
 
-    if (_.indexOf(accepted_servers, options.server) === -1) {
-      throw error('Server type <' + options.server + '> not supported.')
+    if (seneca.options().plugin.web && seneca.options().plugin.web.framework){
+      internals.options.framework = seneca.options().plugin.web.framework
+    }
+    if (_.indexOf(internals.accepted_framworks, internals.options.framework) === -1) {
+      throw error('Framework type <' + internals.options.framework + '> not supported.')
     }
   }
 
-  migrate_options()
-
-  if ('express' === options.server) {
-    load_default_express_plugins()
-  }
-  else {
-    load_default_hapi_plugins()
-  }
-
+  internals.migrate_options()
+  internals.choose_framework()
 
   var m
-  if ((m = options.prefix.match(/^(.*)\/+$/))) {
-    options.prefix = m[1]
-  }
-
-  // define seneca actions
-  // seneca.add({ role:'auth', wrap:'user' },      wrap_user)
-  seneca.add({init: 'auth'}, init)
-
-  function load_default_express_plugins () {
-    // External seneca-auth modules
-    var AuthToken = require('auth-token-cookie')
-    var AuthRedirect = require('auth-redirect')
-
-    seneca.use(require('./lib/user-management'), options)
-    seneca.use(require('./lib/express-utility'))
-    seneca.use(AuthUrlmatcher)
-    seneca.use(require('./lib/express-auth'), options)
-    seneca.use(AuthToken)
-    seneca.use(AuthRedirect, options.redirect || {})
-    seneca.use(AuthUrlmatcher)
-  }
-
-  function load_default_hapi_plugins () {
-    seneca.use(require('./lib/user-management'), options)
-    seneca.use(require('./lib/hapi-token-cookie'), options)
-    seneca.use(require('./lib/hapi-utility'))
-    seneca.use(AuthUrlmatcher)
-    seneca.use(require('./lib/hapi-auth'), options)
-    seneca.use(AuthUrlmatcher)
-  }
-
-  function init (msg, respond) {
-    respond()
+  if ((m = internals.options.prefix.match(/^(.*)\/+$/))) {
+    internals.options.prefix = m[1]
   }
 
   seneca.ready()

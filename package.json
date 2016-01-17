@@ -39,7 +39,7 @@
   ],
   "dependencies": {
     "auth-redirect": "~0.0.1",
-    "auth-token-cookie": "~0.0.1",
+    "auth-token-cookie": "mirceaalexandru/auth-token-cookie#hapi",
     "auth-urlmatcher": "~0.0.1",
     "connect": "~3.0.1",
     "eraro": "^0.4.1",
@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "hapi": "12.0.1",
+    "chairo": "1.3.0",
     "hapi-auth-cookie": "5.0.0",
     "bell": "6.0.0",
     "assert": "^1.3.0",
@@ -72,8 +73,7 @@
     "seneca-local-auth": "~0.0.2",
     "seneca-user": "~0.2.10",
     "supertest": "~1.0.1",
-    "chairo": "mirceaalexandru/chairo#seneca-web",
-    "seneca-web": "mirceaalexandru/seneca-web#hapi"
+    "seneca-web": "mirceaalexandru/seneca-web"
   },
   "peerDependencies": {
     "seneca": "*",
