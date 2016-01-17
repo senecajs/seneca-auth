@@ -39,12 +39,11 @@ module.exports = function auth (opts) {
   }
 
   internals.load_default_hapi_plugins = function () {
-    seneca.use(require('./lib/user-management'), internals.options)
-    seneca.use(require('./lib/hapi-utility'))
     seneca.use(AuthToken, internals.options)
     seneca.use(AuthUrlmatcher)
     seneca.use(require('./lib/hapi-auth'), internals.options)
-    seneca.use(AuthUrlmatcher)
+    seneca.use(require('./lib/hapi-utility'))
+    seneca.use(require('./lib/user-management'), internals.options)
   }
 
   internals.choose_framework = function (){

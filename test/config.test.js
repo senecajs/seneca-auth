@@ -31,11 +31,11 @@ suite('config suite tests ', function () {
     var si = require('seneca')({errhandler: errhandler, debug: {undead: true}})
     si.use('user')
     var config = {}
-    config.server = 'some_server'
+    config.framework = 'some_server'
     si.use(require('..'), config)
 
     function errhandler (err) {
-      Assert.equal('auth: Server type <some_server> not supported.', err.msg)
+      Assert.equal('auth: Framework type <some_server> not supported.', err.msg)
       si.close()
       done()
     }
