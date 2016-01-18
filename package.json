@@ -70,7 +70,7 @@
     "express-session": "^1.11.3",
     "lab": "6.2.0",
     "seneca": "plugin",
-    "seneca-local-auth": "~0.0.2",
+    "seneca-local-auth": "mirceaalexandru/seneca-local-auth#hapi",
     "seneca-user": "~0.2.10",
     "supertest": "~1.0.1",
     "seneca-web": "mirceaalexandru/seneca-web"
