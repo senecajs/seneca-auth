@@ -68,6 +68,7 @@ module.exports = function auth (opts) {
     if (seneca.options().plugin.web && seneca.options().plugin.web.framework){
       internals.options.framework = seneca.options().plugin.web.framework
     }
+
     if (_.indexOf(internals.accepted_framworks, internals.options.framework) === -1) {
       throw error('Framework type <' + internals.options.framework + '> not supported.')
     }

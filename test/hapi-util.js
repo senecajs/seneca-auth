@@ -13,10 +13,7 @@ exports.init = function (options, done) {
   server.register([Hapi_Cookie, Bell, {
     register: Chairo,
     options: {
-      seneca_plugins: {
-        web: false
-      },
-      webPlugin: require('seneca-web')
+      web: require('seneca-web')
     }
   }], function ( err ) {
       var si = server.seneca
@@ -35,7 +32,7 @@ exports.init = function (options, done) {
               }
             ]
           }, options || {}))
-
+      si.use(require('seneca-local-auth'))
       si.add({role: 'test', cmd: 'service'}, function (args, cb) {
         return cb(null, {ok: true, test: true})
       })

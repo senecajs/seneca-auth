@@ -79,11 +79,11 @@ suite('Hapi register-update-user suite tests ', function () {
       method: 'POST',
       payload: user,
     }, function (res) {
-      Assert.equal(200, res.statusCode)
-      Assert(JSON.parse(res.payload).ok)
-      Assert(JSON.parse(res.payload).user)
-      Assert(JSON.parse(res.payload).login)
-      Assert.equal(changed_user.name, JSON.parse(res.payload).user.name)
+      Assert.equal(200, res.statusCode, 'Invalid status')
+      Assert(JSON.parse(res.payload).ok, 'ok value')
+      Assert(JSON.parse(res.payload).user, 'user value')
+      Assert(JSON.parse(res.payload).login, 'login value')
+      Assert.equal(changed_user.name, JSON.parse(res.payload).user.name, 'user name')
 
       cookie = Util.checkCookie(res)
 
