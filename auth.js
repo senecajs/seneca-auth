@@ -8,11 +8,12 @@ var AuthToken = require('auth-token-cookie')
 
 // Internal modules
 var UserManagement = require('./lib/user-management')
-var ExpressUtility = require('./lib/express-utility')
+var AuthRedirect = require('auth-redirect')
+
+var Utility = require('./lib/common-utility')
 var ExpressAuth = require('./lib/express-auth')
 
 var HapiAuth = require('./lib/hapi-auth')
-var HapiUtility = require('./lib/hapi-utility')
 
 // Load configuration
 var DefaultOptions = require('./default-options.js')
@@ -34,11 +35,8 @@ module.exports = function auth (opts) {
   internals.options = seneca.util.deepextend(DefaultOptions, opts)
 
   internals.load_default_express_plugins = function () {
-    // External seneca-auth modules
-    var AuthRedirect = require('auth-redirect')
-
     seneca.use(UserManagement, internals.options)
-    seneca.use(ExpressUtility)
+    seneca.use(Utility)
     seneca.use(AuthUrlmatcher)
     seneca.use(ExpressAuth, internals.options)
     seneca.use(AuthToken, internals.options)
@@ -50,7 +48,8 @@ module.exports = function auth (opts) {
     seneca.use(AuthToken, internals.options)
     seneca.use(AuthUrlmatcher)
     seneca.use(HapiAuth, internals.options)
-    seneca.use(HapiUtility)
+    seneca.use(Utility)
+    seneca.use(AuthRedirect, internals.options.redirect || {})
     seneca.use(UserManagement, internals.options)
   }
 
