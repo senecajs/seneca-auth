@@ -41,7 +41,7 @@ suite('Hapi restrict suite tests ', function () {
       url: url,
       method: 'GET'
     }, function (res) {
-      Assert.equal(302, res.statusCode)
+      Assert.equal(401, res.statusCode)
 
       done()
     })

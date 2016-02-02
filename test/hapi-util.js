@@ -1,4 +1,3 @@
-var Assert = require('assert')
 var _ = require('lodash')
 
 var Chairo = require ( 'chairo' )
@@ -25,12 +24,6 @@ exports.init = function (options, done) {
           {
             secure: true,
             restrict: '/api',
-            server: 'hapi',
-            strategies: [
-              {
-                provider: 'local'
-              }
-            ]
           }, options || {}))
       si.use(require('seneca-local-auth'))
       si.add({role: 'test', cmd: 'service'}, function (args, cb) {
