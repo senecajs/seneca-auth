@@ -6,6 +6,14 @@ var _ = require('lodash')
 var AuthUrlmatcher = require('auth-urlmatcher')
 var AuthToken = require('auth-token-cookie')
 
+// Internal modules
+var UserManagement = require('./lib/user-management')
+var ExpressUtility = require('./lib/express-utility')
+var ExpressAuth = require('./lib/express-auth')
+
+var HapiAuth = require('./lib/hapi-auth')
+var HapiUtility = require('./lib/hapi-utility')
+
 // Load configuration
 var DefaultOptions = require('./default-options.js')
 
@@ -29,10 +37,10 @@ module.exports = function auth (opts) {
     // External seneca-auth modules
     var AuthRedirect = require('auth-redirect')
 
-    seneca.use(require('./lib/user-management'), internals.options)
-    seneca.use(require('./lib/express-utility'))
+    seneca.use(UserManagement, internals.options)
+    seneca.use(ExpressUtility)
     seneca.use(AuthUrlmatcher)
-    seneca.use(require('./lib/express-auth'), internals.options)
+    seneca.use(ExpressAuth, internals.options)
     seneca.use(AuthToken, internals.options)
     seneca.use(AuthRedirect, internals.options.redirect || {})
     seneca.use(AuthUrlmatcher)
@@ -41,13 +49,13 @@ module.exports = function auth (opts) {
   internals.load_default_hapi_plugins = function () {
     seneca.use(AuthToken, internals.options)
     seneca.use(AuthUrlmatcher)
-    seneca.use(require('./lib/hapi-auth'), internals.options)
-    seneca.use(require('./lib/hapi-utility'))
-    seneca.use(require('./lib/user-management'), internals.options)
+    seneca.use(HapiAuth, internals.options)
+    seneca.use(HapiUtility)
+    seneca.use(UserManagement, internals.options)
   }
 
-  internals.choose_framework = function (){
-    if ('express' === internals.options.framework) {
+  internals.choose_framework = function () {
+    if (internals.options.framework === 'express') {
       internals.load_default_express_plugins()
     }
     else {
@@ -55,7 +63,7 @@ module.exports = function auth (opts) {
     }
   }
 
-  internals.migrate_options = function() {
+  internals.migrate_options = function () {
     if (internals.options.service || internals.options.sendemail || internals.options.email) {
       throw error('<' + (internals.options.service ? 'service' : (internals.options.sendemail ? 'sendemail' : 'email')) +
         '> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth')
@@ -65,7 +73,7 @@ module.exports = function auth (opts) {
       seneca.log('<tokenkey> option is deprecated, please check seneca-auth documentation for migrating to new version of seneca-auth')
     }
 
-    if (seneca.options().plugin.web && seneca.options().plugin.web.framework){
+    if (seneca.options().plugin.web && seneca.options().plugin.web.framework) {
       internals.options.framework = seneca.options().plugin.web.framework
     }
 
@@ -77,8 +85,8 @@ module.exports = function auth (opts) {
   internals.migrate_options()
   internals.choose_framework()
 
-  var m
-  if ((m = internals.options.prefix.match(/^(.*)\/+$/))) {
+  var m = internals.options.prefix.match(/^(.*)\/+$/)
+  if (m) {
     internals.options.prefix = m[1]
   }
 

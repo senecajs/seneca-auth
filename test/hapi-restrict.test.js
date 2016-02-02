@@ -1,7 +1,6 @@
 'use strict'
 
 var Assert = require('assert')
-var agent
 
 var Lab = require('lab')
 var lab = exports.lab = Lab.script()
@@ -14,10 +13,8 @@ var Util = require('./hapi-util.js')
 
 
 suite('Hapi restrict suite tests ', function () {
-  var cookie
   var server
   var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
-  var changed_user = {nick: 'u1', name: 'nu2', email: 'u1@example.com'}
   var cookie
 
   before({}, function (done) {
@@ -72,7 +69,7 @@ suite('Hapi restrict suite tests ', function () {
     server.inject({
       url: url,
       method: 'GET',
-      headers: { cookie: 'seneca-login=' + cookie }
+      headers: {cookie: 'seneca-login=' + cookie}
     }, function (res) {
       Assert.equal(200, res.statusCode)
 
