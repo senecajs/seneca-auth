@@ -25,4 +25,17 @@ suite('config suite tests ', function () {
       }
     })
   }
+
+  test('known server type', function (done) {
+    var si = require('seneca')({errhandler: errhandler, debug: {undead: true}})
+    si.use('user')
+    var config = {}
+    config.server = 'hapi'
+    si.use(require('..'), config)
+
+    function errhandler () {
+      done()// if this is called then test will fail.
+    }
+    done()
+  })
 })
