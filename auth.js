@@ -36,23 +36,27 @@ module.exports = function auth (opts) {
   internals.options = seneca.util.deepextend(DefaultOptions, opts)
 
   internals.load_common_plugins = function () {
+    seneca.use(AuthToken, internals.options)
     seneca.use(AuthUrlmatcher, internals.options)
     seneca.use(Utility, internals.options)
     seneca.use(UserManagement, internals.options)
-    seneca.use(AuthToken, internals.options)
     seneca.use(AuthRedirect, internals.options.redirect || {})
   }
 
   internals.load_default_express_plugins = function () {
     internals.load_common_plugins()
-    seneca.use(ExpressAuth, internals.options)
-    seneca.use(LocalStrategy, internals.options)
+    seneca.ready(function() {
+      seneca.use(ExpressAuth, internals.options)
+      seneca.use(LocalStrategy, internals.options)
+    })
   }
 
   internals.load_default_hapi_plugins = function () {
     internals.load_common_plugins()
-    seneca.use(HapiAuth, internals.options)
-    seneca.use(LocalStrategy, internals.options)
+    seneca.ready(function(){
+      seneca.use(HapiAuth, internals.options)
+      seneca.use(LocalStrategy, internals.options)
+    })
   }
 
   internals.choose_framework = function () {
@@ -83,15 +87,20 @@ module.exports = function auth (opts) {
     }
   }
 
-  internals.migrate_options()
-  internals.choose_framework()
 
-  var m = internals.options.prefix.match(/^(.*)\/+$/)
-  if (m) {
-    internals.options.prefix = m[1]
+  function init(args, done) {
+    internals.migrate_options()
+
+    var m = internals.options.prefix.match(/^(.*)\/+$/)
+    if (m) {
+      internals.options.prefix = m[1]
+    }
+
+    internals.choose_framework()
+    done()
   }
 
-  seneca.ready()
+  seneca.add('init: auth', init)
 
   return {
     name: 'auth'
