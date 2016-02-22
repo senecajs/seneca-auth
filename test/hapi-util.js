@@ -15,7 +15,7 @@ exports.init = function (options, done) {
     {
       register: Chairo,
       options: {
-        web: require('seneca-web')
+        web: true
       }
     }], function (err) {
       if (err) {
