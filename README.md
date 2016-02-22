@@ -169,6 +169,62 @@ Change user password.
 npm test
 ```
 
+## Example of using seneca-auth with Hapi
+
+
+```
+var _ = require('lodash')
+
+var Chairo = require('chairo')
+var Hapi = require('hapi')
+var Bell = require('bell')
+var Hapi_Cookie = require('hapi-auth-cookie')
+
+var server = new Hapi.Server()
+server.connection()
+
+server.register([Hapi_Cookie, Bell, Chairo], function (err) {
+  var si = server.seneca
+
+  si.use('user')
+  si.use(
+    require('.'),
+    {
+      secure: true,
+      restrict: '/api',
+      server: 'hapi',
+      strategies: [
+        {
+          provider: 'local'
+        }
+      ]
+    }
+  )
+
+  si.add({role: 'test', cmd: 'service'}, function (args, cb) {
+    return cb(null, {something: 'else'})
+  })
+
+  si.act({
+    role: 'web',
+    plugin: 'test',
+    use: {
+      prefix: '/api',
+      pin: {role: 'test', cmd: '*'},
+      map: {
+        service: {GET: true}
+      }
+    }
+  }, function(err){
+
+    server.start(function () {
+    })
+  })
+})
+
+```
+
+
 [npm-badge]: https://badge.fury.io/js/seneca-auth.svg
 [npm-url]: https://badge.fury.io/js/seneca-auth
 [travis-badge]: https://api.travis-ci.org/senecajs/seneca-auth.svg

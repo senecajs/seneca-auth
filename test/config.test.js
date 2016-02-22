@@ -20,9 +20,22 @@ suite('config suite tests ', function () {
       si.use(require('..'), config)
 
       function errhandler (err) {
-        Assert.equal('auth: <' + cfg + '> option is no longer supported, please check seneca-auth documentation for migrating to new version of seneca-auth', err.msg)
+        Assert(err.msg.indexOf('auth: <' + cfg + '> option is no longer supported'))
         done()
       }
     })
   }
+
+  test('known server type', function (done) {
+    var si = require('seneca')({errhandler: errhandler, debug: {undead: true}})
+    si.use('user')
+    var config = {}
+    config.server = 'hapi'
+    si.use(require('..'), config)
+
+    function errhandler () {
+      done()// if this is called then test will fail.
+    }
+    done()
+  })
 })

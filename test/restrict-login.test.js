@@ -133,24 +133,10 @@ suite('restrict suite tests ', function () {
       })
   })
 
-  test('api/login test with external restrict plugin - login not allowed', function (done) {
-    agent
-      .post('/auth/login')
-      .send({nick: user.nick, password: user.password})
-      .expect(200)
-      .end(function (err, res) {
-        Util.log(res)
-        Assert(!res.body.ok, 'OK response')
-        Assert.equal('not-allowed', res.body.why)
-        done(err)
-      })
-  })
-
   test('api/login test with external restrict plugin - login allowed', function (done) {
     agent
       .post('/auth/login')
       .send({nick: user.nick, password: user.password})
-      .set('Cookie', ['allow_login=' + 1])
       .expect(200)
       .end(function (err, res) {
         Util.log(res)
