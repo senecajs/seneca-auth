@@ -45,18 +45,14 @@ module.exports = function auth (opts) {
 
   internals.load_default_express_plugins = function () {
     internals.load_common_plugins()
-    seneca.ready(function() {
-      seneca.use(ExpressAuth, internals.options)
-      seneca.use(LocalStrategy, internals.options)
-    })
+    seneca.use(ExpressAuth, internals.options)
+    seneca.use(LocalStrategy, internals.options)
   }
 
   internals.load_default_hapi_plugins = function () {
     internals.load_common_plugins()
-    seneca.ready(function(){
-      seneca.use(HapiAuth, internals.options)
-      seneca.use(LocalStrategy, internals.options)
-    })
+    seneca.use(HapiAuth, internals.options)
+    seneca.use(LocalStrategy, internals.options)
   }
 
   internals.choose_framework = function () {
@@ -88,19 +84,14 @@ module.exports = function auth (opts) {
   }
 
 
-  function init(args, done) {
-    internals.migrate_options()
+  internals.migrate_options()
 
-    var m = internals.options.prefix.match(/^(.*)\/+$/)
-    if (m) {
-      internals.options.prefix = m[1]
-    }
-
-    internals.choose_framework()
-    done()
+  var m = internals.options.prefix.match(/^(.*)\/+$/)
+  if (m) {
+    internals.options.prefix = m[1]
   }
 
-  seneca.add('init: auth', init)
+  internals.choose_framework()
 
   return {
     name: 'auth'

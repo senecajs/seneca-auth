@@ -9,47 +9,50 @@ exports.init = function (options, done) {
   var server = new Hapi.Server()
   server.connection()
 
-  server.register([Hapi_Cookie, Bell, {
-    register: Chairo,
-    options: {
-      web: require('seneca-web')
-    }
-  }], function (err) {
-    if (err) {
-      return done(err)
-    }
-    var si = server.seneca
-
-    si.use('user')
-    si.use(
-      require('..'),
-      _.extend(
-        {
-          secure: true,
-          restrict: '/api'
-        }, options || {}))
-    si.use(require('seneca-local-auth'))
-    si.add({role: 'test', cmd: 'service'}, function (args, cb) {
-      return cb(null, {ok: true, test: true})
-    })
-    si.add({role: 'test', cmd: 'service2'}, function (args, cb) {
-      return cb(null, {ok: true, test: true})
-    })
-    si.act({
-      role: 'web',
-      plugin: 'test',
-      use: {
-        prefix: '/api',
-        pin: {role: 'test', cmd: '*'},
-        map: {
-          service: {GET: true},
-          service2: {GET: true}
-        }
+  server.register([
+    Hapi_Cookie,
+    Bell,
+    {
+      register: Chairo,
+      options: {
+        web: require('seneca-web')
       }
-    }, function () {
-      done(null, server)
-    })
-  })
+    }], function (err) {
+      if (err) {
+        return done(err)
+      }
+      var si = server.seneca
+
+      si.use('user')
+      si.use(
+        require('..'),
+        _.extend(
+          {
+            secure: false,
+            restrict: '/api'
+          }, options || {}))
+      si.add({role: 'test', cmd: 'service'}, function (args, cb) {
+        return cb(null, {ok: true, test: true})
+      })
+      si.add({role: 'test', cmd: 'service2'}, function (args, cb) {
+        return cb(null, {ok: true, test: true})
+      })
+      si.act({
+        role: 'web',
+        plugin: 'test',
+        use: {
+          prefix: '/api',
+          pin: {role: 'test', cmd: '*'},
+          map: {
+            service: {GET: true},
+            service2: {GET: true}
+          }
+        }
+      }, function () {
+        done(null, server)
+      })
+    }
+  )
 }
 
 exports.checkCookie = function (res) {
