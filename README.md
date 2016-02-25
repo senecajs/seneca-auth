@@ -1,7 +1,8 @@
 ![Seneca](http://senecajs.org/files/assets/seneca-logo.png)
 > A [Seneca.js](http://senecajs.org) Auth Plugin
 
-# seneca-auth
+seneca-auth
+============
 
 A user authentication plugin, using [PassportJS](http://passportjs.org).
 
@@ -11,6 +12,33 @@ A user authentication plugin, using [PassportJS](http://passportjs.org).
 [![Dependency Status][david-badge]][david-url]
 [![Gitter chat][gitter-badge]][gitter-url]
 
+
+Table of Contents                                                                                                                                                                                                    
+=================                                                                                                                                                                                                    
+                                                                                                                                                                                                                     
+  * [seneca-auth](#seneca-auth)                                                                                                                                                                                      
+  * [Install](#install)                                                                                                                                                                                              
+  * [Migration guide](#migration-guide)                                                                                                                                                                              
+  * [Plugins and modules](#plugins-and-modules)                                                                                                                                                                      
+  * [Note about node version support](#note-about-node-version-support)                                                                                                                                              
+  * [Options deprecated or no longer supported](#options-deprecated-or-no-longer-supported)                                                                                                                          
+  * [Restrict Login](#restrict-login)                                                                                                                                                                                
+  * [JSON API and Redirects](#json-api-and-redirects)                                                                                                                                                                
+    * [Redirect](#redirect)                                                                                                                                                                                          
+  * [API](#api)                                                                                                                                                                                                      
+    * [login](#login)                                                                                                                                                                                                
+    * [logout](#logout)                                                                                                                                                                                              
+    * [user - previously instance](#user---previously-instance)                                                                                                                                                      
+    * [register](#register)                                                                                                                                                                                          
+    * [create reset](#create-reset)                                                                                                                                                                                  
+    * [load reset](#load-reset)                                                                                                                                                                                      
+    * [execute reset](#execute-reset)                                                                                                                                                                                
+    * [update user](#update-user)
+    * [change password](#change-password)
+  * [Test](#test)
+  * [Example of using seneca-auth with Hapi](#example-of-using-seneca-auth-with-hapi)
+  
+  
 A user authentication plugin, using [PassportJS](http://passportjs.org).
 
 Lead Maintainers: [Mircea Alexandru](https://github.com/mirceaalexandru) and [Mihai Dima](https://github.com/mihaidma)
@@ -21,19 +49,19 @@ For a gentle introduction to Seneca itself, see the
 If you're using this plugin module, feel free to contact me on twitter if you
 have any questions! :) [@rjrodger](http://twitter.com/rjrodger)
 
-### Install
+# Install
 
 ```sh
 npm install seneca-auth
 ```
 
-## Migration guide
+# Migration guide
 
 Please see bellow the migration guide from older version to 0.4.x or above version.
 
 A large part of the internal functionality of seneca-auth is now implemented as external plugins. Some of them are loaded by default in order to offer the basic functionality, some must be loaded explicitly.
 
-### Plugins and modules
+# Plugins and modules
 
 |        Functionality    | Loaded by default |                                 plugin                                                      |
 |-------------------------|-------------------|---------------------------------------------------------------------------------------------|
@@ -51,7 +79,11 @@ A large part of the internal functionality of seneca-auth is now implemented as 
 
 Check the documentation of each plugin for details.
 
-### Options deprecated or no longer supported
+# Note about node version support
+
+Hapi is supported only if using node 4 or greater. When using node 0.1x only Express is supported
+
+# Options deprecated or no longer supported
 
 Some options are no longer supported:
    * `service` - the service array that defines the auth strategies is no longer supported. Instead of this the auth strategies plugins must be loaded explicitly, each with its own options.
@@ -63,7 +95,7 @@ When one of these parameters are provided to *seneca-auth* it will be considered
 Some options are deprecated:
    * `tokenkey` - this parameter is deprecated. It is now an option for one of the two plugins that are used for storing/retrieving the auth-token from request/response - [seneca-auth-token-cookie](https://github.com/mirceaalexandru/seneca-auth-token-cookie) or [seneca-auth-token-header](https://github.com/mirceaalexandru/seneca-auth-token-header)
 
-## Restrict Login
+# Restrict Login
 
 Different conditions for login can be added by simply overriding the default behavior of seneca action with pattern:
 
@@ -80,17 +112,19 @@ The restrict condition implemented by this plugin is based on the existence of a
 If more conditions are required these can be implemented in separated seneca actions. All actions can then be added to seneca but make sure
 to call `seneca.prior` from each action to make sure that all conditions in the chain are verified.
 
-## JSON API and Redirects
+# JSON API and Redirects
 
 **NOTE:** Take a look at the [user accounts example](http://github.com/rjrodger/seneca-examples) or [seneca-mvp example](https://github.com/rjrodger/seneca-mvp).
 
-### Redirect
+## Redirect
 
 The redirect functionality is now implemented as a separate module. Please see [auth-redirect](https://github.com/mirceaalexandru/auth-redirect) documentation for details.
 
 The redirect module is loaded by default by *seneca-auth*.
 
-### login
+# API
+
+## login
 
 Login an existing user and set a login token. A new login entity is created for each login.
 
@@ -98,7 +132,7 @@ Login an existing user and set a login token. A new login entity is created for 
    * options property: `urlpath.login`
 
 
-### logout
+## logout
 
 Logout an existing user with an active login. The login entity is updated to reflect the end of the login.
 
@@ -106,7 +140,7 @@ Logout an existing user with an active login. The login entity is updated to ref
    * options property: `urlpath.logout`
 
 
-### user - previously instance
+## user - previously instance
 
 Get the details of an existing, logged in user.
 
@@ -115,7 +149,7 @@ Get the details of an existing, logged in user.
 
 This was previously the `/auth/instance`.
 
-### register
+## register
 
 Register a user and login automatically.
 
@@ -123,7 +157,7 @@ Register a user and login automatically.
    * options property: `urlpath.register`
    * body should contain user information. Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at ``cmd: register`` documentation for details.
 
-### create reset
+## create reset
 
 Create a reset token
 
@@ -131,7 +165,7 @@ Create a reset token
    * options property: `urlpath.create_reset`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: create_reset` documentation for details.
 
-### load reset
+## load reset
 
 Load a user entity using a reset token.
 
@@ -139,7 +173,7 @@ Load a user entity using a reset token.
    * options property: `urlpath.load_reset`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: load_reset` documentation for details.
 
-### execute reset
+## execute reset
 
 Execute a password reset action.
 
@@ -147,7 +181,7 @@ Execute a password reset action.
    * options property: `urlpath.execute_reset`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: execute_reset` documentation for details.
 
-### update user
+## update user
 
 Update user data.
 
@@ -155,7 +189,7 @@ Update user data.
    * options property: `urlpath.update_user`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: update_user` documentation for details.
 
-### change password
+## change password
 
 Change user password.
 
@@ -163,13 +197,13 @@ Change user password.
    * options property: `urlpath.change_password`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: change_password` documentation for details.
 
-## Test
+# Test
 
 ```sh
 npm test
 ```
 
-## Example of using seneca-auth with Hapi
+# Example of using seneca-auth with Hapi
 
 
 ```
