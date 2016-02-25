@@ -47,10 +47,10 @@
     "auth-token-cookie": "0.0.x",
     "auth-urlmatcher": "0.0.x",
     "seneca-local-auth": "0.1.x",
-    "connect": "~3.0.1",
+    "connect": "~3.4.1",
     "eraro": "^0.4.1",
-    "passport": "~0.2.0",
-    "lodash": "^3.10.0"
+    "passport": "~0.3.2",
+    "lodash": "^4.5.1"
   },
   "repository": {
     "type": "git",
@@ -76,7 +76,7 @@
     "express-session": "^1.11.3",
     "lab": "6.2.0",
     "seneca": "plugin",
-    "seneca-user": "senecajs/seneca-user",
+    "seneca-user": "1.0.x",
     "supertest": "~1.0.1"
   },
   "peerDependencies": {
