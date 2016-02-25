@@ -4,7 +4,7 @@
 seneca-auth
 ============
 
-A user authentication plugin, using [PassportJS](http://passportjs.org).
+A user authentication plugin, using [PassportJS](http://passportjs.org) for Express and [Bell](https://github.com/hapijs/bell) for Hapi.
 
 [![npm version][npm-badge]][npm-url]
 [![Build Status][travis-badge]][travis-url]
@@ -16,7 +16,6 @@ A user authentication plugin, using [PassportJS](http://passportjs.org).
 Table of Contents                                                                                                                                                                                                    
 =================                                                                                                                                                                                                    
                                                                                                                                                                                                                      
-  * [seneca-auth](#seneca-auth)                                                                                                                                                                                      
   * [Install](#install)                                                                                                                                                                                              
   * [Migration guide](#migration-guide)                                                                                                                                                                              
   * [Plugins and modules](#plugins-and-modules)                                                                                                                                                                      
@@ -35,11 +34,12 @@ Table of Contents
     * [execute reset](#execute-reset)                                                                                                                                                                                
     * [update user](#update-user)
     * [change password](#change-password)
-  * [Test](#test)
   * [Example of using seneca-auth with Hapi](#example-of-using-seneca-auth-with-hapi)
+  * [Test](#test)
+
   
   
-A user authentication plugin, using [PassportJS](http://passportjs.org).
+
 
 Lead Maintainers: [Mircea Alexandru](https://github.com/mirceaalexandru) and [Mihai Dima](https://github.com/mihaidma)
 
@@ -81,7 +81,7 @@ Check the documentation of each plugin for details.
 
 # Note about node version support
 
-Hapi is supported only if using node 4 or greater. When using node 0.1x only Express is supported
+Hapi is supported only if using node 4 or greater. When using node 0.1x only Express is supported.
 
 # Options deprecated or no longer supported
 
@@ -197,11 +197,6 @@ Change user password.
    * options property: `urlpath.change_password`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: change_password` documentation for details.
 
-# Test
-
-```sh
-npm test
-```
 
 # Example of using seneca-auth with Hapi
 
@@ -256,6 +251,12 @@ server.register([Hapi_Cookie, Bell, Chairo], function (err) {
   })
 })
 
+```
+
+# Test
+
+```sh
+npm test
 ```
 
 
