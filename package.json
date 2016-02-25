@@ -76,7 +76,7 @@
     "express-session": "^1.11.3",
     "lab": "6.2.0",
     "seneca": "plugin",
-    "seneca-user": "senecajs/seneca-user",
+    "seneca-user": "1.0.x",
     "supertest": "~1.0.1"
   },
   "peerDependencies": {
