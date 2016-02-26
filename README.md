@@ -220,13 +220,7 @@ server.register([Hapi_Cookie, Bell, Chairo], function (err) {
     require('.'),
     {
       secure: true,
-      restrict: '/api',
-      server: 'hapi',
-      strategies: [
-        {
-          provider: 'local'
-        }
-      ]
+      restrict: '/api'
     }
   )
 
