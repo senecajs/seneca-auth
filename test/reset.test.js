@@ -12,7 +12,7 @@ var before = lab.before
 var Util = require('./util.js')
 
 var cookie
-var reset
+// var reset
 var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
 // var newPwd = 'uuu1'
 
@@ -59,7 +59,7 @@ suite('reset suite tests ', function () {
   })
 
   // need to see how we can test reset
-  //test('auth/load_reset', function (done) {
+  // test('auth/load_reset', function (done) {
   //  agent
   //    .post('/auth/load_reset')
   //    .send({token: reset.id})
@@ -70,7 +70,7 @@ suite('reset suite tests ', function () {
   //      Assert(res.body.nick, 'No nick in response')
   //      done(err)
   //    })
-  //})
+  // })
 
   // test( 'auth/execute_reset', function( done ) {
   //  agent
