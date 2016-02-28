@@ -68,8 +68,8 @@ suite('Hapi restrict suite tests ', function () {
     })
   })
 
-  test('failed api/service restrict test', function (done) {
-    var url = '/api/service'
+  test('auth/logout test', function (done) {
+    var url = '/auth/logout'
 
     server.inject({
       url: url,
@@ -77,6 +77,49 @@ suite('Hapi restrict suite tests ', function () {
       headers: {cookie: 'seneca-login=' + cookie}
     }, function (res) {
       Assert.equal(200, res.statusCode)
+      Assert(JSON.parse(res.payload).ok)
+      Assert(!JSON.parse(res.payload).user)
+      Assert(!JSON.parse(res.payload).login)
+
+      done()
+    })
+  })
+
+  test('auth/login test', function (done) {
+    var url = '/auth/login'
+
+    server.inject({
+      url: url,
+      method: 'POST',
+      payload: user
+    }, function (res) {
+      Assert.equal(200, res.statusCode)
+      Assert(JSON.parse(res.payload).ok)
+      Assert(JSON.parse(res.payload).user)
+      Assert(JSON.parse(res.payload).login)
+
+      cookie = Util.checkCookie(res)
+
+      done()
+    })
+  })
+
+  test('restricted auth/login test', function (done) {
+    server.seneca.add('role: auth, restrict: login', function (args, done) {
+      done(null, {ok: false, why: 'restricted for test'})
+    })
+
+    var url = '/auth/login'
+
+    server.inject({
+      url: url,
+      method: 'POST',
+      payload: user
+    }, function (res) {
+      Assert.equal(200, res.statusCode)
+      Assert(!JSON.parse(res.payload).ok)
+      Assert(JSON.parse(res.payload).why)
+      Assert.equal(JSON.parse(res.payload).why, 'restricted for test')
 
       done()
     })
