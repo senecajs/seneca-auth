@@ -164,6 +164,10 @@ Create a reset token
    * default url path: `/auth/create_reset`
    * options property: `urlpath.create_reset`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: create_reset` documentation for details.
+   
+Note: The response will not contain reset token or user data. The client of this application should make sure to re-define this action
+and send email to the user with reset token.
+
 
 ## load reset
 
