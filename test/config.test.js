@@ -36,7 +36,7 @@ suite('config suite tests ', function () {
     config.server = 'hapi'
     si.use(require('..'), config)
 
-    function errhandler (err) {
+    function errhandler () {
       done()// if this is called then test will fail.
     }
     done()
