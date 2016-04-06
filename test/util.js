@@ -11,6 +11,9 @@ exports.init = function (options, cb) {
   var session = require('express-session')
 
   var si = require('seneca')(/* {log: 'print'} */)
+
+  si.use(require('seneca-entity'))
+
   si.use('user')
   si.use(require('..'), _.extend({secure: true, restrict: '/api'}, options || {}))
 
