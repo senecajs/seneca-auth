@@ -18,12 +18,16 @@ var seneca = require('seneca')()
 // copy template config.template.js to config.mine.js and customize
 var options = seneca.options('config.mine.js')
 
-// use the user and auth plugins
+// use the user, auth and entity plugins
 // the user plugin gives you user account business logic
 seneca.use('user')
 
+
 // the auth plugin handles HTTP authentication
 seneca.use('auth', options.auth)
+
+// the entity plugin provides an active-record like orm
+seneca.use('entity')
 
 // the local-auth handles local auth strategy
 seneca.use('local-auth')

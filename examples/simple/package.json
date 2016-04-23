@@ -20,6 +20,7 @@
     "method-override": "^2.3.5",
     "seneca": "^2.0.1",
     "seneca-auth": "^1.0.1",
+    "seneca-entity": "0.0.1",
     "seneca-local-auth": "^0.1.2",
     "seneca-user": "^1.0.1",
     "serve-static": "^1.10.2"
