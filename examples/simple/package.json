@@ -13,15 +13,15 @@
   },
   "license": "MIT",
   "dependencies": {
-    "body-parser": "~1.9.0",
-    "cookie-parser": "~1.3.2",
-    "express": "~4.9.5",
-    "express-session": "~1.8.2",
-    "method-override": "~2.2.0",
-    "seneca": "plugin",
-    "seneca-auth": "~0.5.0",
-    "seneca-local-auth": "~0.0.2",
-    "seneca-user": "~0.2.10",
-    "serve-static": "~1.6.3"
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "method-override": "^2.3.5",
+    "seneca": "^2.0.1",
+    "seneca-auth": "^1.0.1",
+    "seneca-local-auth": "^0.1.2",
+    "seneca-user": "^1.0.1",
+    "serve-static": "^1.10.2"
   }
 }
