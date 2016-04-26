@@ -214,14 +214,15 @@ var Bell = require('bell')
 var Hapi_Cookie = require('hapi-auth-cookie')
 
 var server = new Hapi.Server()
-server.connection()
+server.connection({port: 3000})
 
 server.register([Hapi_Cookie, Bell, Chairo], function (err) {
   var si = server.seneca
 
   si.use('user')
+  si.use('entity')
   si.use(
-    require('.'),
+    require('seneca-auth'),
     {
       secure: true,
       restrict: '/api'
@@ -245,6 +246,7 @@ server.register([Hapi_Cookie, Bell, Chairo], function (err) {
   }, function(err){
 
     server.start(function () {
+      console.log(server.info.uri)
     })
   })
 })
