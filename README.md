@@ -15,7 +15,7 @@ A user authentication plugin, using [PassportJS](http://passportjs.org) for Expr
 
 Table of Contents                                                                                                                                                                                                    
 =================                                                                                                                                                                                                    
-                                                                                                                                                                                                                     
+
   * [Install](#install)                                                                                                                                                                                              
   * [Migration guide](#migration-guide)                                                                                                                                                                              
   * [Plugins and modules](#plugins-and-modules)                                                                                                                                                                      
@@ -37,8 +37,8 @@ Table of Contents
   * [Example of using seneca-auth with Hapi](#example-of-using-seneca-auth-with-hapi)
   * [Test](#test)
 
-  
-  
+
+
 
 
 Lead Maintainers: [Mircea Alexandru](https://github.com/mirceaalexandru) and [Mihai Dima](https://github.com/mihaidma)
@@ -49,6 +49,9 @@ For a gentle introduction to Seneca itself, see the
 If you're using this plugin module, feel free to contact me on twitter if you
 have any questions! :) [@rjrodger](http://twitter.com/rjrodger)
 
+### Seneca compatibility
+Supports Seneca versions **1.x** and **2.x**
+
 # Install
 
 ```sh
@@ -57,7 +60,7 @@ npm install seneca-auth
 
 # Migration guide
 
-Please see bellow the migration guide from older version to 0.4.x or above version.
+Please see below the migration guide from older version to 0.4.x or above version.
 
 A large part of the internal functionality of seneca-auth is now implemented as external plugins. Some of them are loaded by default in order to offer the basic functionality, some must be loaded explicitly.
 
@@ -164,7 +167,7 @@ Create a reset token
    * default url path: `/auth/create_reset`
    * options property: `urlpath.create_reset`
    * Please refer to [seneca-user](https://github.com/rjrodger/seneca-user) at `cmd: create_reset` documentation for details.
-   
+
 Note: The response will not contain reset token or user data. The client of this application should make sure to re-define this action
 and send email to the user with reset token.
 
