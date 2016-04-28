@@ -263,7 +263,7 @@ npm test
 
 ## License
 
-Copyright (c) 2012, Richard Rodger and other contributors.
+Copyright (c) 2012 - 2016, Richard Rodger and other contributors.
 Licensed under [MIT][].
 
 [MIT]: ./LICENSE.txt
