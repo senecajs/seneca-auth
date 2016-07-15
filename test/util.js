@@ -12,7 +12,9 @@ exports.init = function (options, cb) {
 
   var si = require('seneca')(/* {log: 'print'} */)
 
-  si.use(require('seneca-entity'))
+  if (si.version >= '2.0.0') {
+    si.use(require('seneca-entity'))
+  }
 
   si.use('user')
   si.use(require('..'), _.extend({secure: true, restrict: '/api'}, options || {}))
