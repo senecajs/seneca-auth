@@ -18,6 +18,9 @@ suite('config suite tests ', function () {
       if (si.version >= '2.0.0') {
         si.use(require('seneca-entity'))
       }
+      if (si.version >= '3.0.0') {
+        si.use(require('seneca-web'))
+      }
       si.use('user')
       var config = {}
       config[cfg] = {}
@@ -34,6 +37,9 @@ suite('config suite tests ', function () {
     var si = require('seneca')({errhandler: errhandler, debug: {undead: true}})
     if (si.version >= '2.0.0') {
       si.use(require('seneca-entity'))
+    }
+    if (si.version >= '3.0.0') {
+      si.use(require('seneca-web'))
     }
     si.use('user')
     var config = {}

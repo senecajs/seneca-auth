@@ -10,10 +10,13 @@ exports.init = function (options, cb) {
   var bodyparser = require('body-parser')
   var session = require('express-session')
 
-  var si = require('seneca')(/* {log: 'print'} */)
+  var si = require('seneca')({ log: 'silent' })
 
   if (si.version >= '2.0.0') {
     si.use(require('seneca-entity'))
+  }
+  if (si.version >= '3.0.0') {
+    si.use(require('seneca-web'))
   }
 
   si.use('user')
