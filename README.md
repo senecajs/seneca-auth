@@ -12,23 +12,23 @@ A user authentication plugin, using [PassportJS](http://passportjs.org) for Expr
 [![Gitter chat][gitter-badge]][gitter-url]
 
 
-## Table of Contents                                                                                                                                                                                                    
-  * [Install](#install)                                                                                                                                                                                              
-  * [Migration guide](#migration-guide)                                                                                                                                                                              
-  * [Plugins and modules](#plugins-and-modules)                                                                                                                                                                      
-  * [Note about node version support](#note-about-node-version-support)                                                                                                                                              
-  * [Options deprecated or no longer supported](#options-deprecated-or-no-longer-supported)                                                                                                                          
-  * [Restrict Login](#restrict-login)                                                                                                                                                                                
-  * [JSON API and Redirects](#json-api-and-redirects)                                                                                                                                                                
-    * [Redirect](#redirect)                                                                                                                                                                                          
-  * [API](#api)                                                                                                                                                                                                      
-    * [login](#login)                                                                                                                                                                                                
-    * [logout](#logout)                                                                                                                                                                                              
-    * [user - previously instance](#user---previously-instance)                                                                                                                                                      
-    * [register](#register)                                                                                                                                                                                          
-    * [create reset](#create-reset)                                                                                                                                                                                  
-    * [load reset](#load-reset)                                                                                                                                                                                      
-    * [execute reset](#execute-reset)                                                                                                                                                                                
+## Table of Contents
+  * [Install](#install)
+  * [Migration guide](#migration-guide)
+  * [Plugins and modules](#plugins-and-modules)
+  * [Note about node version support](#note-about-node-version-support)
+  * [Options deprecated or no longer supported](#options-deprecated-or-no-longer-supported)
+  * [Restrict Login](#restrict-login)
+  * [JSON API and Redirects](#json-api-and-redirects)
+    * [Redirect](#redirect)
+  * [API](#api)
+    * [login](#login)
+    * [logout](#logout)
+    * [user - previously instance](#user---previously-instance)
+    * [register](#register)
+    * [create reset](#create-reset)
+    * [load reset](#load-reset)
+    * [execute reset](#execute-reset)
     * [update user](#update-user)
     * [change password](#change-password)
   * [Example of using seneca-auth with Hapi](#example-of-using-seneca-auth-with-hapi)
@@ -44,7 +44,7 @@ If you're using this plugin module, feel free to contact me on twitter if you
 have any questions! :) [@rjrodger](http://twitter.com/rjrodger)
 
 ### Seneca compatibility
-Supports Seneca versions **1.x** and **2.x**
+Supports Seneca versions **1.x** - **3.x**
 
 # Install
 

@@ -1,7 +1,7 @@
 {
   "name": "seneca-auth",
   "description": "User authentication plugin for the seneca module.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "keywords": [
     "seneca",
     "auth",
@@ -25,6 +25,11 @@
       "name": "Girish Lakshmanan",
       "email": "girish@bigmantra.com",
       "url": "https://github.com/girishla"
+    },
+    {
+      "name": "Mihai Dima",
+      "email": "mihaizn@gmail.com",
+      "url": "https://github.com/mihaidma"
     }
   ],
   "license": "MIT",
