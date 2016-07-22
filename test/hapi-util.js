@@ -20,7 +20,7 @@ exports.init = function (options, done) {
     {
       register: Chairo,
       options: {
-        log: 'print',
+        log: 'silent',
         web: true
       }
     }], function (err) {
