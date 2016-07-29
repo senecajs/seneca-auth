@@ -4,7 +4,7 @@
 // External modules.
 var _ = require('lodash')
 var AuthUrlmatcher = require('auth-urlmatcher')
-var AuthToken = require('auth-token-cookie')
+var AuthTokenCookie = require('auth-token-cookie')
 
 // Internal modules
 var UserManagement = require('./lib/user-management')
@@ -36,23 +36,34 @@ module.exports = function auth (opts) {
   internals.options = seneca.util.deepextend(DefaultOptions, opts)
 
   internals.load_common_plugins = function () {
-    seneca.use(AuthToken, internals.options)
-    seneca.use(AuthUrlmatcher, internals.options)
+    const plugins = internals.options.default_plugins
+    if (plugins.authTokenCookie) {
+      seneca.use(AuthTokenCookie, internals.options)
+    }
+    if (plugins.authUrlmatcher) {
+      seneca.use(AuthUrlmatcher, internals.options)
+    }
     seneca.use(Utility, internals.options)
     seneca.use(UserManagement, internals.options)
-    seneca.use(AuthRedirect, internals.options.redirect || {})
+    if (plugins.authRedirect) {
+      seneca.use(AuthRedirect, internals.options.redirect || {})
+    }
   }
 
   internals.load_default_express_plugins = function () {
     internals.load_common_plugins()
     seneca.use(ExpressAuth, internals.options)
-    seneca.use(LocalStrategy, internals.options)
+    if (internals.options.default_plugins.localAuth) {
+      seneca.use(LocalStrategy, internals.options)
+    }
   }
 
   internals.load_default_hapi_plugins = function () {
     internals.load_common_plugins()
     seneca.use(HapiAuth, internals.options)
-    seneca.use(LocalStrategy, internals.options)
+    if (internals.options.default_plugins.localAuth) {
+      seneca.use(LocalStrategy, internals.options)
+    }
   }
 
   internals.choose_framework = function () {

@@ -4,6 +4,14 @@ module.exports = {
   },
 
   framework: 'express',
+
+  default_plugins: {
+    authRedirect: true,
+    authTokenCookie: true,
+    authUrlmatcher: true,
+    localAuth: true
+  },
+
   prefix: '/auth/',
 
   urlpath: {
