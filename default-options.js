@@ -5,6 +5,8 @@ module.exports = {
 
   framework: 'express',
 
+  // Register (true) default plugins. Set false to not register when
+  // using custom versions.
   default_plugins: {
     authRedirect: true,
     authTokenCookie: true,
