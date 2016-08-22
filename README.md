@@ -16,6 +16,7 @@ A user authentication plugin, using [PassportJS](http://passportjs.org) for Expr
   * [Install](#install)
   * [Migration guide](#migration-guide)
   * [Plugins and modules](#plugins-and-modules)
+    * [Disabling default plugins](#disabling-default-plugins)
   * [Note about node version support](#note-about-node-version-support)
   * [Options deprecated or no longer supported](#options-deprecated-or-no-longer-supported)
   * [Restrict Login](#restrict-login)
@@ -62,7 +63,7 @@ A large part of the internal functionality of seneca-auth is now implemented as 
 
 |        Functionality    | Loaded by default |                                 plugin                                                      |
 |-------------------------|-------------------|---------------------------------------------------------------------------------------------|
-| Local strategy auth     | No                | [seneca-local-auth](https://github.com/senecajs/seneca-local-auth)                   |
+| Local strategy auth     | Yes               | [seneca-local-auth](https://github.com/senecajs/seneca-local-auth)                   |
 | Facebook  strategy auth | No                | [seneca-facebook-auth](https://github.com/senecajs/seneca-facebook-auth)                    |
 | Github strategy auth    | No                | [seneca-github-auth](https://github.com/senecajs/seneca-github-auth)                        |
 | Google  strategy auth   | No                | [seneca-google-auth](https://github.com/senecajs/seneca-google-auth)                        |
@@ -75,6 +76,17 @@ A large part of the internal functionality of seneca-auth is now implemented as 
 | Restrict Login          | No                | [auth-restrict-login](https://github.com/senecajs/auth-restrict-login) |
 
 Check the documentation of each plugin for details.
+
+## Disabling default plugins
+
+Disable default plugins by setting the flags on `options.default_plugins` to false. For example, if you want to use [auth-token-header](https://github.com/senecajs/auth-token-header) instead of [auth-token-cookie](https://github.com/senecajs/auth-token-cookie):
+
+```js
+seneca.use(require('seneca-auth', {
+    default_plugins: { authTokenCookie: false }
+})
+seneca.use(require('auth-token-header'))
+```
 
 # Note about node version support
 
