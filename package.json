@@ -80,7 +80,7 @@
     "express": "4.14.x",
     "express-session": "1.14.x",
     "hapi": "12.0.0",
-    "hapi-auth-cookie": "6.1.1",
+    "hapi-auth-cookie": "5.0.0",
     "lab": "11.0.x",
     "pre-commit": "1.1.x",
     "seneca": "plugin",
