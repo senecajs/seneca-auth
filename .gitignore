@@ -20,3 +20,6 @@ npm-debug.log
 
 *~
 .idea
+
+docs/annotated
+docs/coverage.html
