@@ -37,7 +37,7 @@
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.2",
     "request-arguments-parser": "0.1.0",
-    "seneca-crypto-sign": "0.1.1",
+    "seneca-crypto-sign": "~0.1.2",
     "seneca-jsonrest-api": "0.2.1",
     "seneca-perm": "*",
     "string": "~1.8.0",
