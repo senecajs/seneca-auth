@@ -100,7 +100,7 @@ $(function () {
     }
   }
 
-  function showLogin (data) {
+  function showLogin () {
     $('#content_login').slideDown()
     $('#content_register').slideUp()
     $('#content_account').slideUp()

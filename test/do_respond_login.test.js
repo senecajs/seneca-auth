@@ -4,7 +4,7 @@ var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
-var lab = exports.lab = Lab.script()
+var lab = (exports.lab = Lab.script())
 var suite = lab.suite
 var test = lab.test
 var before = lab.before
@@ -23,13 +23,12 @@ var options = {
       fail: '/register_fail',
       win: '/register_win'
     }
-
   }
 }
 
-suite('register-login-logout suite tests ', function () {
-  before({}, function (done) {
-    Util.init(options, function (err, agentData) {
+suite('register-login-logout suite tests ', function() {
+  before({}, function(done) {
+    Util.init(options, function(err, agentData) {
       Assert.ok(!err)
       agent = agentData
 
@@ -37,51 +36,79 @@ suite('register-login-logout suite tests ', function () {
     })
   })
 
-  test('redirect auth/login fail test', function (done) {
+  test('redirect auth/login fail test', function(done) {
     agent
       .post('/auth/login')
-      .send({nick: 'u1', password: 'u1'})
+      .send({ nick: 'u1', password: 'u1' })
       .expect(301)
-      .end(function (err, res) {
+      .end(function(err, res) {
         Util.log(res)
-        Assert(options.redirect.login.fail, res.header.location, 'Redirect to fail')
+        Assert(
+          options.redirect.login.fail,
+          res.header.location,
+          'Redirect to fail'
+        )
         done(err)
       })
   })
 
-  test('auth/register win test', function (done) {
+  test('auth/register win test', function(done) {
     agent
       .post('/auth/register')
-      .send({nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true})
+      .send({
+        nick: 'u1',
+        name: 'nu1',
+        email: 'u1@example.com',
+        password: 'u1',
+        active: true
+      })
       .expect(301)
-      .end(function (err, res) {
+      .end(function(err, res) {
         Util.log(res)
-        Assert(options.redirect.register.win, res.header.location, 'Redirect to win')
+        Assert(
+          options.redirect.register.win,
+          res.header.location,
+          'Redirect to win'
+        )
         Util.checkCookie(res)
         done(err)
       })
   })
 
-  test('auth/register fail test', function (done) {
+  test('auth/register fail test', function(done) {
     agent
       .post('/auth/register')
-      .send({nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true})
+      .send({
+        nick: 'u1',
+        name: 'nu1',
+        email: 'u1@example.com',
+        password: 'u1',
+        active: true
+      })
       .expect(301)
-      .end(function (err, res) {
+      .end(function(err, res) {
         Util.log(res)
-        Assert(options.redirect.register.fail, res.header.location, 'Redirect to fail')
+        Assert(
+          options.redirect.register.fail,
+          res.header.location,
+          'Redirect to fail'
+        )
         done(err)
       })
   })
 
-  test('redirect auth/login win test', function (done) {
+  test('redirect auth/login win test', function(done) {
     agent
       .post('/auth/login')
-      .send({nick: 'u1', password: 'u1'})
+      .send({ nick: 'u1', password: 'u1' })
       .expect(301)
-      .end(function (err, res) {
+      .end(function(err, res) {
         Util.log(res)
-        Assert(options.redirect.login.win, res.header.location, 'Redirect to fail')
+        Assert(
+          options.redirect.login.win,
+          res.header.location,
+          'Redirect to fail'
+        )
         done(err)
       })
   })
