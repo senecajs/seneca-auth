@@ -4,7 +4,7 @@ var Assert = require('assert')
 var agent
 
 var Lab = require('lab')
-var lab = exports.lab = Lab.script()
+var lab = (exports.lab = Lab.script())
 var suite = lab.suite
 var test = lab.test
 var before = lab.before
@@ -12,11 +12,17 @@ var before = lab.before
 var Util = require('./util.js')
 
 var cookie
-var user = {nick: 'u1', name: 'nu1', email: 'u1@example.com', password: 'u1', active: true}
+var user = {
+  nick: 'u1',
+  name: 'nu1',
+  email: 'u1@example.com',
+  password: 'u1',
+  active: true
+}
 
-suite('restricted suite tests ', function () {
-  before({}, function (done) {
-    Util.init({}, function (err, agentData) {
+suite('restricted suite tests ', function() {
+  before({}, function(done) {
+    Util.init({}, function(err, agentData) {
       Assert.ok(!err)
       agent = agentData
 
@@ -36,12 +42,12 @@ suite('restricted suite tests ', function () {
   //    } )
   // } )
 
-  test('auth/register user', function (done) {
+  test('auth/register user', function(done) {
     agent
       .post('/auth/register')
       .send(user)
       .expect(200)
-      .end(function (err, res) {
+      .end(function(err, res) {
         Util.log(res)
         Assert(res.body.ok, 'Not OK')
         Assert(res.body.user, 'No user in response')
@@ -51,17 +57,17 @@ suite('restricted suite tests ', function () {
       })
   })
 
-  test('verify cookie exists after register', function (done) {
+  test('verify cookie exists after register', function(done) {
     Assert(cookie)
     done()
   })
 
-  test('api/service test with user login', function (done) {
+  test('api/service test with user login', function(done) {
     agent
       .get('/api/service')
       .set('Cookie', ['seneca-login=' + cookie])
       .expect(200)
-      .end(function (err, res) {
+      .end(function(err, res) {
         Util.log(res)
         Assert(res.body.ok, 'OK response')
         Assert(res.body.test, 'Test OK response')
