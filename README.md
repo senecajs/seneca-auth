@@ -11,6 +11,8 @@ A user authentication plugin, using [PassportJS](http://passportjs.org) for Expr
 [![Dependency Status][david-badge]][david-url]
 [![Gitter chat][gitter-badge]][gitter-url]
 
+| ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
+|---|---|
 
 ## Table of Contents
   * [Install](#install)
